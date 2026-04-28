@@ -2,15 +2,10 @@
 """
 Fonctions de visualisation pour les graphiques
 """
-
-import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
-import numpy as np
 from typing import Optional, Dict
-
-from config.constants import COLOR_MAP, ZONE_COLOR_MAP
 
 
 def create_rendement_chart(
