@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environnement
+.venv/
+venv/
+.env
+
+# Data
+data/*
+!data/
+!data/.gitkeep
+
+# climat
+!data/climat/
+!data/climat/*.csv
+data/climat/dataset_clean_climat.csv
+
+# projections
+!data/projections/
+!data/projections/*.csv
+
+# geojson
+!data/geojson/
+!data/geojson/*.geojson
+!data/geojson/*.json
+
+# rendement (si nécessaire en csv uniquement)
+!data/rendement/
+!data/rendement/*.csv
+
+# Ignore lourds
+*.parquet
+*.duckdb
+
+# Logs
+*.log
+.env
+# OS
+.DS_Store
+Thumbs.db 
+*:Zone.Identifier
+
+# Streamlit
+.streamlit/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/

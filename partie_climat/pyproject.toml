@@ -1,0 +1,23 @@
+[project]
+name = "Cartographie Pays d'Oc IGP bis"
+version = "0.1.0"
+description = "Description de mon projet"
+authors = [
+    { name = "Julien VU", email = "julienvu@interoc.fr" },
+    { name = "De Gelvic NSEMI", email = "degelvic@interoc.fr" }
+]
+requires-python = ">=3.8"
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+exclude = 'tests/'  # Simple regex sur une ligne
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["migrations", ".venv", "build", "dist", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F"]
+fixable = ["ALL"]

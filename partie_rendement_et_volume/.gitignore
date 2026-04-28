@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+mvttdb.duckdb
+dataset_mvttdb_final.parquet
+ai_memory.pkl
