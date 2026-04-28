@@ -431,7 +431,7 @@ class AIAnalyzer:
     def _load_fallback_climate_data(self):
         if hasattr(self, "_climate_fallback_cache"):
             return self._climate_fallback_cache
-        path_climate_AI = Path("data/climate_zones_AI_generate.json")
+        path_climate_AI = Path("climate_zones_AI_generate.json")
         if not path_climate_AI.exists():
             return None
         with open(path_climate_AI, "r", encoding="utf-8") as f:

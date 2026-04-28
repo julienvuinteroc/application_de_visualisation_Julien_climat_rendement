@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import numpy as np
-import os
-from pathlib import Path
+
 
 # Configuration de la page
 st.set_page_config(layout="wide", page_title="Analyse Viticole")
@@ -121,19 +119,16 @@ st.markdown("""
 # =====================================================
 from config.constants import (
     COLOR_MAP, ZONE_COLOR_MAP, ZONE_LABELS,
-    DEPARTEMENTS, GEOJSON_FILES,
-    BASE_DIR, DB_FILE, PARQUET_FILE
+    DEPARTEMENTS
 )
 from modules.data_loader import load_data, load_geojson, apply_filters
 from modules.utils import (
-    zone_sort_key, zone_order_from_series, complete_years,
-    bootstrap_ci, format_number
+    zone_sort_key, zone_order_from_series, complete_years
 )
 from modules.visualization import (
     create_rendement_chart, create_volume_chart,
-    create_comparison_bar_chart, create_pie_chart,
-    create_scatter_with_trend, create_choropleth_map,
-    create_anomaly_chart
+    create_comparison_bar_chart,
+    create_scatter_with_trend
 )
 from modules.prediction import run_prediction
 
