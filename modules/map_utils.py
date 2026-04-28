@@ -4,10 +4,7 @@ Utilitaires spécifiques pour les cartes
 """
 
 import streamlit as st
-import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
 
 from config.constants import ZONE_LABELS, ZONE_COLOR_MAP
 from modules.data_loader import load_geojson

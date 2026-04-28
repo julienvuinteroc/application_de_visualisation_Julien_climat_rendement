@@ -5,9 +5,8 @@ Fonctions utilitaires
 
 import numpy as np
 import pandas as pd
-import json
 import hashlib
-from typing import List, Dict, Any
+from typing import List
 
 
 def to_float_series(s: pd.Series) -> pd.Series:

@@ -79,7 +79,7 @@ st.markdown("""
 # =====================================================
 from config.constants import (
     COLOR_MAP, ZONE_COLOR_MAP, ZONE_LABELS,
-    DEPARTEMENTS, DEPT_COLOR_MAP, DEPT_NAMES
+    DEPARTEMENTS, DEPT_COLOR_MAP
 )
 from modules.data_loader import load_data, load_geojson, apply_filters
 from modules.utils import (
