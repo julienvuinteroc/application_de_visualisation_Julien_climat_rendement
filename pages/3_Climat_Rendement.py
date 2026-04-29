@@ -482,7 +482,7 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         .sort_values("zone")
     )
 
-    # Climat de reference = zones les plus productives
+    # Climat de reference = zones les plus productrices
     top_yield_threshold = zone_scoring["rendement_moy"].quantile(0.75) if len(zone_scoring) >= 4 else zone_scoring["rendement_moy"].median()
     top_zone_ref = zone_scoring[zone_scoring["rendement_moy"] >= top_yield_threshold].copy()
 
@@ -948,16 +948,16 @@ with st.expander("Analyse automatique", expanded=False):
         )
         if not cepage_perf.empty:
             row = cepage_perf.iloc[0]
-            best_cepage_text = f"Le cepage le plus present est {row['code_cepage']} avec {row['volume']:.0f} hl."
+            best_cepage_text = f"Le cepage le plus present est le {row['code_cepage']} avec {row['volume']:.0f} hl."
         
         narrative = f"""
         ### Synthese de l'analyse
         
         Sur la periode analysee :
 
-        - **Zone la mieux classee** : Zone {int(top_zone['zone'])} avec un score qualite de {top_zone['score_final']:.1f} (classe {top_zone['classe_final']})
-        - **Zone la plus productive** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.2f} hl/ha
-        - **Zone la plus stable** : Zone {int(most_stable['zone'])} (ecart-type de {most_stable['rendement_std']:.2f})
+        - **Zone la mieux classee** : Zone {int(top_zone['zone'])} avec un score global de {top_zone['score_final']:.1f} (classe {top_zone['classe_final']})
+        - **Zone la plus productrice** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.2f} hl/ha
+        - **Zone la plus stable** : Zone {int(most_stable['zone'])} (variation de {most_stable['rendement_std']:.2f})
         
         {best_color_text}
         {best_cepage_text}

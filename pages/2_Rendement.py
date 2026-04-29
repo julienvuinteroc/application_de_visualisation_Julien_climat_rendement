@@ -1166,8 +1166,8 @@ with tab_quant:
             **Interpretation :**
             - La correlation entre surface et volume est de {tmp["surface"].corr(tmp["volume"]):.2f}
             - La productivite moyenne est de {prod_global:.1f} hl/ha
-            - La zone la plus productive est {prod_zone.loc[prod_zone["productivite"].idxmax(), "Zone"]} avec {prod_zone["productivite"].max():.0f} hl/ha
-            - La couleur la plus productive est {prod_couleur.loc[prod_couleur["productivite"].idxmax(), "code_couleur"]} avec {prod_couleur["productivite"].max():.0f} hl/ha
+            - La zone la plus productrice est {prod_zone.loc[prod_zone["productivite"].idxmax(), "Zone"]} avec {prod_zone["productivite"].max():.0f} hl/ha
+            - La couleur la plus productrice est {prod_couleur.loc[prod_couleur["productivite"].idxmax(), "code_couleur"]} avec {prod_couleur["productivite"].max():.0f} hl/ha
             """)
     
     with tab_q2:
@@ -1280,7 +1280,7 @@ with tab_quant:
             with col_rank1:
                 # Top 3 zones
                 top3 = prod_stats.nlargest(3, "mean")
-                st.markdown("**Top 3 zones les plus productives**")
+                st.markdown("**Top 3 zones les plus productrices**")
                 for i, row in top3.iterrows():
                     st.markdown(f"""
                     <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
@@ -1292,7 +1292,7 @@ with tab_quant:
             with col_rank2:
                 # Bottom 3 zones
                 bottom3 = prod_stats.nsmallest(3, "mean")
-                st.markdown("**3 zones les moins productives**")
+                st.markdown("**3 zones les moins productrices**")
                 for i, row in bottom3.iterrows():
                     st.markdown(f"""
                     <div style="background: #ffebee; padding: 10px; border-radius: 8px; margin: 5px 0;">
