@@ -217,7 +217,7 @@ def close_popup(popup_name):
 
 st.markdown("""
 <div class="main-header">
-    <h1>Observatoire Viticole - Pays d'Oc</h1>
+    <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
     <p>Analyse du climat, du rendement et de leurs interactions</p>
 </div>
 """, unsafe_allow_html=True)
@@ -557,7 +557,7 @@ st.markdown("---")
 # Footer
 st.markdown("""
 <div class="footer">
-    <p>Observatoire Viticole - Pays d'Oc | Donnees mises a jour regulierement</p>
+    <p>Observatoire Viticole - Pays d'Oc IGP | Donnees mises a jour regulierement</p>
     <p style="font-size: 0.75rem;">(c) 2024 - Analyse du climat et du rendement viticole</p>
 </div>
 """, unsafe_allow_html=True)

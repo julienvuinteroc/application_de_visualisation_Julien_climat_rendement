@@ -486,8 +486,8 @@ class AIAnalyzer:
         try:
             response_AI = self.client_climate.chat.completions.create(model="gpt-4o-mini",
                                                                         messages=[{"role": "user", "content": prompt_climate}],
-                                                                        max_tokens=1400,
-                                                                        temperature=0.9
+                                                                        max_tokens=1000,
+                                                                        temperature=0.8
                                                                       ) 
             result = response_AI.choices[0].message.content
             self.cache[key] = result

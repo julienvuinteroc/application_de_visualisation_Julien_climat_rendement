@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Configuration de la page
 st.set_page_config(
-    page_title="Analyse Viticole - Pays d'Oc",
+    page_title="Analyse Viticole - Pays d'Oc IGP",
     page_icon="🍇",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -69,7 +69,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="main-header">
-    <h1>Observatoire Viticole - Pays d'Oc</h1>
+    <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
     <p>Analyse des rendements et volumes par zone pedoclimatique, couleur et cepage</p>
 </div>
 """, unsafe_allow_html=True)

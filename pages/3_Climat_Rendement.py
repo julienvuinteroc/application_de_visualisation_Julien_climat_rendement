@@ -69,7 +69,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="main-header">
-    <h1>Observatoire Viticole - Pays d'Oc</h1>
+    <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
     <p>Analyse des rendements et volumes par zone pedoclimatique, couleur et cepage</p>
 </div>
 """, unsafe_allow_html=True)
@@ -107,6 +107,14 @@ ZONE_COLOR_MAP = {
     "5": "#AFC6D9",
     "6": "#7A1FA2",
     "7": "#FFD800",
+}
+
+DISPLAY_LABELS_scoring_ = {
+    "rendement_moy": "Rendement moyen (hl/ha)",
+    "rendement_std": "Mesure de dispersion du rendement (hl/ha)",
+    "score_final": "Score global",
+    "classe_final": "Classe qualitative",
+    "zone": "Zone"
 }
 
 WINE_COLOR_MAP = {
@@ -184,6 +192,8 @@ def weighted_corr(df_in: pd.DataFrame, x: str, y: str) -> float:
         return np.nan
     return tmp[x].corr(tmp[y])
 
+def rename_columns_scoring(df):
+    return df.rename(columns=DISPLAY_LABELS_scoring_)
 
 # =====================================================
 # CHARGEMENT DES DONNEES
@@ -515,52 +525,33 @@ with st.expander("Scoring intelligent des zones", expanded=True):
 
     zone_scoring["classe_final"] = zone_scoring["score_final"].apply(class_from_score)
     zone_color_dict = build_zone_color_dict(zone_scoring["zone"].tolist())
-
-    col_score1, col_score2 = st.columns([2, 1])
-    
-    with col_score1:
-        fig_score = px.bar(
-            zone_scoring.sort_values("score_final", ascending=False),
-            x="zone",
-            y="score_final",
-            color="zone",
-            color_discrete_map=zone_color_dict,
-            text="classe_final",
-            title="Classement qualitatif des zones",
-            labels={"zone": "Zone", "score_final": "Score qualite"},
-            height=500
-        )
-        fig_score.update_traces(textposition="outside", textfont_size=14)
-        fig_score.update_layout(
-            xaxis_type="category",
-            showlegend=False,
-            plot_bgcolor="rgba(0,0,0,0)",
-            hoverlabel=dict(bgcolor="white", font_size=12)
-        )
-        st.plotly_chart(fig_score, key="score_bar_chart", use_container_width=True)
-
-    with col_score2:
-        st.markdown("### Detail des scores")
-        st.dataframe(
-            zone_scoring[
-                [
-                    "zone",
-                    "classe_final",
-                    "score_final",
-                    "rendement_moy",
-                    "rendement_std",
-                ]
-            ].round(2),
-            width="stretch",
-            hide_index=True,
-        )
-
+    fig_score = px.bar(
+        zone_scoring.sort_values("score_final", ascending=False),
+        x="zone",
+        y="score_final",
+        color="zone",
+        color_discrete_map=zone_color_dict,
+        text="classe_final",
+        title="Classement qualitatif des zones",
+        labels={"zone": "Zone", "score_final": "Score global"},
+        height=500
+    )
+    fig_score.update_traces(textposition="outside", textfont_size=14)
+    fig_score.update_layout(
+        xaxis_type="category",
+        showlegend=False,
+        plot_bgcolor="rgba(0,0,0,0)",
+        hoverlabel=dict(bgcolor="white", font_size=12)
+    )
+    st.plotly_chart(fig_score, key="score_bar_chart", use_container_width=True)
+    st.markdown("N.B: Le score global traduit la performance globale de chaque zone en tenant compte des critères suivants: ")
+    st.markdown("stabilité des rendements pour les 3 couleurs et répartition optimale des températures annuelles et des précipitations annuelles.")
 
 # =====================================================
 # CARTE PAR ZONE
 # =====================================================
 
-with st.expander("Cartographie climat-rendement", expanded=True):
+with st.expander("Cartographie climat-production", expanded=True):
     try:
         geo_zones = load_geojson("zones")
 
