@@ -126,7 +126,7 @@ def get_last_5_years(df_data):
 def get_zones_1_7(df):
     """Filtre pour garder uniquement les zones 1 a 7"""
     if "Zone" in df.columns:
-        return df[~df["Zone"].isin(["0", "None", "nan", 0])].copy()
+        return df[~df["Zone"].isin(["0", "None", "nan", 0, "8", 8])].copy()
     return df
 
 def create_cepage_map(df, df_all, indicator, level, year, couleur, cepage=None):

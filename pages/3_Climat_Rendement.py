@@ -936,7 +936,7 @@ with st.expander("Analyse automatique", expanded=False):
         )
         if not color_perf.empty:
             row = color_perf.iloc[0]
-            best_color_text = f"La couleur la plus performante est {WINE_CORRESPONDANCE.get(row['code_couleur'], row['code_couleur'])} avec un rendement moyen de {row['rendement']:.1f} hl/ha."
+            best_color_text = f"La couleur la plus performante est le {WINE_CORRESPONDANCE.get(row['code_couleur'], row['code_couleur'])} avec un rendement moyen de {row['rendement']:.1f} hl/ha."
         
         # Meilleur cepage
         best_cepage_text = "Information indisponible"
