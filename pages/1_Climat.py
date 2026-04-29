@@ -1367,6 +1367,18 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
+            st.markdown("**Légende des zones pédoclimatiques**")
+            st.markdown("""
+                <div>
+                    <span style="color:#000000">O</span> Zone 1 : zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2 : zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3 : zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4 : zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5 : zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6 : zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> Zone 7 : zone avec le plus grand nombre de jours très chauds mais sols profonds
+                </div>
+                """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte  : {e}")
 
