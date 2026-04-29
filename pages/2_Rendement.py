@@ -522,7 +522,7 @@ with tab_rdt:
             with st.expander("Statistiques descriptives", expanded=False):
                 stats_df = data.groupby(col_map)["rendement"].describe(percentiles=[.25, .5, .75]).round(2)
                 stats_df = stats_df[['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']]
-                stats_df.columns = ['Nb annees', 'Moyenne', 'Ecart-type', 'Min', 'Q1', 'Mediane', 'Q3', 'Max']
+                stats_df.columns = ['Occurrence', 'Moyenne', 'Ecart-type', 'Min', 'Q1', 'Mediane', 'Q3', 'Max']
                 st.dataframe(stats_df, width="stretch")
 
 # =====================================================
@@ -1360,9 +1360,9 @@ with tab_quant:
             # Interpretation
             st.markdown("""
             **Guide de lecture :**
-            - **Indice de variabilité du rendement < 15%** : Rendement tres stable (vert)
-            - **Indice de variabilité du rendement entre 15% et 25%** : Variabilite moderee (orange)
-            - **Indice de variabilité du rendement > 25%** : Rendement tres variable (rouge)
+            - **Indice de stabilité du rendement < 15%** : Rendement tres stable (vert)
+            - **Indice de stabilité du rendement entre 15% et 25%** : Variabilite moderee (orange)
+            - **Indice de stabilité du rendement > 25%** : Rendement tres variable (rouge)
             """)
             
             # Graphique 2: Evolution temporelle pour les zones les plus/moins stables
@@ -1373,7 +1373,7 @@ with tab_quant:
             with col_evol1:
                 # Zone la plus stable
                 most_stable = vol_stats.loc[vol_stats["cv"].idxmin(), "Zone"]
-                st.markdown(f"**Zone la plus stable : Zone {int(most_stable)} (CV={vol_stats.loc[vol_stats['cv'].idxmin(), 'cv']:.0f}%)**")
+                st.markdown(f"**Zone la plus stable : Zone {int(most_stable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmin(), 'cv']:.0f}%)**")
                 
                 df_stable = tmp[tmp["Zone"] == most_stable].groupby("annee")["rendement"].mean().reset_index()
                 
@@ -1391,7 +1391,7 @@ with tab_quant:
             with col_evol2:
                 # Zone la plus variable
                 most_variable = vol_stats.loc[vol_stats["cv"].idxmax(), "Zone"]
-                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Indice de variabilité du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
+                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Indice de stabilité du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
                 
                 df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
                 

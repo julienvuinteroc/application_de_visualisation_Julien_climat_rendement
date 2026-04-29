@@ -160,13 +160,13 @@ class AIAnalyzer:
             cv = (stat['std'] / stat['mean'] * 100) if stat['mean'] > 0 else 0
             
             if cv > 35:
-                lines.append(f"  • **Forte variabilité** interannuelle (écart-type de {stat['std']:.1f} hl/ha, CV={cv:.0f}%). Cette irrégularité complique la planification et peut indiquer une sensibilité aux aléas climatiques.")
+                lines.append(f"  • **Forte variabilité** interannuelle (écart-type de {stat['std']:.1f} hl/ha, Indice de stabilité du rendement={cv:.0f}%). Cette irrégularité complique la planification et peut indiquer une sensibilité aux aléas climatiques.")
             elif cv > 25:
-                lines.append(f"  • **Variabilité marquée** (écart-type de {stat['std']:.1f} hl/ha, CV={cv:.0f}%). La production fluctue significativement selon les millésimes.")
+                lines.append(f"  • **Variabilité marquée** (écart-type de {stat['std']:.1f} hl/ha, Indice de stabilité du rendement={cv:.0f}%). La production fluctue significativement selon les millésimes.")
             elif cv > 15:
-                lines.append(f"  • **Variabilité modérée** (écart-type de {stat['std']:.1f} hl/ha, CV={cv:.0f}%).")
+                lines.append(f"  • **Variabilité modérée** (écart-type de {stat['std']:.1f} hl/ha, Indice de stabilité du rendement={cv:.0f}%).")
             else:
-                lines.append(f"  • **Très bonne stabilité** (écart-type de {stat['std']:.1f} hl/ha, CV={cv:.0f}%).")
+                lines.append(f"  • **Très bonne stabilité** (écart-type de {stat['std']:.1f} hl/ha, Indice de stabilité du rendement={cv:.0f}%).")
             
             # Étendue
             lines.append(f"  • Les rendements s'échelonnent de **{stat['min']:.0f}** à **{stat['max']:.0f} hl/ha**, soit une amplitude de {stat['max'] - stat['min']:.0f} hl/ha.")
@@ -390,7 +390,7 @@ class AIAnalyzer:
             lines.append(f"  • Volume total : **{stat['total']:,.0f} hl** ({share:.1f}% du total)")
             lines.append(f"  • Moyenne annuelle : **{stat['mean']:,.0f} hl**")
             if stat['cv'] > 30:
-                lines.append(f"  • Forte variation (CV={stat['cv']:.0f}%)")
+                lines.append(f"  • Forte variation (Indice de stabilité du rendement={stat['cv']:.0f}%)")
             lines.append("")
         
         natural_analysis = "\n".join(lines)
@@ -469,7 +469,7 @@ class AIAnalyzer:
         1. Type de climat 
         2. 2 régions viticoles mondiales avec de fortes similitudes (sous-régions idéalement)
         3. Raisons de cette similarité ?
-        4. Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
+        4. Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique
         5. Pratiques culturales recommandées
         6. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ? 
         7. Quelles mesures ont été prises pour garantir une bonne gestion de l'eau ?

@@ -554,43 +554,6 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
         ),
     ).add_to(m)
     colormap.add_to(m)
-    legend_items = ""
-    for zone, label in ZONE_LABELS.items():
-        if zone == "0":
-            continue
-        legend_items += f"""
-        <div style="display:flex; align-items:center; margin-bottom:1px">
-            <div style="
-                width:4px;
-                height:4px;
-                background:white;
-                border:1.5px solid {ZONE_COLOR_MAP[zone]};
-                margin-right:5px;
-            "></div>
-            <span style="font-size:6px;">{label}</span>
-        </div>
-        """
-
-    zone_legend_html = f"""
-    <div style="
-        position: fixed;
-        bottom: 85px;
-        right: 20px;
-        z-index: 9999;
-        background: white;
-        border: 1.5px solid #666;
-        border-radius: 6px;
-        padding: 4px;
-        font-size: 6px;
-        width: 120px;
-        box-shadow: 0 0 6px rgba(0,0,0,0.20);
-    ">
-        <b>Zonage pédoclimatique</b>
-        <hr style="margin:3px 0;">
-        {legend_items}
-    </div>
-    """
-
     title_html = f"""
     <div style="
         position: fixed;
@@ -609,8 +572,6 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
         {title_label}
     </div>
     """
-
-    m.get_root().html.add_child(folium.Element(zone_legend_html))
     m.get_root().html.add_child(folium.Element(title_html))
     m.get_root().html.add_child(folium.Element("""
         <style>
@@ -1056,6 +1017,18 @@ with tab_histo_2007_2024:
 
             map_hist = create_zone_map(zone_values_hist, map_indicator_hist, map_title)
             components.html(map_hist._repr_html_(), height=350)
+            st.markdown("**Légende des zones pédoclimatiques**")
+            st.markdown("""
+                <div>
+                    <span style="color:#000000">O</span> Zone 1 : zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2 : zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3 : zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4 : zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5 : zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6 : zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> Zone 7 : zone avec le plus grand nombre de jours très chauds mais sols profonds
+                </div>
+                """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte : {e}")
     if view_historical == "Graphique des indicateurs":
@@ -1275,7 +1248,7 @@ with tab_future:
                 trend_col_name,
             ]
             scenario_table_display = scenario_table_display[cols_to_keep]
-            st.dataframe(scenario_table_display, width="stretch", height=min(35 * len(scenario_table_display) + 60, 1000))
+            st.dataframe(scenario_table_display, width="stretch", height=475, row_height=15)
             map_scenario = st.selectbox(
                 "Scénario étudié",
                 options=["optimiste", "neutre", "pessimiste"],
@@ -1328,6 +1301,18 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
+            st.markdown("**Légende des zones pédoclimatiques**")
+            st.markdown("""
+                <div>
+                    <span style="color:#000000">O</span> Zone 1 : zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2 : zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3 : zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4 : zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5 : zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6 : zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> Zone 7 : zone avec le plus grand nombre de jours très chauds mais sols profonds
+                </div>
+                """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte  : {e}")
         st.markdown ("**Visibilité des projections climatiques sur chaque commune**")
