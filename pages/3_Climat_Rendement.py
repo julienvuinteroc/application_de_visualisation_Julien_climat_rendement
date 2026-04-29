@@ -956,7 +956,7 @@ with st.expander("Analyse automatique", expanded=False):
         Sur la periode analysee :
 
         - **Zone la mieux classee** : Zone {int(top_zone['zone'])} avec un score global de {top_zone['score_final']:.1f} (classe {top_zone['classe_final']})
-        - **Zone la plus productrice** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.2f} hl/ha
+        - **Zone la plus productive** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.2f} hl/ha
         - **Zone la plus stable** : Zone {int(most_stable['zone'])} (variation de {most_stable['rendement_std']:.2f})
         
         {best_color_text}
