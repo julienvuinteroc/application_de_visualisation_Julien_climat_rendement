@@ -964,20 +964,20 @@ with st.expander("Analyse automatique", expanded=False):
         """
         st.markdown(narrative)
 
-with st.expander("Analogie climatique", expanded=False):
-    zone_focused = st.selectbox("Choisir une zone", selected_zones)
+with st.expander("Analogie climatique et viticole", expanded=False):
+    zone_focused = st.selectbox("Choisir une zone", selected_zones, label_visibility="collapsed")
     data_zone_answer = df_geo_filtered[df_geo_filtered["zone"] == zone_focused]
     if not data_zone_answer.empty:
         temperature_moyenne = data_zone_answer["temp_moyenne"].mean()
         precipitation_total = data_zone_answer["precipitation_total"].mean()
-        with st.spinner("Analyse analogie climatique en cours..."):
-            st.markdown(f"**Analogie climatique pour la zone {zone_focused} :**")
-            resultat_analogie_climat = call_climate_ai(
+        with st.spinner("Analyse analogie climatique et viticole en cours..."):
+            st.markdown(f"**Analogie climatique et viticole pour la zone {zone_focused} :**")
+            resul_analogy_climate_wine = call_climate_ai(
                 zone_focused,
                 temperature_moyenne,
                 precipitation_total
             )
-            st.markdown(resultat_analogie_climat)
+            st.markdown(resul_analogy_climate_wine)
 
 st.markdown("---")
 st.caption(f"Analyse mise a jour le {pd.Timestamp.now().strftime('%d/%m/%Y %H:%M')}")
