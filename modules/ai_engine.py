@@ -456,7 +456,7 @@ class AIAnalyzer:
                 Zone 5: zone de sols de qualité moyenne dans l’arrière-pays,
                 Zone 6: *zone de sols profonds sur côtes tempérées,
                 Zone 7: *zone avec le plus grand nombre de jours très chauds mais sols profonds,
-            - Utilise uniquement des régions viticoles réelles interationales en dehors de la France (appellations reconnues à l'international)
+            - Utilise uniquement des régions viticoles réelles internationales hors France
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
             - Ne pas inclure de régions viticoles françaises
             - Etre fiable sur la topographie de la région
@@ -467,11 +467,12 @@ class AIAnalyzer:
             - Précipitations totales : {precipitations_totales} mm
         Réponds à mon besoin en précisant les points suivants :
         1. Type de climat 
-        2. 2 régions viticoles mondiales avec de fortes similitudes
+        2. 2 régions viticoles mondiales avec de fortes similitudes (sous-régions idéalement)
         3. Raisons de cette similarité ?
         4. Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
         5. Pratiques culturales recommandées
-        6. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ?
+        6. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ? 
+        7. Quelles mesures ont été prises pour garantir une bonne gestion de l'eau ?
         """
         key = f"{zone_id}_{temperature_moyenne}_{precipitations_totales}"
         if key in self.cache:
@@ -489,7 +490,7 @@ class AIAnalyzer:
             response_AI = self.client_climate.chat.completions.create(model="gpt-4o-mini",
                                                                         messages=[{"role": "user", "content": prompt_climate}],
                                                                         max_tokens=1000,
-                                                                        temperature=0.8
+                                                                        temperature=0.7
                                                                       ) 
             result = response_AI.choices[0].message.content
             self.cache[key] = result
