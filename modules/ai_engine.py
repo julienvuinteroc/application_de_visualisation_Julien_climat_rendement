@@ -280,12 +280,14 @@ class AIAnalyzer:
                     # Tendances
                     if selection in patterns and 'trend' in patterns[selection]:
                         trend = patterns[selection]['trend']
-                        if abs(trend) > 0.5:
+                        absolute_trend = abs(trend)
+                        if absolute_trend > 0.5:
                             if trend > 0:
                                 recommendations.append(f"**{selection}** : Tendance haussière de {trend:.2f} hl/ha/an")
+                                
                             else:
-                                recommendations.append(f"**{selection}** : Tendance baissière de {abs(trend):.2f} hl/ha/an")
-        
+                                recommendations.append(f"**{selection}** : Tendance baissière de {absolute_trend:.2f} hl/ha/an")
+
         # Comparaisons
         if len(selections) > 1:
             means = {k: v['mean'] for k, v in stats.items()}
