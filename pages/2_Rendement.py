@@ -308,7 +308,11 @@ if show_ref_map:
 # =====================================================
 # METRIQUES GLOBALES
 # =====================================================
-
+WINE_CORRESPONDANCE = {
+    "BL": "Blanc",
+    "RG": "Rouge",
+    "RS": "Rosé",
+}
 st.header("Indicateurs cles")
 col1, col2, col3, col4 = st.columns(4)
 
@@ -1073,7 +1077,7 @@ with tab_quant:
     share_hors = (base["statut_plafond"].eq("Hors plafond").mean() * 100) if base["rendement"].notna().any() else np.nan
     
     col_k1.metric("Productivite moyenne", f"{prod_global:.1f} hl/ha" if pd.notna(prod_global) else "N/A")
-    col_k2.metric("Correlation V/R", f"{corr_vr:.2f}" if pd.notna(corr_vr) else "N/A")
+    col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.2f}" if pd.notna(corr_vr) else "N/A")
     col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f}" if pd.notna(vol_rdt) else "N/A")
     col_k4.metric("% Hors plafond", f"{share_hors:.1f}%" if pd.notna(share_hors) else "N/A")
     
@@ -1167,7 +1171,7 @@ with tab_quant:
             - La correlation entre surface et volume est de {tmp["surface"].corr(tmp["volume"]):.2f}
             - La productivite moyenne est de {prod_global:.1f} hl/ha
             - La zone la plus productive est {prod_zone.loc[prod_zone["productivite"].idxmax(), "Zone"]} avec {prod_zone["productivite"].max():.0f} hl/ha
-            - La couleur la plus productive est {prod_couleur.loc[prod_couleur["productivite"].idxmax(), "code_couleur"]} avec {prod_couleur["productivite"].max():.0f} hl/ha
+            - La couleur la plus productive est le {WINE_CORRESPONDANCE.get(prod_couleur.loc[prod_couleur["productivite"].idxmax(), "code_couleur"])} avec {prod_couleur["productivite"].max():.0f} hl/ha
             """)
     
     with tab_q2:
@@ -1356,9 +1360,9 @@ with tab_quant:
             # Interpretation
             st.markdown("""
             **Guide de lecture :**
-            - **CV < 15%** : Rendement tres stable (vert)
-            - **CV entre 15% et 25%** : Variabilite moderee (orange)
-            - **CV > 25%** : Rendement tres variable (rouge)
+            - **Indice de variabilité du rendement < 15%** : Rendement tres stable (vert)
+            - **Indice de variabilité du rendement entre 15% et 25%** : Variabilite moderee (orange)
+            - **Indice de variabilité du rendement > 25%** : Rendement tres variable (rouge)
             """)
             
             # Graphique 2: Evolution temporelle pour les zones les plus/moins stables
@@ -1387,7 +1391,7 @@ with tab_quant:
             with col_evol2:
                 # Zone la plus variable
                 most_variable = vol_stats.loc[vol_stats["cv"].idxmax(), "Zone"]
-                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (CV={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
+                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Indice de variabilité du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
                 
                 df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
                 
@@ -1410,7 +1414,7 @@ with tab_quant:
                     "Zone": "Zone",
                     "mean": st.column_config.NumberColumn("Rendement moyen (hl/ha)", format="%.1f"),
                     "std": st.column_config.NumberColumn("Ecart-type", format="%.1f"),
-                    "cv": st.column_config.NumberColumn("Coef. variation (%)", format="%.1f")
+                    "Coefficient de variation du rendement": st.column_config.NumberColumn("Coef. variation (%)", format="%.1f")
                 },
                 width="stretch",
                 hide_index=True
