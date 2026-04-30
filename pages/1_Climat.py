@@ -539,8 +539,8 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
         return {
             "fillColor": "#D9D9D9" if val is None else colormap(val),
             "color": border_color,
-            "weight": 0.5,
-            "fillOpacity": 0.8,
+            "weight": 0.60,
+            "fillOpacity": 0.85,
         }
 
     folium.GeoJson(
@@ -620,8 +620,8 @@ def create_communes_map(
         return {
             "fillColor": "white" if val is None else colormap(val),
             "color": "white",
-            "weight": 0.15,
-            "fillOpacity": 0.95,
+            "weight": 0.25,
+            "fillOpacity": 0.8,
         }
         
     folium.GeoJson(
