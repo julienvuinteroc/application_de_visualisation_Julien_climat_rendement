@@ -165,7 +165,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
             # Calcul des metriques de validation
             mae_scores = []
-            rmse_scores = []
+            #rmse_scores = []
 
             for i in range(n_years):
                 train_idx = [j for j in range(n_years) if j != i]
@@ -182,14 +182,14 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
                     y_pred_cv = lr_cv.predict(X_test)
 
                     mae_scores.append(mean_absolute_error([y_test], y_pred_cv))
-                    rmse_scores.append(np.sqrt(mean_squared_error([y_test], y_pred_cv)))
+                    #rmse_scores.append(np.sqrt(mean_squared_error([y_test], y_pred_cv)))
 
             if mae_scores:
                 avg_mae = np.mean(mae_scores)
-                avg_rmse = np.mean(rmse_scores)
+                #avg_rmse = np.mean(rmse_scores)
             else:
                 avg_mae = np.nan
-                avg_rmse = np.nan
+                #avg_rmse = np.nan
 
             # Tracé de la tendance lineaire
             trend_line = lr.predict(X).ravel()
@@ -232,19 +232,15 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
             results.append({
                 "Groupe": group_name,
                 "Tendance (hl/ha/an)": round(trend_slope, 2),
-                "R² tendance": round(trend_r2, 2),
-                "MAE": round(avg_mae, 2) if not np.isnan(avg_mae) else 0,
-                "RMSE": round(avg_rmse, 2) if not np.isnan(avg_rmse) else 0,
-                "Prediction " + str(int(future_years[0])): round(future_values[0], 1)
+                "Erreur moyenne": round(avg_mae, 2) if not np.isnan(avg_mae) else 0,
+                "Prediction" + str(int(future_years[0])): round(future_values[0], 1)
             })
 
         else:
             results.append({
                 "Groupe": group_name,
                 "Tendance (hl/ha/an)": 0,
-                "R² tendance": 0,
-                "MAE": 0,
-                "RMSE": 0,
+                "Erreur moyenne": 0,
                 "Prediction": np.nan
             })
 
@@ -268,7 +264,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
         with col1:
             st.subheader("Performance du modele")
-            display_cols = ["Groupe", "Tendance (hl/ha/an)", "R² tendance", "MAE", "RMSE"]
+            display_cols = ["Groupe", "Tendance (hl/ha/an)", "Erreur moyenne sur le rendement"]
             if "Prediction 2025" in res.columns:
                 display_cols.append("Prediction 2025")
             st.dataframe(res[display_cols], width="stretch")
@@ -284,23 +280,22 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
             
             if not negative_trends.empty:
                 st.warning(f"**Tendance negative** : {', '.join(negative_trends['Groupe'].tolist())}")
-
-            good_trends = res[res["R² tendance"] > 0.3]
-            if not good_trends.empty:
-                st.info(f"**Tendances significatives** (R² > 0.3) : {', '.join(good_trends['Groupe'].tolist())}")
-
+            '''
+            #good_trends = res[res["R² tendance"] > 0.3]
+            #if not good_trends.empty:
+            #    st.info(f"**Tendances significatives** (R² > 0.3) : {', '.join(good_trends['Groupe'].tolist())}")
             if "RMSE" in res.columns and not res.empty:
                 valid_rmse = res[res["RMSE"] > 0]
                 if not valid_rmse.empty:
                     best_idx = valid_rmse["RMSE"].idxmin()
                     best_rmse = valid_rmse.loc[best_idx, "RMSE"]
                     st.metric("Meilleure precision", f"{valid_rmse.loc[best_idx, 'Groupe']} (RMSE={best_rmse:.2f})")
-
+            '''
             st.markdown("---")
             st.markdown("""
             **Recommandations :**
             - Les predictions a 1 an sont les plus fiables
-            - Plus le R² de la tendance est eleve, plus la prediction est fiable
+            - Moins l'erreur moyenne sur le rendement est elevee, plus la prediction est fiable
             - En cas de forte variabilite, privilegier des horizons de prediction courts
             """)
 
