@@ -264,7 +264,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
         with col1:
             st.subheader("Performance du modele")
-            display_cols = ["Groupe", "Tendance (hl/ha/an)", "Erreur moyenne sur le rendement"]
+            display_cols = ["Groupe", "Tendance (hl/ha/an)", "Erreur moyenne"]
             if "Prediction 2025" in res.columns:
                 display_cols.append("Prediction 2025")
             st.dataframe(res[display_cols], width="stretch")
@@ -295,7 +295,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
             st.markdown("""
             **Recommandations :**
             - Les predictions a 1 an sont les plus fiables
-            - Moins l'erreur moyenne sur le rendement est elevee, plus la prediction est fiable
+            - Moins les erreurs moyennes sur le rendement et le volume sont elevees, plus la prediction est fiable
             - En cas de forte variabilite, privilegier des horizons de prediction courts
             """)
 
