@@ -358,7 +358,6 @@ def indicator_label(indicator: str) -> str:
 def format_value(value, indicator: str) -> str:
     if pd.isna(value):
         return "NA"
-
     no_decimal_indicators = {
         "Hot_D",
         "Huglin_Index",
@@ -366,6 +365,7 @@ def format_value(value, indicator: str) -> str:
         "stress_climatique",
         "Very_Hot_D",
         "deficit_hydrique",
+        "precipitations_total"
     }
     val_round = round(value)
     if indicator in no_decimal_indicators:

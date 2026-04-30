@@ -729,7 +729,6 @@ with tab_vol:
 
 with tab_pred:
     st.header("Prediction")
-    st.caption("Modele de prediction pour anticiper les tendances")
     run_prediction(df)
 
 # =====================================================
