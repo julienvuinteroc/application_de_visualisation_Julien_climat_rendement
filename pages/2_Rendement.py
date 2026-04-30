@@ -728,8 +728,8 @@ with tab_vol:
 # =====================================================
 
 with tab_pred:
-    st.header("Prediction - Random Forest")
-    st.caption("Modele de prediction base sur Random Forest pour anticiper les tendances")
+    st.header("Prediction")
+    st.caption("Modele de prediction pour anticiper les tendances")
     run_prediction(df)
 
 # =====================================================
@@ -738,8 +738,6 @@ with tab_pred:
 
 with tab_map:
     st.header("Cartographie viticole")
-    st.caption("Visualisation spatiale des donnees par departement, zone, couleur et cepage")
-    
     # Selection du type de carte
     map_category = st.radio(
         "Type de carte",
@@ -813,8 +811,6 @@ with tab_map:
     
     elif map_category == "Par couleur":
         st.subheader("Carte par couleur de vin")
-        st.caption("Visualisation des indicateurs par couleur (BL: Blanc, RG: Rouge, RS: Rose)")
-        
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:

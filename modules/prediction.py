@@ -14,7 +14,7 @@ from config.constants import COLOR_MAP, ZONE_COLOR_MAP, DEPT_COLOR_MAP
 
 def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
-    st.subheader("Parametres de prediction")
+    st.subheader("Facteurs influant sur la répartition future des cépages et du rendement futur")
 
     # Parametres
     col1, col2, col3 = st.columns(3)
