@@ -13,6 +13,54 @@ from branca.colormap import linear, LinearColormap
 from utils.db import get_conn
 from config.constants import ZONE_COLOR_MAP, ZONE_LABELS
 
+st.markdown("""
+<style> 
+    .main-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        color: white;
+        text-align: center;
+    }
+    .main-header h1 {
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+    .metric-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border-left: 4px solid #2c3e50;
+    }
+    .metric-value {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    .metric-label {
+        color: #6c757d;
+        font-size: 0.85rem;
+    }
+    hr {
+        margin: 1.5rem 0;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 20px 20px 0 0;
+        padding: 10px 20px;
+        background-color: #f1f3f5;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: white;
+        border-bottom: 3px solid #2c3e50;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = APP_DIR.parent.parent
@@ -316,6 +364,8 @@ def format_value(value, indicator: str) -> str:
         "Huglin_Index",
         "Climatic_Dryness_Index",
         "stress_climatique",
+        "Very_Hot_D",
+        "deficit_hydrique",
     }
 
     if indicator in no_decimal_indicators:
@@ -477,7 +527,7 @@ def build_indicator_colormap(values: pd.Series, indicator: str):
 
     elif indicator == "deficit_hydrique":
         colormap = LinearColormap(
-            colors=["red", "#f75a2a", "#e46e0f", "yellow", "#b8ceeb", "#749dd3", "#022f69"],
+            colors=["#022f69", "#749dd3", "yellow","#e46e0f","red"],
             vmin=180,
             vmax=280,
         )
@@ -490,6 +540,10 @@ def build_indicator_colormap(values: pd.Series, indicator: str):
     elif indicator == "Very_Hot_D":
         colormap = LinearColormap(colors=["white", "orange", "red"], vmin=2, vmax=18)
         colormap = colormap.to_step(index=[2, 4, 6, 8, 10, 12, 14, 16, 18])
+        
+    elif indicator == "stress_climatique":
+        colormap = LinearColormap(colors=["white", "orange", "red"], vmin=0, vmax=100)
+        colormap = colormap.to_step(index=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 
     else:
         if min_val == max_val:
@@ -521,16 +575,12 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     zones_gdf["zone_str"] = zones_gdf["zone"].astype("Int64").astype(str)
     zones_gdf["zone_label"] = zones_gdf["zone_str"].map(ZONE_LABELS_Tick)
     zones_gdf["indicator_fmt"] = zones_gdf[indicator].apply(lambda x: format_value(x, indicator))
-
     bounds = zones_gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-
     m = folium.Map(location=center, tiles=None, zoom_start=8)
-    
     colormap = build_indicator_colormap(zones_gdf[indicator], indicator)
     if colormap is None:
         return m
-
     def style_function(feature):
         val = feature["properties"].get(indicator)
         zone_str = str(feature["properties"].get("zone"))
@@ -613,7 +663,7 @@ def create_communes_map(
             return f"{val_etiquette:.1f}"
         elif "precipitation_total" in indicator:
             return f"{val_etiquette:.0f}"
-        return f"{val_etiquette:.1f}"
+        return f"{val_etiquette:.0f}"
     gdf["value_fmt"] = gdf["value"].apply(format_indicator)
     def style_function(feature):
         val = feature["properties"].get("value")
@@ -683,6 +733,7 @@ def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicato
             continue
         if indicator == "Climatic_Dryness_Index":
             grouped = grouped[grouped["Year"] >= 2011]
+        grouped = grouped[grouped["Year"] >= 2008]
         grouped["Year"] = grouped["Year"].astype(int)
         zone_str = str(int(zone))
         ax.plot(
@@ -852,7 +903,6 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
     trend_vals = df_indexed.loc[sorted_zones, trend_col].values
     hist_vals = np.array(hist_vals, dtype=float)
     trend_vals = np.array(trend_vals, dtype=float)
-    color_diag = SCENARIO_COLOR_MAP.get(scenario, "#C99700")
     if indicator == "temp_moyenne" or indicator =="tmax_mean" or indicator =="tmin_mean":
         for i in range(len(x)):
             projection = hist_vals[i] + trend_vals[i]
@@ -872,6 +922,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 fontweight="bold",
                 color ="black"
             )
+            ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
+            ax.bar(x, trend_vals, bottom=hist_vals, color="red", alpha=0.85, width=0.8)
     if indicator == "precipitation_total":
         for i in range(len(x)):
             projection = hist_vals[i] + trend_vals[i]
@@ -892,8 +944,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 fontweight="bold",
                 color ="black"
             )
-    ax.bar(x, hist_vals, color="orange", alpha=0.85, width=0.8)
-    ax.bar(x, trend_vals, bottom=hist_vals, color=color_diag, alpha=0.85, width=0.8)
+            ax.bar(x, hist_vals, color="red", alpha=0.85, width=0.8)
+            ax.bar(x, trend_vals, bottom=hist_vals, color="blue", alpha=0.85, width=0.8)
     ax.set_xticks(x)
     ax.set_xlabel("Zone")
     ax.set_ylabel(indicator_label(indicator))
@@ -970,14 +1022,14 @@ with tab_details:
     
 with tab_histo_2007_2024:
     view_historical = st.radio("ds", 
-                           options=["Évolution du climat - graphiques",
-                                    "Évolution du climat - cartographie"], 
+                           options=["Graphiques",
+                                    "Cartographie"], 
                            index=0, 
                            horizontal=True,
                            label_visibility="collapsed"
                         )
 
-    if view_historical == "Évolution du climat - cartographie":
+    if view_historical == "Cartographie":
         st.markdown("**Comment les indicateurs climatiques ont évolué spatialement au niveau des zones ?**")
         available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         year_max = int(df_climat["Year"].dropna().max())
@@ -1020,18 +1072,18 @@ with tab_histo_2007_2024:
             st.markdown("**Légende des zones pédoclimatiques**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1 : zone humide de l'arrière-pays<br>
-                    <span style="color:#FF0000">O</span> Zone 2 : zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3 : zone de piémont avec une réserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4 : zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5 : zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> Zone 6 : zone de sols profonds sur côtes tempérées<br>
-                    <span style="color:#FFD800">O</span> Zone 7 : zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte : {e}")
-    if view_historical == "Évolution du climat - graphiques":
+    if view_historical == "Graphiques":
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
             "Zones",
@@ -1315,25 +1367,6 @@ with tab_future:
                 """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte  : {e}")
-        st.markdown ("**Visibilité des projections climatiques sur chaque commune**")
-        try:
-            df_filtered = proj_period[proj_period["scenario"] == map_scenario].copy()
-            df_filtered["code_commune"] = safe_numeric(df_filtered["commune_code"]).astype("Int64")
-            values_proj_communes = (
-                df_filtered
-                .groupby("code_commune", as_index=False)[map_indicator_proj]
-                .mean()
-            )
-            map_proj_communes = create_communes_map(
-                df_communes_values=values_proj_communes,
-                indicator=map_indicator_proj,
-                title_label=f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}"
-            )
-            components.html(map_proj_communes._repr_html_(), height=450)
-
-        except Exception as e:
-            st.error(f"Erreur carte communes : {e}")
-    
         st.markdown("**Projection des précipitations sur le cycle végétatif de la vigne à long terme**")
         map_scenario = st.selectbox(
             "Scénario étudié",
