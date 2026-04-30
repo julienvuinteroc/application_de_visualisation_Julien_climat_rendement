@@ -616,7 +616,8 @@ with col_evol1:
         "Zones à comparer",
         options=selected_zones,
         default=selected_zones[:min(3, len(selected_zones))] if len(selected_zones) > 1 else selected_zones,
-        help="Selectionnez les zones a afficher sur les graphiques"
+        help="Selectionnez les zones a afficher sur les graphiques",
+        label_visibility="collapsed"
     )
 
 with col_evol2:
@@ -625,7 +626,8 @@ with col_evol2:
         options=["rendement"] + CLIMATE_VARS,
         format_func=label_of,
         index=0,
-        key="evol_indicator"
+        key="evol_indicator",
+        label_visibility="collapsed"
     )
 
 if not evol_zone:

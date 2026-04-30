@@ -970,14 +970,14 @@ with tab_details:
     
 with tab_histo_2007_2024:
     view_historical = st.radio("ds", 
-                           options=["Graphique des indicateurs",
-                                    "Carte des indicateurs"], 
+                           options=["Évolution du climat - graphiques",
+                                    "Évolution du climat - cartographie"], 
                            index=0, 
                            horizontal=True,
                            label_visibility="collapsed"
                         )
 
-    if view_historical == "Carte des indicateurs":
+    if view_historical == "Évolution du climat - cartographie":
         st.markdown("**Comment les indicateurs climatiques ont évolué spatialement au niveau des zones ?**")
         available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         year_max = int(df_climat["Year"].dropna().max())
@@ -1031,7 +1031,7 @@ with tab_histo_2007_2024:
                 """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte : {e}")
-    if view_historical == "Graphique des indicateurs":
+    if view_historical == "Évolution du climat - graphiques":
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
             "Zones",
@@ -1304,13 +1304,13 @@ with tab_future:
             st.markdown("**Légende des zones pédoclimatiques**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1 : zone humide de l'arrière-pays<br>
-                    <span style="color:#FF0000">O</span> Zone 2 : zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3 : zone de piémont avec une réserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4 : zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5 : zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> Zone 6 : zone de sols profonds sur côtes tempérées<br>
-                    <span style="color:#FFD800">O</span> Zone 7 : zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
@@ -1370,13 +1370,13 @@ with tab_future:
             st.markdown("**Légende des zones pédoclimatiques**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1 : zone humide de l'arrière-pays<br>
-                    <span style="color:#FF0000">O</span> Zone 2 : zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3 : zone de piémont avec une réserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4 : zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5 : zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> Zone 6 : zone de sols profonds sur côtes tempérées<br>
-                    <span style="color:#FFD800">O</span> Zone 7 : zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:

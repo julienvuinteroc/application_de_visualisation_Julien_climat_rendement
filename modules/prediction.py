@@ -20,14 +20,15 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        var_lbl = st.radio("Variable a predire", ["Rendement", "Volume"], horizontal=True, key="pred_var")
+        var_lbl = st.radio("Variable a predire", ["Rendement", "Volume"], horizontal=True, key="pred_var", label_visibility="collapsed")
 
     with col2:
         group = st.radio(
             "Regrouper par",
             ["Couleur", "Departement", "Zone"],
             horizontal=True,
-            key="pred_group"
+            key="pred_group",
+            label_visibility="collapsed"
         )
 
     with col3:

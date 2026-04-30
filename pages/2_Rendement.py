@@ -389,7 +389,8 @@ with tab_rdt:
                 "Comparer par",
                 ["Couleur", "Departement", "Zone"],
                 horizontal=True,
-                key="rdt_mode"
+                key="rdt_mode",
+                label_visibility="collapsed"
             )
         
         col_map = {
@@ -408,7 +409,8 @@ with tab_rdt:
                 "Selectionner les elements a comparer",
                 available_options,
                 default=available_options[:min(3, len(available_options))],
-                key="rdt_sel"
+                key="rdt_sel",
+                label_visibility="collapsed"
             )
         
         if not selections:
@@ -545,7 +547,8 @@ with tab_vol:
                 "Comparer par",
                 ["Couleur", "Departement", "Zone"],
                 horizontal=True,
-                key="vol_mode"
+                key="vol_mode",
+                label_visibility="collapsed"
             )
         
         col_map = {
@@ -564,7 +567,8 @@ with tab_vol:
                 "Selectionner les elements a comparer",
                 available_options,
                 default=available_options[:min(3, len(available_options))],
-                key="vol_sel"
+                key="vol_sel",
+                label_visibility="collapsed"
             )
         
         if not selections:
@@ -741,7 +745,8 @@ with tab_map:
         "Type de carte",
         ["Par indicateur", "Par couleur", "Par cepage", "Moyenne sur periode", "Cepage dominant 5 ans"],
         horizontal=True,
-        key="map_category"
+        key="map_category",
+        label_visibility="collapsed"
     )
     
     if map_category == "Par indicateur":
@@ -749,7 +754,8 @@ with tab_map:
             "Sous-type",
             ["Carte simple", "Comparaison de cartes"],
             horizontal=True,
-            key="map_type_main"
+            key="map_type_main",
+            label_visibility="collapsed"
         )
         
         if map_type == "Carte simple":
@@ -1468,7 +1474,8 @@ with tab_quant:
         zones_to_compare = st.multiselect(
             "Selectionner les zones a comparer (max 5)",
             options=sorted(summary["Zone"].unique(), key=lambda x: int(x)),
-            default=sorted(summary["Zone"].unique(), key=lambda x: int(x))[:3]
+            default=sorted(summary["Zone"].unique(), key=lambda x: int(x))[:3],
+            label_visibility="collapsed"
         )
         
         if zones_to_compare:
