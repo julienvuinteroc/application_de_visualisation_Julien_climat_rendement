@@ -1068,7 +1068,7 @@ with tab_histo_2007_2024:
 
             map_hist = create_zone_map(zone_values_hist, map_indicator_hist, map_title)
             components.html(map_hist._repr_html_(), height=350)
-            st.markdown("**Légende des zones pédoclimatiques**")
+            st.markdown("**Légende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
@@ -1293,21 +1293,28 @@ with tab_future:
             )
             cols_to_keep = [
                 "zone",
-                "scenario",
-                display_col,
                 hist_col_name,
+                "scenario",
                 trend_col_name,
+                display_col
             ]
             scenario_table_display = scenario_table_display[cols_to_keep]
             st.dataframe(scenario_table_display, width="stretch", height=475, row_height=15)
             map_scenario = st.selectbox(
                 "Scénario étudié",
-                options=["optimiste", "neutre", "pessimiste"],
+                options=["optimiste", "neutre", "pessimiste", "sans scenario"],
                 key="map_scenario_tab",
                 label_visibility="collapsed"
             )
             indicator = indicator_map[compare_indicator]
-            df_graph = scenario_table[scenario_table["scenario"] == map_scenario]
+            if map_scenario == "sans scenario":
+                df_graph = scenario_table[
+                    scenario_table["scenario"] == "sans scenario"
+                ]
+            else:
+                df_graph = scenario_table[
+                    scenario_table["scenario"] == map_scenario
+                ]
             fig_scenario = plot_scenario_comparison(
                 df_table=df_graph,
                 indicator=indicator,
@@ -1316,6 +1323,16 @@ with tab_future:
             )
 
             st.pyplot(fig_scenario)
+            st.markdown("**Légende**")
+            st.markdown("""
+            <div>
+                <span style="color:#0000FF">⬤</span> Écart des précipitations passé-futur<br>
+                <span style="color:#FFFF00">⬤</span> Températures historiques<br>
+                <span style="color:#FF0000">⬤</span> Écart des températures/Précipitations passé-futur<br>
+
+            </div>""",
+            unsafe_allow_html=True
+            )
             plt.close(fig_scenario)
     if view_future == "Projection des scénarios – cartes":
         st.markdown("**Tendances des indicateurs climatiques à court et à long terme par zone**")
@@ -1352,7 +1369,7 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
-            st.markdown("**Légende des zones pédoclimatiques**")
+            st.markdown("**Légende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
@@ -1399,7 +1416,7 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
-            st.markdown("**Légende des zones pédoclimatiques**")
+            st.markdown("**Légende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
@@ -1413,7 +1430,7 @@ with tab_future:
                 """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte  : {e}")
-
+        
 
 st.markdown("---")
 st.markdown(f"""
