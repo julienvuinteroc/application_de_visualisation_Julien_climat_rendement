@@ -370,7 +370,7 @@ def format_value(value, indicator: str) -> str:
     val_round = round(value)
     if indicator in no_decimal_indicators:
         return f"{val_round:.0f}"
-    return f"{val_round:.1f}"
+    return f"{value:.1f}"
 
 
 def ensure_hist_schema(df: pd.DataFrame) -> pd.DataFrame:
