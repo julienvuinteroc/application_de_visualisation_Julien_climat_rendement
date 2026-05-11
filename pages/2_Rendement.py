@@ -308,7 +308,7 @@ if show_ref_map:
 WINE_CORRESPONDANCE = {
     "BL": "Blanc",
     "RG": "Rouge",
-    "RS": "Rosé",
+    "RS": "Rose",
 }
 st.header("Indicateurs cles")
 col1, col2, col3, col4 = st.columns(4)
@@ -1227,6 +1227,7 @@ with tab_quant:
             ax5.set_xticks(positions)
             ax5.set_xticklabels([f"Zone {int(z)}" for z in zones_sorted])
             ax5.set_xlabel("Zone", fontsize=12)
+            ax5.set_ylim(0,100)
             ax5.set_ylabel("Rendement (hl/ha)", fontsize=12)
             ax5.set_title("Distribution du rendement par zone", fontsize=14, fontweight="bold")
             ax5.grid(axis="y", alpha=0.3)
@@ -1358,9 +1359,9 @@ with tab_quant:
             # Interpretation
             st.markdown("""
             **Guide de lecture :**
-            - **Indice de stabilité du rendement < 15%** : Rendement tres stable (vert)
-            - **Indice de stabilité du rendement entre 15% et 25%** : Variabilite moderee (orange)
-            - **Indice de stabilité du rendement > 25%** : Rendement tres variable (rouge)
+            - **Indice de stabilite du rendement < 15%** : Rendement tres stable (vert)
+            - **Indice de stabilite du rendement entre 15% et 25%** : Variabilite moderee (orange)
+            - **Indice de stabilite du rendement > 25%** : Rendement tres variable (rouge)
             """)
             
             # Graphique 2: Evolution temporelle pour les zones les plus/moins stables
@@ -1389,7 +1390,7 @@ with tab_quant:
             with col_evol2:
                 # Zone la plus variable
                 most_variable = vol_stats.loc[vol_stats["cv"].idxmax(), "Zone"]
-                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Indice de stabilité du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
+                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Indice de stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
                 
                 df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
                 fig9, ax9 = plt.subplots(figsize=(16, 6))

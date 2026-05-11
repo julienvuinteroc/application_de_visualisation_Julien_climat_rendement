@@ -201,7 +201,7 @@ def rename_columns_scoring(df):
 
 @st.cache_data
 def load_climate_yield_geo() -> pd.DataFrame:
-    """Charge les données climat_rendement_geo"""
+    """Charge les donnees climat_rendement_geo"""
     conn = get_conn()
     try:
         df = conn.execute("SELECT * FROM climat_rendement_geo").df()
@@ -237,7 +237,7 @@ def load_climate_yield_geo() -> pd.DataFrame:
 
 @st.cache_data
 def load_fusion_analysis() -> pd.DataFrame:
-    """Charge les données fusion"""
+    """Charge les donnees fusion"""
     conn = get_conn()
     try:
         df = conn.execute(
@@ -549,10 +549,10 @@ with st.expander("Scoring intelligent des zones", expanded=True):
     with st.info(""):
         st.markdown("""
         **N.B :** Le score global traduit la performance globale de chaque zone en tenant compte des deux critères suivants :
-        - stabilité des rendements pour les 3 couleurs
-        - répartition optimale des températures annuelles et des précipitations annuelles
-        Les zones sont classées en fonction de leur score global, allant de 0 à 100 :
-        - **Classe A** : score global égal à 80 et plus
+        - stabilite des rendements pour les 3 couleurs
+        - repartition optimale des temperatures annuelles et des precipitations annuelles
+        Les zones sont classees en fonction de leur score global, allant de 0 à 100 :
+        - **Classe A** : score global egal à 80 et plus
         - **Classe B** : score global de 65 à 79
         - **Classe C** : score global de 50 à 64
         - **Classe D** : score global de moins de 50
