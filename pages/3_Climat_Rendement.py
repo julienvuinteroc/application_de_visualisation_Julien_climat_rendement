@@ -536,7 +536,7 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         text="classe_final",
         title="Classement qualitatif des zones",
         labels={"zone": "Zone", "score_final": "Score global"},
-        height=400
+        height=500
     )
     fig_score.update_traces(textposition="outside", textfont_size=14)
     fig_score.update_layout(
@@ -596,7 +596,7 @@ with st.expander("Cartographie climat-production", expanded=True):
                     "zone": "Zone",
                     "rendement": label_of("rendement"),
                 },
-                height=400
+                height=550
             )
             fig_map.update_geos(fitbounds="locations", visible=False)
             fig_map.update_layout(
@@ -680,7 +680,7 @@ else:
         yaxis_title=label_of(evol_indicator),
         hovermode="x unified",
         plot_bgcolor="rgba(0,0,0,0)",
-        height=400,
+        height=500,
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -762,7 +762,7 @@ with st.expander("Distributions des indicateurs", expanded=False):
             yaxis_title="Frequence",
             barmode="overlay",
             plot_bgcolor="rgba(0,0,0,0)",
-            height=400,
+            height=500,
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
@@ -841,7 +841,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 color_discrete_map=WINE_COLOR_MAP,
                 title="Rendement moyen par zone et par couleur",
                 labels={"zone": "Zone", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"},
-                height=400
+                height=450
             )
             st.plotly_chart(fig_color, key="color_bar_chart", use_container_width=True)
             
@@ -867,7 +867,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     color_discrete_map=WINE_COLOR_MAP,
                     title="Poids relatif de chaque couleur dans le volume total",
                     hole=0.4,
-                    height=400
+                    height=450
                 )
                 st.plotly_chart(fig_color_ratio, key="color_ratio_chart", use_container_width=True)
     
@@ -901,7 +901,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 facet_row="zone" if len(selected_zones) <= 4 else None,
                 title="Evolution des cepages par zone",
                 labels={"volume": "Volume (hl)", "annee": "Annee", "code_cepage": "Cepage"},
-                height=400
+                height=500
             )
             st.plotly_chart(fig_cepage, key="cepage_evolution_chart", use_container_width=True)
 
@@ -921,7 +921,7 @@ with st.expander("Tableau de synthese par zone et annee", expanded=False):
         .sort_values(["zone", "annee"])
     )
     table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
-    st.dataframe(table_zone_year_display.round(2), width="stretch", hide_index=True, height=775, row_height=20)
+    st.dataframe(table_zone_year_display.round(2), width="stretch", hide_index=True)
 
 
 # =====================================================
