@@ -715,7 +715,7 @@ def create_communes_map(
 
 
 def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicator: str):
-    fig, ax = plt.subplots(figsize=(17, 6))
+    fig, ax = plt.subplots(figsize=(16, 6))
     df["Year"] = pd.to_numeric(df["Year"], errors="coerce").astype("Int64")
     for zone in selected_zones:
         df_zone = df[df["cluster"] == zone].copy()
@@ -889,7 +889,7 @@ def build_scenario_table(df_proj_period: pd.DataFrame, selected_zones: list[int]
 
 
 def plot_scenario_comparison(df_table, indicator, period, scenario):
-    fig, ax = plt.subplots(figsize=(15, 5))
+    fig, ax = plt.subplots(figsize=(16, 6))
     df = df_table[df_table["scenario"] == scenario].copy()
     sorted_zones = sorted(df["zone"].unique())
     x = np.arange(len(sorted_zones))
