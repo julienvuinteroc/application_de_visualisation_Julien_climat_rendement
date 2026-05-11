@@ -546,20 +546,17 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         hoverlabel=dict(bgcolor="white", font_size=12)
     )
     st.plotly_chart(fig_score, key="score_bar_chart", use_container_width=True)
-    st.info("""
-        N.B : Le score global traduit la performance globale de chaque zone en tenant compte des critères suivants : 
-        stabilité des rendements pour les 3 couleurs et répartition optimale des températures annuelles et des précipitations annuelles.
+    with st.info(""):
+        st.markdown("""
+        **N.B :** Le score global traduit la performance globale de chaque zone en tenant compte des deux critères suivants :
+        - stabilité des rendements pour les 3 couleurs
+        - répartition optimale des températures annuelles et des précipitations annuelles
         Les zones sont classées en fonction de leur score global, allant de 0 à 100 :
-        • Classe A : score global égal à 80 et plus  
-        • Classe B : score global de 65 à 79  
-        • Classe C : score global de 50 à 64  
-        • Classe D : score global de moins de 50
-    """)
-
-
-# =====================================================
-# CARTE PAR ZONE
-# =====================================================
+        - **Classe A** : score global égal à 80 et plus
+        - **Classe B** : score global de 65 à 79
+        - **Classe C** : score global de 50 à 64
+        - **Classe D** : score global de moins de 50
+        """)
 
 with st.expander("Cartographie climat-production", expanded=True):
     try:
