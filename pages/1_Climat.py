@@ -989,11 +989,10 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.divider()
     # POPUP carte des zones
     with st.expander("Carte des zones pedoclimatiques"):
         if st.button("Afficher la carte", key="show_zone_map_btn"):
-            st.image("carte_zones_pedoclimatiques_.png",caption="Carte des zones pedoclimatiques")
+            st.image("carte_zones_pedoclimatiques_.png")
     
 with tab_details:
     

@@ -338,7 +338,7 @@ with st.sidebar:
     st.divider()
     with st.expander("Carte des zones pedoclimatiques"):
         if st.button("Afficher la carte", key="show_zone_map_btn"):
-            st.image("carte_zones_pedoclimatiques_.png",caption="Carte des zones pedoclimatiques")
+            st.image("carte_zones_pedoclimatiques_.png")
     available_zones = sorted([int(z) for z in df_geo["zone"].dropna().unique()])
     selected_zones = st.multiselect(
         "Zones pedoclimatiques",
@@ -546,13 +546,15 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         hoverlabel=dict(bgcolor="white", font_size=12)
     )
     st.plotly_chart(fig_score, key="score_bar_chart", use_container_width=True)
-    st.markdown("N.B: Le score global traduit la performance globale de chaque zone en tenant compte des critères suivants: ")
-    st.markdown("stabilité des rendements pour les 3 couleurs et répartition optimale des températures annuelles et des précipitations annuelles.")
-    st.markdown("Les zones sont classées en fonction de leur score global, allant de 0 à 100. Les classes sont définies ci-dessous:")
-    st.markdown("Classe A: score global égal à 80 et plus")
-    st.markdown("Classe B: score global de 65 à 79")
-    st.markdown("Classe C: score global de 50 à 64")
-    st.markdown("Classe D: score global de moins de 50")
+    st.info("""
+        N.B : Le score global traduit la performance globale de chaque zone en tenant compte des critères suivants : 
+        stabilité des rendements pour les 3 couleurs et répartition optimale des températures annuelles et des précipitations annuelles.
+        Les zones sont classées en fonction de leur score global, allant de 0 à 100 :
+        • Classe A : score global égal à 80 et plus  
+        • Classe B : score global de 65 à 79  
+        • Classe C : score global de 50 à 64  
+        • Classe D : score global de moins de 50
+    """)
 
 
 # =====================================================

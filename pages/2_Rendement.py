@@ -197,7 +197,7 @@ with st.sidebar:
     show_ref_map = False
     with st.expander("Carte des zones pedoclimatiques"):
         if st.button("Afficher la carte", key="show_zone_map_btn"):
-            st.image("carte_zones_pedoclimatiques_.png",caption="Carte des zones pedoclimatiques")
+            st.image("carte_zones_pedoclimatiques_.png")
     # Filtres principaux
     departements = st.multiselect(
         "Departements",
