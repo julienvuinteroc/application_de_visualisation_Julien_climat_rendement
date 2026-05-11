@@ -715,7 +715,7 @@ def create_communes_map(
 
 
 def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicator: str):
-    fig, ax = plt.subplots(figsize=(16, 6))
+    fig, ax = plt.subplots(figsize=(17, 6))
     df["Year"] = pd.to_numeric(df["Year"], errors="coerce").astype("Int64")
     for zone in selected_zones:
         df_zone = df[df["cluster"] == zone].copy()
@@ -743,6 +743,16 @@ def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicato
             color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
             label=ZONE_LABELS.get(zone_str, f"Zone {zone_str}"),
         )
+        x = grouped["Year"].to_numpy(dtype=float)
+        y = grouped[indicator].to_numpy(dtype=float)
+        slope, _ = np.polyfit(x, y, 1)
+        first_val = grouped[indicator].iloc[0]
+        for i, year in enumerate(range(2007 + 1, 2025), start=1):
+            value = slope * i + first_val
+            ax.plot(year, value, marker="x",
+                linestyle="--",
+                linewidth=2,
+                color=ZONE_COLOR_MAP.get(zone_str, "#333333"))
     ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
     ax.set_title(f"Historique - {indicator_label(indicator)}")
     ax.set_xlabel("Année")
