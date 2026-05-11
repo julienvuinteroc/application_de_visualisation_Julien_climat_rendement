@@ -458,9 +458,11 @@ class AIAnalyzer:
                 Zone 7: *zone avec le plus grand nombre de jours très chauds mais sols profonds,
             - Utilise uniquement des régions viticoles réelles internationales hors France
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
-            - Ne pas inclure de régions viticoles françaises
+            - Utiliser les cépages autorisées en Pays d'Oc pour ta réponse sur les cépages résistants
+            - https://info.agriculture.gouv.fr/boagri/document_administratif-9231994c-2220-475c-b784-b51d291c7c7c
+            - Ne pas mettre de régions viticoles françaises dans tes réponses
             - Etre fiable sur la topographie de la région
-            - Ne pas inventer de régions
+            - Ne pas inventer de noms de régions
             - Justifie chaque analogie par le climat
             - Zone ID : {zone_id}
             - Température moyenne : {temperature_moyenne} °C
