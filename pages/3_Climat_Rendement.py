@@ -336,7 +336,9 @@ if df_fusion.empty:
 with st.sidebar:
     st.header("Filtres")
     st.divider()
-    
+    with st.expander("Carte des zones pedoclimatiques"):
+        if st.button("Afficher la carte", key="show_zone_map_btn"):
+            st.image("carte_zones_pedoclimatiques_.png",caption="Carte des zones pedoclimatiques")
     available_zones = sorted([int(z) for z in df_geo["zone"].dropna().unique()])
     selected_zones = st.multiselect(
         "Zones pedoclimatiques",

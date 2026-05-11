@@ -190,17 +190,14 @@ def create_cepage_map(df, df_all, indicator, level, year, couleur, cepage=None):
 # =====================================================
 
 with st.sidebar:
-    st.header("Filtres globaux")
+    st.header("Filtres")
     st.divider()
     
     # POPUP carte des zones
     show_ref_map = False
     with st.expander("Carte des zones pedoclimatiques"):
         if st.button("Afficher la carte", key="show_zone_map_btn"):
-            show_ref_map = True
-    
-    st.divider()
-    
+            st.image("carte_zones_pedoclimatiques_.png",caption="Carte des zones pedoclimatiques")
     # Filtres principaux
     departements = st.multiselect(
         "Departements",
