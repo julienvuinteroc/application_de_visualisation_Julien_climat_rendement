@@ -246,7 +246,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
     # Mise en page
     fig.update_layout(
-        title=f"Evolution et prediction {var_lbl} par {group.lower()}",
+        title=f"Evolution et prediction du {var_lbl} par {group.lower()}",
         xaxis_title="Annee",
         yaxis_title=f"{var_lbl} ({'hl/ha' if var == 'rendement' else 'hl'})",
         height=550,
