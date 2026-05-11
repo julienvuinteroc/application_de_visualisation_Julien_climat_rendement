@@ -921,7 +921,7 @@ with st.expander("Tableau de synthese par zone et annee", expanded=False):
         .sort_values(["zone", "annee"])
     )
     table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
-    st.dataframe(table_zone_year_display.round(2), width="stretch", hide_index=True)
+    st.dataframe(table_zone_year_display.round(2), width="stretch", hide_index=True, row_height=20, height=750)
 
 
 # =====================================================

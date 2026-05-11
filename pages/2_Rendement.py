@@ -1090,7 +1090,7 @@ with tab_quant:
         tmp = base.dropna(subset=["surface", "volume", "code_couleur"]).copy()
         if not tmp.empty:
             # Graphique 1: Nuage de points avec regression
-            fig1, ax1 = plt.subplots(figsize=(12, 6))
+            fig1, ax1 = plt.subplots(figsize=(16, 6))
             
             for couleur in ["BL", "RG", "RS"]:
                 subset = tmp[tmp["code_couleur"] == couleur]
@@ -1126,7 +1126,7 @@ with tab_quant:
                 prod_zone["productivite"] = prod_zone["volume"] / prod_zone["surface"]
                 prod_zone = get_zones_1_7(prod_zone)
                 
-                fig2, ax2 = plt.subplots(figsize=(10, 5))
+                fig2, ax2 = plt.subplots(figsize=(16, 6))
                 bars = ax2.bar(prod_zone["Zone"].astype(str), prod_zone["productivite"], 
                               color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_zone["Zone"]])
                 ax2.set_xlabel("Zone", fontsize=12)
@@ -1149,7 +1149,7 @@ with tab_quant:
                 }).reset_index()
                 prod_couleur["productivite"] = prod_couleur["volume"] / prod_couleur["surface"]
                 
-                fig3, ax3 = plt.subplots(figsize=(8, 5))
+                fig3, ax3 = plt.subplots(figsize=(16, 6))
                 colors_prod = [COLOR_MAP.get(c, "#808080") for c in prod_couleur["code_couleur"]]
                 bars = ax3.bar(prod_couleur["code_couleur"], prod_couleur["productivite"], color=colors_prod)
                 ax3.set_xlabel("Couleur", fontsize=12)
@@ -1179,7 +1179,7 @@ with tab_quant:
         tmp = base.dropna(subset=["rendement", "volume", "code_couleur"]).copy()
         if not tmp.empty:
             # Graphique 1: Nuage de points avec regression
-            fig4, ax4 = plt.subplots(figsize=(12, 6))
+            fig4, ax4 = plt.subplots(figsize=(16, 6))
             
             for couleur in ["BL", "RG", "RS"]:
                 subset = tmp[tmp["code_couleur"] == couleur]
@@ -1205,7 +1205,7 @@ with tab_quant:
             # Graphique 2: Distribution du rendement par zone (boxplot simplifie)
             st.subheader("Distribution du rendement par zone")
             
-            fig5, ax5 = plt.subplots(figsize=(12, 6))
+            fig5, ax5 = plt.subplots(figsize=(16, 6))
             tmp_zone = tmp[~tmp["Zone"].isin(["0", "None", "nan"])].copy()
             zones_sorted = sorted(tmp_zone["Zone"].unique(), key=lambda x: int(x))
             
@@ -1255,7 +1255,7 @@ with tab_quant:
             prod_stats = get_zones_1_7(prod_stats)
             prod_stats = prod_stats.sort_values("mean", ascending=False)
             
-            fig6, ax6 = plt.subplots(figsize=(12, 6))
+            fig6, ax6 = plt.subplots(figsize=(16, 6))
             bars = ax6.bar(prod_stats["Zone"].astype(str), prod_stats["mean"], 
                           yerr=prod_stats["std"], capsize=5,
                           color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_stats["Zone"]],
@@ -1332,7 +1332,7 @@ with tab_quant:
             vol_stats = vol_stats.sort_values("cv")
             
             # Graphique 1: Coefficient de variation
-            fig7, ax7 = plt.subplots(figsize=(12, 6))
+            fig7, ax7 = plt.subplots(figsize=(16, 6))
             
             colors_cv = ['#2e7d32' if cv < 15 else '#f9a825' if cv < 25 else '#c62828' for cv in vol_stats['cv']]
             bars = ax7.bar(vol_stats["Zone"].astype(str), vol_stats["cv"], color=colors_cv, edgecolor="black")
@@ -1375,7 +1375,7 @@ with tab_quant:
                 
                 df_stable = tmp[tmp["Zone"] == most_stable].groupby("annee")["rendement"].mean().reset_index()
                 
-                fig8, ax8 = plt.subplots(figsize=(10, 4))
+                fig8, ax8 = plt.subplots(figsize=(16, 6))
                 ax8.plot(df_stable["annee"], df_stable["rendement"], 'o-', color="#2e7d32", linewidth=2, markersize=6)
                 ax8.axhline(y=df_stable["rendement"].mean(), color='green', linestyle='--', alpha=0.7, label='Moyenne')
                 ax8.set_xlabel("Annee", fontsize=10)
@@ -1392,8 +1392,7 @@ with tab_quant:
                 st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Indice de stabilité du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
                 
                 df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
-                
-                fig9, ax9 = plt.subplots(figsize=(10, 4))
+                fig9, ax9 = plt.subplots(figsize=(16, 6))
                 ax9.plot(df_variable["annee"], df_variable["rendement"], 'o-', color="#c62828", linewidth=2, markersize=6)
                 ax9.axhline(y=df_variable["rendement"].mean(), color='red', linestyle='--', alpha=0.7, label='Moyenne')
                 ax9.set_xlabel("Annee", fontsize=10)
@@ -1471,7 +1470,7 @@ with tab_quant:
         )
         
         if zones_to_compare:
-            fig10, ax10 = plt.subplots(figsize=(10, 8), subplot_kw=dict(projection='polar'))
+            fig10, ax10 = plt.subplots(figsize=(16, 6), subplot_kw=dict(projection='polar'))
             
             angles = np.linspace(0, 2 * np.pi, len(indicators), endpoint=False).tolist()
             angles += angles[:1]
@@ -1488,9 +1487,9 @@ with tab_quant:
                     ax10.fill(angles, values, alpha=0.15, color=color)
             
             ax10.set_xticks(angles[:-1])
-            ax10.set_xticklabels(["Rendement", "Productivite", "Part volume"], fontsize=10)
+            ax10.set_xticklabels(["Rendement normalise", "Productivite normalisee", "Part volume normalisee"], fontsize=10)
             ax10.set_ylim(0, 100)
-            ax10.set_title("Comparaison des zones (valeurs normalisees)", fontsize=14, fontweight="bold", pad=20)
+            ax10.set_title("Comparaison des zones", fontsize=14, fontweight="bold", pad=20)
             ax10.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
             st.pyplot(fig10)
             plt.close(fig10)
@@ -1516,7 +1515,7 @@ with tab_quant:
         cluster_df["cluster"] = kmeans.fit_predict(X_scaled)
         
         # Graphique simplifie
-        fig_cluster, ax_cluster = plt.subplots(figsize=(10, 6))
+        fig_cluster, ax_cluster = plt.subplots(figsize=(16, 6))
         
         for cluster in range(k):
             cluster_data = cluster_df[cluster_df["cluster"] == cluster]

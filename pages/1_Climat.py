@@ -72,7 +72,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 ZONE_LABELS_Tick = {
-    "0": "0: non classée / hors zonage",
+    "0": "0: non classee / hors zonage",
     "1": "1",
     "2": "2",
     "3": "3",
@@ -334,20 +334,20 @@ def safe_numeric(series: pd.Series) -> pd.Series:
 
 def indicator_label(indicator: str) -> str:
     labels = {
-        "temp_moyenne": "Température moyenne (°C)",
-        "tmax_mean": "Température maximale moyenne (°C)",
-        "tmin_mean": "Température minimale moyenne (°C)",
-        "precipitation_total": "Précipitations totales (mm)",
-        "precipitation_total_avril_septembre": "Précipitations avril-septembre (mm)",
+        "temp_moyenne": "Temperature moyenne (°C)",
+        "tmax_mean": "Temperature maximale moyenne (°C)",
+        "tmin_mean": "Temperature minimale moyenne (°C)",
+        "precipitation_total": "Precipitations totales (mm)",
+        "precipitation_total_avril_septembre": "Precipitations avril-septembre (mm)",
         "Huglin_Index": "Indice de Huglin (°C-jours)",
         "Hot_D": "Nombre de jours de chaleur",
         "Very_Hot_D": "Nombre de jours de forte chaleur",
         "Frost_D": "Nombre de jours de gel",
         "Late_Frost": "Nombre de jours de gel tardif",
         "stress_climatique": "Stress climatique",
-        "deficit_hydrique": "Déficit hydrique (mm)",
-        "Climatic_Dryness_Index": "Indice de sécheresse climatique (mm)",
-        "Soil_Water_Stock": "Réserve utile en eau du sol (mm)",
+        "deficit_hydrique": "Deficit hydrique (mm)",
+        "Climatic_Dryness_Index": "Indice de secheresse climatique (mm)",
+        "Soil_Water_Stock": "Reserve utile en eau du sol (mm)",
         "Soil_pH": "pH du sol",
         "jours_secs": "Jours secs",
         "jours_pluie": "Jours de pluie",
@@ -657,7 +657,7 @@ def create_communes_map(
         return m
     def format_indicator (val_etiquette):
         if pd.isnull(val_etiquette):
-            return "Non renseigné"
+            return "Non renseigne"
         if any(x in indicator for x in ["temp_moyenne","tmax_mean", "tmin_mean"]):
             return f"{val_etiquette:.1f}"
         elif "precipitation_total" in indicator:
@@ -755,7 +755,7 @@ def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicato
                 color=ZONE_COLOR_MAP.get(zone_str, "#333333"))
     ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
     ax.set_title(f"Historique - {indicator_label(indicator)}")
-    ax.set_xlabel("Année")
+    ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.legend(fontsize=15, bbox_to_anchor=(0.5, -0.15), loc="upper center")
@@ -856,8 +856,8 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
                 color=color,
             )
 
-    ax.set_title(f"Projection sans scénario - {indicator_label(indicator)}")
-    ax.set_xlabel("Année")
+    ax.set_title(f"Projection sans scenario - {indicator_label(indicator)}")
+    ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.legend(fontsize=15, bbox_to_anchor=(0.5, -0.15), loc="upper center")
@@ -894,16 +894,16 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
     sorted_zones = sorted(df["zone"].unique())
     x = np.arange(len(sorted_zones))
     hist_col_map = {
-        "temp_moyenne": "Température moyenne 2007-2024 (°C)",
-        "tmax_mean": "Température maximale 2007-2024 (°C)",
-        "tmin_mean": "Température minimale 2007-2024 (°C)",
-        "precipitation_total": "Précipitations moyennes 2007-2024 (mm)",
+        "temp_moyenne": "Temperature moyenne 2007-2024 (°C)",
+        "tmax_mean": "Temperature maximale 2007-2024 (°C)",
+        "tmin_mean": "Temperature minimale 2007-2024 (°C)",
+        "precipitation_total": "Precipitations moyennes 2007-2024 (mm)",
     }
     trend_col_map = {
-        "temp_moyenne": "Tendance température moyenne (°C)",
-        "tmax_mean": "Tendance température maximale (°C)",
-        "tmin_mean": "Tendance température minimale (°C)",
-        "precipitation_total": "Tendance précipitations (en %)",
+        "temp_moyenne": "Tendance temperature moyenne (°C)",
+        "tmax_mean": "Tendance temperature maximale (°C)",
+        "tmin_mean": "Tendance temperature minimale (°C)",
+        "precipitation_total": "Tendance precipitations (en %)",
     }
     hist_col = hist_col_map[indicator]
     trend_col = trend_col_map[indicator]
@@ -977,7 +977,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-tab_details, tab_histo_2007_2024, tab_future = st.tabs(["Détails",
+tab_details, tab_histo_2007_2024, tab_future = st.tabs(["Details",
     "Historique 2007-2024", "Futur"
 ])
 st.markdown("""
@@ -998,39 +998,39 @@ with tab_details:
     
     st.markdown("**Informations sur l'historique et les projections climatiques**")
     st.info(
-        "Les données historiques proviennent de la plateforme [Open-Météo]"
+        "Les donnees historiques proviennent de la plateforme [Open-Meteo]"
         "(https://open-meteo.com/en/docs/historical-weather-api). "
         "Les projections climatiques issues du [GIEC](https://meteofrance.fr/actualite/presse-0/"
         "6e-rapport-du-giec-les-contributions-de-meteo-france) reposent sur "
-        "les données de la base mondiale [WorldClim]"
+        "les donnees de la base mondiale [WorldClim]"
         "(https://www.worldclim.org/data/cmip6/cmip6_clim2.5m.html) "
-        "pour 2021-2040 et 2041-2060. Plusieurs modèles climatiques globaux sont analysés. "
-        "Des disparités subsistent "
-        "entre les simulations des températures et des précipitations "
-        "en fonction des scénarios SSP126 (optimiste), SSP245 (neutre) et SSP585 (pessimiste). "
-        "Ces écarts découlent de plusieurs sources d'incertitude "
-        "scientifique et technique évoquées ci-dessous :\n\n"
-        "1.\tLa [variabilité naturelle du climat](https://culturesciencesphysique.ens-lyon.fr/"
-        "pdf/GIEC-climat.pdf) peu prévisible comprend les variations des courants océaniques "
-        "et de la température de surface de la mer impactant le développement de la vigne. "
-        "À partir de deux états climatiques très proches, les évolutions climatiques "
-        "peuvent être considérablement différentes.\n\n"
-        "2.\tLa modélisation des [rétroactions](https://web.lmd.jussieu.fr/~jldufres/Exposes/"
+        "pour 2021-2040 et 2041-2060. Plusieurs modèles climatiques globaux sont analyses. "
+        "Des disparites subsistent "
+        "entre les simulations des temperatures et des precipitations "
+        "en fonction des scenarios SSP126 (optimiste), SSP245 (neutre) et SSP585 (pessimiste). "
+        "Ces ecarts decoulent de plusieurs sources d'incertitude "
+        "scientifique et technique evoquees ci-dessous :\n\n"
+        "1.\tLa [variabilite naturelle du climat](https://culturesciencesphysique.ens-lyon.fr/"
+        "pdf/GIEC-climat.pdf) peu previsible comprend les variations des courants oceaniques "
+        "et de la temperature de surface de la mer impactant le developpement de la vigne. "
+        "À partir de deux etats climatiques très proches, les evolutions climatiques "
+        "peuvent être considerablement differentes.\n\n"
+        "2.\tLa modelisation des [retroactions](https://web.lmd.jussieu.fr/~jldufres/Exposes/"
         "Duf_ChEDF_juin_2014.pdf) reste complexe, en particulier pour la "
-        "vapeur d'eau sur la stratosphère. Cela peut être causée par certains phénomènes "
-        "régionaux: les épisodes cévenols ou les vents "
-        "régionaux (Autan, Tramontane).\n\n"
-        "3.\tLes fortes incertitudes physiques sur la représentation des [précipitations](https://www.foret-mediterraneenne.org/"
+        "vapeur d'eau sur la stratosphère. Cela peut être causee par certains phenomènes "
+        "regionaux: les episodes cevenols ou les vents "
+        "regionaux (Autan, Tramontane).\n\n"
+        "3.\tLes fortes incertitudes physiques sur la representation des [precipitations](https://www.foret-mediterraneenne.org/"
         "_0/upload/biblio/foret_med_2011_2_205-212.pdf) rendent l'estimation "
         "du bilan hydrique des sols complexe, particulièrement en hiver. Cette mesure "
         "influence la croissance de la vigne et la maturation des raisins. \n\n"
-        "4.\tLa résolution spatiale et temporelle est propre à chaque modèle.\n\n"
-        "Sur la base de cinq modèles européens, les valeurs centrales "
-        "des variables climatiques sont déterminées à l'échelle pluriannuelle et "
-        "sur le cycle végétatif de la vigne pour l'ensemble des communes des sept "
-        "zones pédoclimatiques. "
-        "Seuls certains indicateurs sont représentés en raison des limites liées à la disponibilité"
-        " des données.\n\n"
+        "4.\tLa resolution spatiale et temporelle est propre à chaque modèle.\n\n"
+        "Sur la base de cinq modèles europeens, les valeurs centrales "
+        "des variables climatiques sont determinees à l'echelle pluriannuelle et "
+        "sur le cycle vegetatif de la vigne pour l'ensemble des communes des sept "
+        "zones pedoclimatiques. "
+        "Seuls certains indicateurs sont representes en raison des limites liees à la disponibilite"
+        " des donnees.\n\n"
         "Pour connaître les significations des indicateurs climatiques, vous pouvez naviguer [ici]"
         "(https://www.vignevin-occitanie.com/wp-content/uploads/2023/01/guide-vitisad-fr-FINAL.pdf)."
     )
@@ -1045,17 +1045,17 @@ with tab_histo_2007_2024:
                         )
 
     if view_historical == "Cartographie":
-        st.markdown("**Comment les indicateurs climatiques ont évolué spatialement au niveau des zones ?**")
+        st.markdown("**Comment les indicateurs climatiques ont evolue spatialement au niveau des zones ?**")
         available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         year_max = int(df_climat["Year"].dropna().max())
         year_min = year_max - 4
         selected_year = st.selectbox(
-            "Année historique",
+            "Annee historique",
             options=available_years,
             index=len(available_years) - 1,
             label_visibility="collapsed"
         )
-        use_last_5y_mean = st.checkbox("Moyenne des 5 dernières années", value=False)
+        use_last_5y_mean = st.checkbox("Moyenne des 5 dernières annees", value=False)
         map_indicator_hist = st.selectbox(
             "Indicateur climatique",
             options=MAP_INDICATORS,
@@ -1084,15 +1084,15 @@ with tab_histo_2007_2024:
 
             map_hist = create_zone_map(zone_values_hist, map_indicator_hist, map_title)
             components.html(map_hist._repr_html_(), height=350)
-            st.markdown("**Légende**")
+            st.markdown("**Legende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
                     <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes temperees<br>
                     <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
@@ -1109,10 +1109,10 @@ with tab_histo_2007_2024:
         )
         
         if not selected_zones:
-            st.warning("Sélectionne au moins une zone.")
+            st.warning("Selectionne au moins une zone.")
             st.stop()
         st.markdown(
-            "**Évolution annuelle des indicateurs climatiques entre les zones**"
+            "**evolution annuelle des indicateurs climatiques entre les zones**"
         )
         selected_indicator = st.selectbox(
             "Indicateur climatique",
@@ -1129,18 +1129,18 @@ with tab_histo_2007_2024:
 
 
 # =====================================================
-# SANS SCÉNARIO
+# SANS SCeNARIO
 # =====================================================
 with tab_future:
     view_future = st.radio(" ", 
-                           options=["Projection des tendances passées", "Projection des scénarios – graphiques", 
-                                    "Projection des scénarios – cartes"], 
+                           options=["Projection des tendances passees", "Projection des scenarios – graphiques", 
+                                    "Projection des scenarios – cartes"], 
                            index=0, 
                            horizontal=True,
                            label_visibility="collapsed"
                            )
     
-    if view_future == "Projection des tendances passées":
+    if view_future == "Projection des tendances passees":
         st.markdown("**Quel sera le climat si les tendances actuelles se poursuivent d'ici 2040?**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
@@ -1152,7 +1152,7 @@ with tab_future:
         )
         available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         if not selected_zones:
-            st.warning("Sélectionne au moins une zone.")
+            st.warning("Selectionne au moins une zone.")
             st.stop()
         try:
             df_no_scenario = build_no_scenario_projection(
@@ -1178,12 +1178,12 @@ with tab_future:
             plt.close(fig_no_scenario)
 
         except Exception as e:
-            st.error(f"Erreur projection sans scénario : {e}")
-    if view_future == "Projection des scénarios – graphiques":
+            st.error(f"Erreur projection sans scenario : {e}")
+    if view_future == "Projection des scenarios – graphiques":
     # =====================================================
-    # SCÉNARIOS
+    # SCeNARIOS
     # =====================================================
-        st.markdown("**Évolution des températures et des précipitations selon les scénarios à court et moyen terme**")
+        st.markdown("**evolution des temperatures et des precipitations selon les scenarios à court et moyen terme**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
             "Zones",
@@ -1194,14 +1194,14 @@ with tab_future:
         )
         available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         scenario_period = st.selectbox(
-            "Période future considérée",
+            "Periode future consideree",
             options=["2021-2040", "2041-2060"],
             key="map_scenario_period_1",
             label_visibility="collapsed"
         )
         compare_indicator = st.selectbox(
             "Indicateur climatique",
-            options=["Température moyenne (°C)", "Température maximale moyenne (°C)", "Température minimale moyenne (°C)", "Précipitations totales (mm)"],
+            options=["Temperature moyenne (°C)", "Temperature maximale moyenne (°C)", "Temperature minimale moyenne (°C)", "Precipitations totales (mm)"],
             key="compare_indicator_scenario_tableau",
             label_visibility="collapsed"
         )
@@ -1209,32 +1209,32 @@ with tab_future:
             (df_proj["periode"] == scenario_period)
         )
         indicator_map = {
-            "Température moyenne (°C)": "temp_moyenne",
-            "Température maximale moyenne (°C)": "tmax_mean",
-            "Température minimale moyenne (°C)": "tmin_mean",
-            "Précipitations totales (mm)": "precipitation_total",
+            "Temperature moyenne (°C)": "temp_moyenne",
+            "Temperature maximale moyenne (°C)": "tmax_mean",
+            "Temperature minimale moyenne (°C)": "tmin_mean",
+            "Precipitations totales (mm)": "precipitation_total",
         }
         hist_map = {
-            "temp_moyenne": "Température moyenne 2007-2024 (°C)",
-            "tmax_mean": "Température maximale 2007-2024 (°C)",
-            "tmin_mean": "Température minimale 2007-2024 (°C)",
-            "precipitation_total": "Précipitations moyennes 2007-2024 (mm)",
+            "temp_moyenne": "Temperature moyenne 2007-2024 (°C)",
+            "tmax_mean": "Temperature maximale 2007-2024 (°C)",
+            "tmin_mean": "Temperature minimale 2007-2024 (°C)",
+            "precipitation_total": "Precipitations moyennes 2007-2024 (mm)",
         }
         trend_map = {
-            "temp_moyenne": "Tendance température moyenne (°C)",
-            "tmax_mean": "Tendance température maximale (°C)",
-            "tmin_mean": "Tendance température minimale (°C)",
-            "precipitation_total": "Tendance précipitations (en %)",
+            "temp_moyenne": "Tendance temperature moyenne (°C)",
+            "tmax_mean": "Tendance temperature maximale (°C)",
+            "tmin_mean": "Tendance temperature minimale (°C)",
+            "precipitation_total": "Tendance precipitations (en %)",
         }
         label_map = {
-            "temp_moyenne": "Température moyenne (°C)",
-            "tmax_mean": "Température maximale moyenne (°C)",
-            "tmin_mean": "Température minimale moyenne (°C)",
-            "precipitation_total": "Précipitations totales (mm)",
+            "temp_moyenne": "Temperature moyenne (°C)",
+            "tmax_mean": "Temperature maximale moyenne (°C)",
+            "tmin_mean": "Temperature minimale moyenne (°C)",
+            "precipitation_total": "Precipitations totales (mm)",
         }
         proj_period = df_proj.loc[mask].copy()
         if proj_period.empty:
-            st.warning("Aucune donnée de projection disponible pour cette période.")
+            st.warning("Aucune donnee de projection disponible pour cette periode.")
         else:
             scenario_table = build_scenario_table(proj_period, selected_zones)
             df_no_scenario = build_no_scenario_projection(
@@ -1317,7 +1317,7 @@ with tab_future:
             scenario_table_display = scenario_table_display[cols_to_keep]
             st.dataframe(scenario_table_display, width="stretch", height=475, row_height=15)
             map_scenario = st.selectbox(
-                "Scénario étudié",
+                "Scenario etudie",
                 options=["optimiste", "neutre", "pessimiste", "sans scenario"],
                 key="map_scenario_tab",
                 label_visibility="collapsed"
@@ -1339,27 +1339,27 @@ with tab_future:
             )
 
             st.pyplot(fig_scenario)
-            st.markdown("**Légende**")
+            st.markdown("**Legende**")
             st.markdown("""
             <div>
-                <span style="color:#0000FF">⬤</span> Écart des précipitations passé-futur<br>
-                <span style="color:#FFFF00">⬤</span> Températures historiques<br>
-                <span style="color:#FF0000">⬤</span> Écart des températures/Précipitations passé-futur<br>
+                <span style="color:#0000FF">⬤</span> ecart des precipitations passe-futur<br>
+                <span style="color:#FFFF00">⬤</span> Temperatures historiques<br>
+                <span style="color:#FF0000">⬤</span> ecart des temperatures/Precipitations passe-futur<br>
 
             </div>""",
             unsafe_allow_html=True
             )
             plt.close(fig_scenario)
-    if view_future == "Projection des scénarios – cartes":
+    if view_future == "Projection des scenarios – cartes":
         st.markdown("**Tendances des indicateurs climatiques à court et à long terme par zone**")
         map_scenario = st.selectbox(
-            "Scénario étudié",
+            "Scenario etudie",
             options=["optimiste", "neutre", "pessimiste"],
             key="map_scenario",
             label_visibility="collapsed"
         )
         scenario_period = st.selectbox(
-            "Période future considérée",
+            "Periode future consideree",
             options=["2021-2040", "2041-2060"],
             key="map_scenario_period_future",
             label_visibility="collapsed"
@@ -1385,55 +1385,55 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
-            st.markdown("**Légende**")
+            st.markdown("**Legende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
                     <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes temperees<br>
                     <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte  : {e}")
-        st.markdown("**Si nous poursuivons les tendances passées, quelles seraient les projections des températures et des précipitations ?**")
+        st.markdown("**Si nous poursuivons les tendances passees, quelles seraient les projections des temperatures et des precipitations ?**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         map_indicator_proj = SCENARIO_INDICATORS[0]
         compare_indicator = st.selectbox(
             "Indicateur climatique",
-            options=["Température moyenne (°C)", "Température maximale moyenne (°C)", "Température minimale moyenne (°C)", "Précipitations totales (mm)"],
+            options=["Temperature moyenne (°C)", "Temperature maximale moyenne (°C)", "Temperature minimale moyenne (°C)", "Precipitations totales (mm)"],
             key="compare_indicator_scenario_tableau",
             label_visibility="collapsed"
         )
         indicator_map = {
-            "Température moyenne (°C)": "temp_moyenne",
-            "Température maximale moyenne (°C)": "tmax_mean",
-            "Température minimale moyenne (°C)": "tmin_mean",
-            "Précipitations totales (mm)": "precipitation_total"
+            "Temperature moyenne (°C)": "temp_moyenne",
+            "Temperature maximale moyenne (°C)": "tmax_mean",
+            "Temperature minimale moyenne (°C)": "tmin_mean",
+            "Precipitations totales (mm)": "precipitation_total"
         }
         hist_map = {
-            "temp_moyenne": "Température moyenne 2007-2024 (°C)",
-            "tmax_mean": "Température maximale 2007-2024 (°C)",
-            "tmin_mean": "Température minimale 2007-2024 (°C)",
-            "precipitation_total": "Précipitations totales 2007-2024 (mm)"
+            "temp_moyenne": "Temperature moyenne 2007-2024 (°C)",
+            "tmax_mean": "Temperature maximale 2007-2024 (°C)",
+            "tmin_mean": "Temperature minimale 2007-2024 (°C)",
+            "precipitation_total": "Precipitations totales 2007-2024 (mm)"
         }
         trend_map = {
-            "temp_moyenne": "Tendance température moyenne (°C)",
-            "tmax_mean": "Tendance température maximale (°C)",
-            "tmin_mean": "Tendance température minimale (°C)",
-            "precipitation_total": "Tendance précipitations totales (mm)"
+            "temp_moyenne": "Tendance temperature moyenne (°C)",
+            "tmax_mean": "Tendance temperature maximale (°C)",
+            "tmin_mean": "Tendance temperature minimale (°C)",
+            "precipitation_total": "Tendance precipitations totales (mm)"
         }
         label_map = {
-            "temp_moyenne": "Température moyenne (°C)",
-            "tmax_mean": "Température maximale moyenne (°C)",
-            "tmin_mean": "Température minimale moyenne (°C)",
-            "precipitation_total": "Précipitations totales (mm)"
+            "temp_moyenne": "Temperature moyenne (°C)",
+            "tmax_mean": "Temperature maximale moyenne (°C)",
+            "tmin_mean": "Temperature minimale moyenne (°C)",
+            "precipitation_total": "Precipitations totales (mm)"
         }
         scenario_period = st.selectbox(
-            "Période future considérée",
+            "Periode future consideree",
             options=["2021-2040"],
             key="map_scenario_period_future_bis_bis",
             label_visibility="collapsed"
@@ -1536,29 +1536,29 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
-            st.markdown("**Légende**")
+            st.markdown("**Legende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
                     <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes temperees<br>
                     <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Erreur carte  : {e}")
-        st.markdown("**Projection des précipitations sur le cycle végétatif de la vigne à long terme**")
+        st.markdown("**Projection des precipitations sur le cycle vegetatif de la vigne à long terme**")
         map_scenario = st.selectbox(
-            "Scénario étudié",
+            "Scenario etudie",
             options=["optimiste", "neutre", "pessimiste"],
             key="map_scenario_cycle_wine",
             label_visibility="collapsed"
         )
         scenario_period = st.selectbox(
-            "Période future considérée",
+            "Periode future consideree",
             options=["2041-2060"],
             key="map_scenario_period_future_cycle",
             label_visibility="collapsed"
@@ -1583,15 +1583,15 @@ with tab_future:
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
             components.html(map_proj._repr_html_(), height=350)
-            st.markdown("**Légende**")
+            st.markdown("**Legende**")
             st.markdown("""
                 <div>
                     <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
-                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
                     <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes temperees<br>
                     <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
