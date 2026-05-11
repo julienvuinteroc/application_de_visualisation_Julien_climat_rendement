@@ -1377,8 +1377,159 @@ with tab_future:
                     <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
                     <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
                     <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes tempérées<br>
-                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                </div>
+                """, unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Erreur carte  : {e}")
+        st.markdown("**Si nous poursuivons les tendances passées, quelles seraient les projections des températures et des précipitations ?**")
+        available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
+        map_indicator_proj = SCENARIO_INDICATORS[0]
+        compare_indicator = st.selectbox(
+            "Indicateur climatique",
+            options=["Température moyenne (°C)", "Température maximale moyenne (°C)", "Température minimale moyenne (°C)", "Précipitations totales (mm)"],
+            key="compare_indicator_scenario_tableau",
+            label_visibility="collapsed"
+        )
+        indicator_map = {
+            "Température moyenne (°C)": "temp_moyenne",
+            "Température maximale moyenne (°C)": "tmax_mean",
+            "Température minimale moyenne (°C)": "tmin_mean",
+            "Précipitations totales (mm)": "precipitation_total"
+        }
+        hist_map = {
+            "temp_moyenne": "Température moyenne 2007-2024 (°C)",
+            "tmax_mean": "Température maximale 2007-2024 (°C)",
+            "tmin_mean": "Température minimale 2007-2024 (°C)",
+            "precipitation_total": "Précipitations totales 2007-2024 (mm)"
+        }
+        trend_map = {
+            "temp_moyenne": "Tendance température moyenne (°C)",
+            "tmax_mean": "Tendance température maximale (°C)",
+            "tmin_mean": "Tendance température minimale (°C)",
+            "precipitation_total": "Tendance précipitations totales (mm)"
+        }
+        label_map = {
+            "temp_moyenne": "Température moyenne (°C)",
+            "tmax_mean": "Température maximale moyenne (°C)",
+            "tmin_mean": "Température minimale moyenne (°C)",
+            "precipitation_total": "Précipitations totales (mm)"
+        }
+        scenario_period = st.selectbox(
+            "Période future considérée",
+            options=["2021-2040"],
+            key="map_scenario_period_future_bis_bis",
+            label_visibility="collapsed"
+        )
+        selected_zones = st.multiselect(
+            "Zones",
+            options=available_zones,
+            default=available_zones[:3] if len(available_zones) >= 3 else available_zones,
+            key="histo_zones_future",
+            label_visibility="collapsed"
+        )
+        available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
+        scenario_table = build_scenario_table(proj_period, selected_zones)
+        df_no_scenario = build_no_scenario_projection(
+            df_hist=df_climat,
+            zones=selected_zones,
+            indicators=HISTORICAL_INDICATORS,
+        )
+        col = indicator_map[compare_indicator]
+        map_indicator_proj = col
+        no_scenario_table = (
+            df_no_scenario[df_no_scenario["indicator"] == col]
+            .groupby("cluster", as_index=False)["value"]
+            .mean()
+            .rename(columns={
+                "cluster": "zone",
+                "value": col
+            })
+        )
+        no_scenario_table["scenario"] = "sans scenario"
+        no_scenario_table[col] = no_scenario_table[col].astype(float)
+        df_hist_zone = df_climat[df_climat["cluster"].isin(selected_zones)].copy()
+        hist_means = df_hist_zone.groupby("cluster").agg({
+            "temp_moyenne": "mean",
+            "tmax_mean": "mean",
+            "tmin_mean": "mean",
+            "precipitation_total": "mean"
+        })
+        hist_col_name = hist_map[col]
+        trend_col_name = trend_map[col]
+        scenario_table[hist_col_name] = (
+            scenario_table["zone"]
+            .map(hist_means[col])
+            .astype(float)
+            .round(1)
+        )
+        if col == "precipitation_total":
+            scenario_table[trend_col_name] = (
+                (scenario_table["precipitation_total"] - scenario_table[hist_col_name])
+                / scenario_table[hist_col_name]
+                * 100
+            ).astype(float).round(0)
+            no_scenario_table[hist_col_name] = no_scenario_table["zone"].map(hist_means[col]).astype(float).round(0)
+            no_scenario_table[trend_col_name] = (
+                (no_scenario_table[col] - no_scenario_table[hist_col_name])
+                / no_scenario_table[hist_col_name]
+                * 100
+            ).astype(float).round(0)
+            
+        else:
+            scenario_table[trend_col_name] = (
+                scenario_table[col] - scenario_table[hist_col_name]
+            ).astype(float).round(1)
+            no_scenario_table[hist_col_name] = no_scenario_table["zone"].map(hist_means[col]).astype(float).round(1)
+            no_scenario_table[trend_col_name] = (
+                no_scenario_table[col] - no_scenario_table[hist_col_name]
+            ).astype(float).round(1)
+        display_col = label_map[col]
+        for c in ["temp_moyenne", "tmax_mean", "tmin_mean"]:
+            if c in no_scenario_table.columns:
+                no_scenario_table[c] = no_scenario_table[c].astype(float).round(1)
+            if c in scenario_table.columns:
+                scenario_table[c] = scenario_table[c].astype(float).round(1)
+        for c in ["precipitation_total"]:
+            if c in no_scenario_table.columns:
+                no_scenario_table[c] = no_scenario_table[c].astype(float).round(0)
+            if c in scenario_table.columns:
+                scenario_table[c] = scenario_table[c].astype(float).round(0)  
+        scenario_table = pd.concat([scenario_table, no_scenario_table], ignore_index=True)
+        scenario_table_display = scenario_table.copy()
+        scenario_table_display["zone"] = scenario_table_display["zone"].apply(lambda z: f"Zone {int(z)}")
+        scenario_table_display = scenario_table_display.rename(
+            columns={col: display_col}
+        )
+        cols_to_keep = [
+            "zone",
+            hist_col_name,
+            "scenario",
+            trend_col_name,
+            display_col
+        ]
+        scenario_table_display = scenario_table_display[cols_to_keep]
+        df_graph = scenario_table[
+                    scenario_table["scenario"] == "sans scenario"
+                ]
+        try:
+            map_proj = create_zone_map(
+                df_graph,
+                map_indicator_proj,
+                f"{indicator_label(map_indicator_proj)} - {scenario_period}",
+            )
+            components.html(map_proj._repr_html_(), height=350)
+            st.markdown("**Légende**")
+            st.markdown("""
+                <div>
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
+                    <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
+                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
@@ -1424,8 +1575,8 @@ with tab_future:
                     <span style="color:#1A8F2A">O</span> Zone 3: zone de piémont avec une réserve utile limitante<br>
                     <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
                     <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualité moyenne dans l’arrière-pays<br>
-                    <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes tempérées<br>
-                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes tempérées<br>
+                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
