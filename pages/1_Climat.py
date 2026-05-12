@@ -66,7 +66,7 @@ APP_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = APP_DIR.parent.parent
 DB_PATH = PROJECT_ROOT / "db" / "mvttdb.duckdb"
 st.set_page_config(
-    page_title="Observatoire Viticole - Pays d'Oc",
+    page_title="Observatoire Viticole Climat - Pays d'Oc IGP",
     page_icon="🍇",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -562,7 +562,7 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     gdf = gdf.dropna(subset=["zone"]).copy()
 
     if gdf.empty:
-        return folium.Map(location=[43.7, 3.5], zoom_start=6)
+        return folium.Map(location=[43.7, 3.5], zoom_start=7)
 
     zone_geom = gdf[["zone", "geometry"]].dissolve(by="zone", as_index=False)
 
@@ -576,7 +576,7 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     zones_gdf["indicator_fmt"] = zones_gdf[indicator].apply(lambda x: format_value(x, indicator))
     bounds = zones_gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-    m = folium.Map(location=center, tiles=None, zoom_start=6)
+    m = folium.Map(location=center, tiles=None, zoom_start=7)
     colormap = build_indicator_colormap(zones_gdf[indicator], indicator)
     if colormap is None:
         return m
@@ -651,7 +651,7 @@ def create_communes_map(
     gdf = gdf.merge(df_values[["code_commune", "value"]], on="code_commune", how="left")
     bounds = gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-    m = folium.Map(location=center, zoom_start=6, tiles=None)
+    m = folium.Map(location=center, zoom_start=7, tiles=None)
     colormap = build_indicator_colormap(gdf["value"], indicator)
     if colormap is None:
         return m
@@ -977,8 +977,8 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-tab_details, tab_histo_2007_2024, tab_future = st.tabs(["Details",
-    "Historique 2007-2024", "Futur"
+tab_details, tab_histo_2008_2024, tab_future = st.tabs(["Details",
+    "Historique 2008-2024", "Futur"
 ])
 st.markdown("""
     <style>
@@ -1004,7 +1004,7 @@ with tab_details:
         "6e-rapport-du-giec-les-contributions-de-meteo-france) reposent sur "
         "les donnees de la base mondiale [WorldClim]"
         "(https://www.worldclim.org/data/cmip6/cmip6_clim2.5m.html) "
-        "pour 2021-2040 et 2041-2060. Plusieurs modèles climatiques globaux sont analyses. "
+        "pour 2021-2040 et 2041-2060. Plusieurs modeles climatiques globaux sont analyses. "
         "Des disparites subsistent "
         "entre les simulations des temperatures et des precipitations "
         "en fonction des scenarios SSP126 (optimiste), SSP245 (neutre) et SSP585 (pessimiste). "
@@ -1013,19 +1013,19 @@ with tab_details:
         "1.\tLa [variabilite naturelle du climat](https://culturesciencesphysique.ens-lyon.fr/"
         "pdf/GIEC-climat.pdf) peu previsible comprend les variations des courants oceaniques "
         "et de la temperature de surface de la mer impactant le developpement de la vigne. "
-        "À partir de deux etats climatiques très proches, les evolutions climatiques "
+        "À partir de deux etats climatiques tres proches, les evolutions climatiques "
         "peuvent être considerablement differentes.\n\n"
         "2.\tLa modelisation des [retroactions](https://web.lmd.jussieu.fr/~jldufres/Exposes/"
         "Duf_ChEDF_juin_2014.pdf) reste complexe, en particulier pour la "
-        "vapeur d'eau sur la stratosphère. Cela peut être causee par certains phenomènes "
+        "vapeur d'eau sur la stratosphere. Cela peut être causee par certains phenomenes "
         "regionaux: les episodes cevenols ou les vents "
         "regionaux (Autan, Tramontane).\n\n"
         "3.\tLes fortes incertitudes physiques sur la representation des [precipitations](https://www.foret-mediterraneenne.org/"
         "_0/upload/biblio/foret_med_2011_2_205-212.pdf) rendent l'estimation "
-        "du bilan hydrique des sols complexe, particulièrement en hiver. Cette mesure "
+        "du bilan hydrique des sols complexe, particulierement en hiver. Cette mesure "
         "influence la croissance de la vigne et la maturation des raisins. \n\n"
-        "4.\tLa resolution spatiale et temporelle est propre à chaque modèle.\n\n"
-        "Sur la base de cinq modèles europeens, les valeurs centrales "
+        "4.\tLa resolution spatiale et temporelle est propre à chaque modele.\n\n"
+        "Sur la base de cinq modeles europeens, les valeurs centrales "
         "des variables climatiques sont determinees à l'echelle pluriannuelle et "
         "sur le cycle vegetatif de la vigne pour l'ensemble des communes des sept "
         "zones pedoclimatiques. "
@@ -1035,7 +1035,7 @@ with tab_details:
         "(https://www.vignevin-occitanie.com/wp-content/uploads/2023/01/guide-vitisad-fr-FINAL.pdf)."
     )
     
-with tab_histo_2007_2024:
+with tab_histo_2008_2024:
     view_historical = st.radio("ds", 
                            options=["Graphiques",
                                     "Cartographie"], 
@@ -1055,7 +1055,7 @@ with tab_histo_2007_2024:
             index=len(available_years) - 1,
             label_visibility="collapsed"
         )
-        use_last_5y_mean = st.checkbox("Moyenne des 5 dernières annees", value=False)
+        use_last_5y_mean = st.checkbox("Moyenne des 5 dernieres annees", value=False)
         map_indicator_hist = st.selectbox(
             "Indicateur climatique",
             options=MAP_INDICATORS,
@@ -1087,13 +1087,13 @@ with tab_histo_2007_2024:
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arriere-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
                     <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et seche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arriere-pays<br>
                     <span style="color:#7A1FA2">O</span> Zone 6: zone de sols profonds sur côtes temperees<br>
-                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#FFD800">O</span> Zone 7: zone avec le plus grand nombre de jours tres chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
@@ -1109,10 +1109,10 @@ with tab_histo_2007_2024:
         )
         
         if not selected_zones:
-            st.warning("Selectionne au moins une zone.")
+            st.warning("Selectionnez au moins une zone.")
             st.stop()
         st.markdown(
-            "**evolution annuelle des indicateurs climatiques entre les zones**"
+            "**Evolution des indicateurs climatiques entre les zones **"
         )
         selected_indicator = st.selectbox(
             "Indicateur climatique",
@@ -1123,6 +1123,17 @@ with tab_histo_2007_2024:
         try:
             fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator)
             st.pyplot(fig_hist)
+            st.markdown("""
+                <div style="text-align: center;">
+                    <span style="color:#000000">x</span> Tendance zone 1<br>
+                    <span style="color:#FF0000">x</span> Tendance zone 2<br>
+                    <span style="color:#1A8F2A">x</span> Tendance zone 3<br>
+                    <span style="color:#0033CC">x</span> Tendance zone 4<br>
+                    <span style="color:#AFC6D9">x</span> Tendance zone 5<br>
+                    <span style="color:#7A1FA2">x</span> Tendance zone 6<br>
+                    <span style="color:#FFD800">x</span> Tendance zone 7
+                </div>
+                """, unsafe_allow_html=True)
             plt.close(fig_hist)
         except Exception as e:
             st.error(f"Erreur graphique historique : {e}")
@@ -1388,13 +1399,13 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arriere-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
                     <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et seche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arriere-pays<br>
                     <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes temperees<br>
-                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours tres chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
@@ -1402,6 +1413,7 @@ with tab_future:
         st.markdown("**Si nous poursuivons les tendances passees, quelles seraient les projections des temperatures et des precipitations ?**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         map_indicator_proj = SCENARIO_INDICATORS[0]
+        
         compare_indicator = st.selectbox(
             "Indicateur climatique",
             options=["Temperature moyenne (°C)", "Temperature maximale moyenne (°C)", "Temperature minimale moyenne (°C)", "Precipitations totales (mm)"],
@@ -1438,6 +1450,8 @@ with tab_future:
             key="map_scenario_period_future_bis_bis",
             label_visibility="collapsed"
         )
+        proj_period = df_proj[df_proj["periode"] == scenario_period].copy()
+        available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         selected_zones = st.multiselect(
             "Zones",
             options=available_zones,
@@ -1445,7 +1459,9 @@ with tab_future:
             key="histo_zones_future",
             label_visibility="collapsed"
         )
-        available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
+        if not selected_zones: 
+            st.warning("Selectionnez au moins une zone.")
+            st.stop()
         scenario_table = build_scenario_table(proj_period, selected_zones)
         df_no_scenario = build_no_scenario_projection(
             df_hist=df_climat,
@@ -1453,6 +1469,10 @@ with tab_future:
             indicators=HISTORICAL_INDICATORS,
         )
         col = indicator_map[compare_indicator]
+        indicator = indicator_map[compare_indicator]
+        if "indicator" not in df_no_scenario.columns or df_no_scenario.empty:
+            st.warning ("Aucune donnee disponible sur les projections")
+            st.stop()
         map_indicator_proj = col
         no_scenario_table = (
             df_no_scenario[df_no_scenario["indicator"] == col]
@@ -1539,13 +1559,13 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arriere-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
                     <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et seche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arriere-pays<br>
                     <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes temperees<br>
-                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours tres chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:
@@ -1586,13 +1606,13 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
-                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arrière-pays<br>
+                    <span style="color:#000000">O</span> Zone 1: zone humide de l'arriere-pays<br>
                     <span style="color:#FF0000">O</span> Zone 2: zone de montagne avec des sols acides et peu profonds<br>
                     <span style="color:#1A8F2A">O</span> Zone 3: zone de piemont avec une reserve utile limitante<br>
-                    <span style="color:#0033CC">O</span> Zone 4: zone froide et sèche autour du Pic Saint-Loup<br>
-                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arrière-pays<br>
+                    <span style="color:#0033CC">O</span> Zone 4: zone froide et seche autour du Pic Saint-Loup<br>
+                    <span style="color:#AFC6D9">O</span> Zone 5: zone de sols de qualite moyenne dans l’arriere-pays<br>
                     <span style="color:#7A1FA2">O</span> *Zone 6: zone de sols profonds sur côtes temperees<br>
-                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds
+                    <span style="color:#FFD800">O</span> *Zone 7: zone avec le plus grand nombre de jours tres chauds mais sols profonds
                 </div>
                 """, unsafe_allow_html=True)
         except Exception as e:

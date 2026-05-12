@@ -31,7 +31,7 @@ GEOJSON_FILES = {
 }
 
 # =====================================================
-# CONSTANTES MÉTIER
+# CONSTANTES MeTIER
 # =====================================================
 DEPT_COLOR_MAP = {
     "11": "#3498db",  # Aude - bleu
@@ -65,14 +65,14 @@ ZONE_COLOR_MAP = {
 DEPARTEMENTS = ["11", "30", "34", "66"]
 #fsd
 ZONE_LABELS = {
-    "0": "Zone 0: non classée / hors zonage",
-    "1": "Zone 1: zone humide de l'arrière-pays",
+    "0": "Zone 0: non classee / hors zonage",
+    "1": "Zone 1: zone humide de l'arriere-pays",
     "2": "Zone 2: zone de montagne avec des sols acides et peu profonds",
-    "3": "Zone 3: zone de piémont avec une réserve utile limitante",
-    "4": "Zone 4: zone froide et sèche autour du Pic Saint-Loup",
-    "5": "Zone 5: zone de sols de qualité moyenne dans l’arrière-pays",
-    "6": "*Zone 6: zone de sols profonds sur côtes tempérées",
-    "7": "*Zone 7: zone avec le plus grand nombre de jours très chauds mais sols profonds",
+    "3": "Zone 3: zone de piemont avec une reserve utile limitante",
+    "4": "Zone 4: zone froide et seche autour du Pic Saint-Loup",
+    "5": "Zone 5: zone de sols de qualite moyenne dans l’arriere-pays",
+    "6": "*Zone 6: zone de sols profonds sur côtes temperees",
+    "7": "*Zone 7: zone avec le plus grand nombre de jours tres chauds mais sols profonds",
 }
 # =====================================================
 # CHECK

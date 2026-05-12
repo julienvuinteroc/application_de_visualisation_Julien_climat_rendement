@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Configuration de la page
 st.set_page_config(
-    page_title="Analyse Viticole - Pays d'Oc IGP",
+    page_title="Observatoire Viticole - Pays d'Oc IGP",
     page_icon="🍇",
     layout="wide",
     initial_sidebar_state="expanded"

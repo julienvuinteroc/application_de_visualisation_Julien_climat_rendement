@@ -9,7 +9,7 @@ from utils.db import get_conn
 from modules.data_loader import load_geojson
 from modules.ai_engine import AIAnalyzer
 
-st.set_page_config(layout="wide", page_title="Analyse Climat - Production")
+st.set_page_config(layout="wide", page_title="Climat - Production - Pays d'Oc IGP")
 
 # Style CSS personnalise
 st.markdown("""
@@ -551,7 +551,7 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         **N.B :** Le score global traduit la performance globale de chaque zone en tenant compte des deux critères suivants :
         - stabilite des rendements pour les 3 couleurs
         - repartition optimale des temperatures annuelles et des precipitations annuelles
-        Les zones sont classees en fonction de leur score global, allant de 0 à 100 :
+        - Les zones sont classees en fonction de leur score global, allant de 0 à 100 :
         - **Classe A** : score global egal à 80 et plus
         - **Classe B** : score global de 65 à 79
         - **Classe C** : score global de 50 à 64
