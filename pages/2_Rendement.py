@@ -1358,9 +1358,9 @@ with tab_quant:
             # Interpretation
             st.markdown("""
             **Guide de lecture :**
-            - **Indice de stabilite du rendement < 15%** : Rendement tres stable (vert)
+            - **Indice de stabilite du rendement inférieur à 15%** : Rendement tres stable (vert)
             - **Indice de stabilite du rendement entre 15% et 25%** : Variabilite moderee (orange)
-            - **Indice de stabilite du rendement > 25%** : Rendement tres variable (rouge)
+            - **Indice de stabilite du rendement supérieur à 25%** : Rendement tres variable (rouge)
             """)
             
             # Graphique 2: Evolution temporelle pour les zones les plus/moins stables
