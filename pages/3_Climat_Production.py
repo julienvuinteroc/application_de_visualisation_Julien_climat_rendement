@@ -921,11 +921,6 @@ with st.expander("Tableau de synthese par zone et annee", expanded=False):
         .sort_values(["zone", "annee"])
     )
     table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
-    if "temp_moyenne" in table_zone_year_display.columns:
-        table_zone_year_display["temp_moyenne"] = table_zone_year_display["temp_moyenne"].round(1)
-    if "precipitation_total" in table_zone_year_display.columns or "rendement" in table_zone_year_display.columns:
-        table_zone_year_display["precipitation_total"] = table_zone_year_display["precipitation_total"].round(0)
-        table_zone_year_display["rendement"] = table_zone_year_display["rendement"].round(0)
     st.dataframe(table_zone_year_display, width="stretch", hide_index=True, row_height=20, height=750)
 
 

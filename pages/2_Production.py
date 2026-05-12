@@ -431,7 +431,7 @@ with tab_rdt:
                 evol_full["rendement"] = evol_full.groupby(col_map)["rendement"].transform(
                     lambda x: x.rolling(5, min_periods=1).mean()
                 )
-            
+            evol_full["rendement"] = evol_full["rendement"].round(0)
             # Utilisation des couleurs selon le mode
             if mode == "Couleur":
                 fig = px.line(
@@ -483,6 +483,7 @@ with tab_rdt:
             # Histogramme rendement par departement et couleur
             st.markdown("#### Rendement par departement et couleur")
             dept_color_rdt = data.groupby(["code_departement", "code_couleur"])["rendement"].mean().reset_index()
+            dept_color_rdt["rendement"] = dept_color_rdt["rendement"].round(0)
             fig_dept_color = px.bar(
                 dept_color_rdt,
                 x="code_departement",
@@ -499,6 +500,7 @@ with tab_rdt:
             st.markdown("#### Rendement par zone et couleur")
             zone_color_rdt = data.groupby(["Zone", "code_couleur"])["rendement"].mean().reset_index()
             zone_color_rdt = get_zones_1_7(zone_color_rdt)
+            zone_color_rdt["rendement"] = zone_color_rdt["rendement"].round(0)
             fig_zone_color = px.bar(
                 zone_color_rdt,
                 x="Zone",
@@ -1540,7 +1542,7 @@ with tab_quant:
             st.markdown(f"""
             <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin: 10px 0;">
                 <b>Cluster {i}</b> : Zones {', '.join([f'Zone {int(z)}' for z in zones_cluster])}<br>
-                <span style="color: #555;">Rendement moyen: {avg_rendement:.1f} hl/ha | Volume moyen: {avg_volume:,.0f} hl</span>
+                <span style="color: #555;">Rendement moyen: {avg_rendement:.0f} hl/ha | Volume moyen: {avg_volume:,.0f} hl</span>
             </div>
             """, unsafe_allow_html=True)
 
