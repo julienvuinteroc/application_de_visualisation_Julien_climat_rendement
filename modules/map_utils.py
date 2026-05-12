@@ -2,11 +2,8 @@
 """
 Utilitaires spécifiques pour les cartes
 """
-
 import streamlit as st
 import plotly.express as px
-
-from config.constants import ZONE_LABELS, ZONE_COLOR_MAP
 from modules.data_loader import load_geojson
 
 

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import streamlit as st
-import pandas as pd
 import plotly.graph_objects as go
 from modules.data_loader import load_geojson
 from config.constants import ZONE_COLOR_MAP, ZONE_LABELS, DEPARTEMENTS
