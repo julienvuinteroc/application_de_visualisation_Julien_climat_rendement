@@ -1036,6 +1036,9 @@ with tab_details:
     )
     
 with tab_histo_2008_2024:
+    st.header(
+            "Analyse de l'evolution des indicateurs climatiques pour les 7 zones"
+    )
     view_historical = st.radio("ds", 
                            options=["Graphiques",
                                     "Cartographie"], 
@@ -1043,9 +1046,7 @@ with tab_histo_2008_2024:
                            horizontal=True,
                            label_visibility="collapsed"
                         )
-
     if view_historical == "Cartographie":
-        st.markdown("**Comment les indicateurs climatiques ont evolue spatialement au niveau des zones ?**")
         available_years = sorted([int(y) for y in df_climat["Year"].dropna().unique()])
         year_max = int(df_climat["Year"].dropna().max())
         year_min = year_max - 4
@@ -1111,9 +1112,7 @@ with tab_histo_2008_2024:
         if not selected_zones:
             st.warning("Selectionnez au moins une zone.")
             st.stop()
-        st.markdown(
-            "**Evolution des indicateurs climatiques entre les zones **"
-        )
+        
         selected_indicator = st.selectbox(
             "Indicateur climatique",
             options=HISTORICAL_INDICATORS,
@@ -1143,6 +1142,9 @@ with tab_histo_2008_2024:
 # SANS SCeNARIO
 # =====================================================
 with tab_future:
+    st.header(
+            "Analyse des perspectives climatiques pour les 7 zones"
+    )
     view_future = st.radio(" ", 
                            options=["Projection des tendances passees", "Projection des scenarios – graphiques", 
                                     "Projection des scenarios – cartes"], 
@@ -1152,7 +1154,7 @@ with tab_future:
                            )
     
     if view_future == "Projection des tendances passees":
-        st.markdown("**Quel sera le climat si les tendances actuelles se poursuivent d'ici 2040?**")
+        st.markdown("**Quel sera le climat si les tendances actuelles se poursuivent d'ici 2040 ?**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
             "Zones",
