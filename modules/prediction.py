@@ -296,7 +296,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
             **Recommandations :**
             - Les predictions a 1 an sont les plus fiables
             - Moins les erreurs moyennes sur le rendement et le volume sont elevees, plus la prediction est fiable
-            - En cas de forte variabilite, privilegier des horizons de prediction courts
+            - En cas de forte variabilite, nous allons privilegier des horizons de prediction courts
             """)
 
         return res

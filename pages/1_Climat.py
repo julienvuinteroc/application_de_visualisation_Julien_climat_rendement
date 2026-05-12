@@ -996,7 +996,7 @@ with st.sidebar:
     
 with tab_details:
     
-    st.markdown("**Informations sur l'historique et les projections climatiques**")
+    st.header("Informations sur l'historique et les projections climatiques")
     st.info(
         "Les donnees historiques proviennent de la plateforme [Open-Meteo]"
         "(https://open-meteo.com/en/docs/historical-weather-api). "
@@ -1037,7 +1037,7 @@ with tab_details:
     
 with tab_histo_2008_2024:
     st.header(
-            "Analyse de l'evolution des indicateurs climatiques pour les 7 zones"
+            "Analyse de l'evolution des indicateurs climatiques des zones"
     )
     view_historical = st.radio("ds", 
                            options=["Graphiques",
@@ -1143,7 +1143,7 @@ with tab_histo_2008_2024:
 # =====================================================
 with tab_future:
     st.header(
-            "Analyse des perspectives climatiques pour les 7 zones"
+            "Analyse des perspectives climatiques des zones"
     )
     view_future = st.radio(" ", 
                            options=["Projection des tendances passees", "Projection des scenarios – graphiques", 
@@ -1196,7 +1196,7 @@ with tab_future:
     # =====================================================
     # SCeNARIOS
     # =====================================================
-        st.markdown("**evolution des temperatures et des precipitations selon les scenarios à court et moyen terme**")
+        st.markdown("**Evolution des temperatures et des precipitations entre les scenarios à court et moyen terme**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
             "Zones",
@@ -1364,7 +1364,7 @@ with tab_future:
             )
             plt.close(fig_scenario)
     if view_future == "Projection des scenarios – cartes":
-        st.markdown("**Tendances des indicateurs climatiques à court et à long terme par zone**")
+        st.markdown("**Evolution des tendances climatiques futures à court et à moyen terme par zone**")
         map_scenario = st.selectbox(
             "Scenario etudie",
             options=["optimiste", "neutre", "pessimiste"],
