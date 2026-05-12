@@ -278,7 +278,7 @@ if show_ref_map:
                 category_orders={"Zone": [str(i) for i in range(1, 8)]},
                 hover_name="Nom",
                 title="Zones pedoclimatiques en Pays d'Oc (zones 1 a 7)",
-                height=600
+                height=500
             )
             
             fig_ref.update_geos(fitbounds="locations", visible=False)
@@ -771,7 +771,7 @@ with tab_map:
                     data = prepare_map_data(df, df_all, indicator, level, year, map_couleurs)
                     if data:
                         data['map_display'] = get_zones_1_7(data['map_display'])
-                        display_map_with_legend(data, title_suffix=str(year), height=600, key="map_simple")
+                        display_map_with_legend(data, title_suffix=str(year), height=500, key="map_simple")
         
         else:
             st.subheader("Comparaison de deux cartes")
@@ -823,7 +823,7 @@ with tab_map:
                 data = prepare_map_data(df, df_all, indicator_color, level_color, year_color, [couleur_selected])
                 if data:
                     data['map_display'] = get_zones_1_7(data['map_display'])
-                    display_map_with_legend(data, title_suffix=f"{year_color} - {couleur_selected}", height=600)
+                    display_map_with_legend(data, title_suffix=f"{year_color} - {couleur_selected}", height=500)
         
         # Comparaison des couleurs
         st.subheader("Comparaison des 3 couleurs")
@@ -847,7 +847,7 @@ with tab_map:
                                 color=data['var'],
                                 color_continuous_scale=['#FFFFFF', color_hex],
                                 title=f"{indicator_color} - {color_name}",
-                                height=400
+                                height=500
                             )
                             fig.update_geos(fitbounds="locations", visible=False)
                             fig.update_layout(coloraxis_showscale=False)
@@ -876,7 +876,7 @@ with tab_map:
                 with st.spinner("Creation de la carte en cours..."):
                     data = create_cepage_map(df, df_all, indicator_cepage, level_cepage, year_cepage, None, selected_cepage)
                     if data:
-                        display_map_with_legend(data, title_suffix=f"{selected_cepage} - {year_cepage}", height=600)
+                        display_map_with_legend(data, title_suffix=f"{selected_cepage} - {year_cepage}", height=500)
                     else:
                         st.warning("Aucune donnee disponible pour ce cepage")
             
@@ -898,7 +898,7 @@ with tab_map:
                     data = create_cepage_map(df, df_all, indicator_couleur, level_couleur, year_couleur, selected_couleur, None)
                     if data:
                         data['map_display'] = get_zones_1_7(data['map_display'])
-                        display_map_with_legend(data, title_suffix=f"{selected_couleur} - {year_couleur}", height=600)
+                        display_map_with_legend(data, title_suffix=f"{selected_couleur} - {year_couleur}", height=500)
                     else:
                         st.warning("Aucune donnee disponible pour cette couleur")
         else:
@@ -1036,7 +1036,7 @@ with tab_map:
                         title=f"Cepages dominants par zone (Top {top_n} - 5 dernieres annees{f' - {filter_couleur}' if filter_couleur != 'Toutes' else ''})",
                         hover_data=["Zone", "code_cepage", "volume", "nb_cepages"],
                         color_discrete_sequence=px.colors.qualitative.Set3,
-                        height=600
+                        height=500
                     )
                     
                     fig_dom.update_geos(fitbounds="locations", visible=False)
