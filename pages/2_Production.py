@@ -317,7 +317,7 @@ with col1:
     rendement_moy = df[df["type_mvt"] == "DECR"]["rendement"].mean()
     st.markdown(f"""
     <div class="metric-card">
-        <div class="metric-value">{format_number(rendement_moy, 1)} hl/ha</div>
+        <div class="metric-value">{format_number(rendement_moy, 0)} hl/ha</div>
         <div class="metric-label">Rendement moyen</div>
     </div>
     """, unsafe_allow_html=True)
