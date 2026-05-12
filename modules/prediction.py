@@ -14,7 +14,7 @@ from config.constants import COLOR_MAP, ZONE_COLOR_MAP, DEPT_COLOR_MAP
 
 def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
-    st.subheader("Facteurs influant sur l'évolution future du volume et du rendement")
+    st.header("Facteurs influant sur l'évolution future du volume et du rendement")
 
     # Parametres
     col1, col2, col3 = st.columns(3)
