@@ -501,7 +501,7 @@ with col_center1:
         <p>Analyse des indicateurs climatiques</p>
     </div>
     """, unsafe_allow_html=True)
-    if st.button("Acceder a Climat", key="nav_climat", use_container_width=True):
+    if st.button("Acceder à Climat", key="nav_climat", use_container_width=True):
         st.switch_page("pages/1_Climat.py")
 
 with col_center2:
@@ -512,8 +512,8 @@ with col_center2:
         <p>Analyse des rendements et volumes</p>
     </div>
     """, unsafe_allow_html=True)
-    if st.button("Acceder a Rendement", key="nav_rendement", use_container_width=True):
-        st.switch_page("pages/2_Rendement.py")
+    if st.button("Acceder à Production", key="nav_production", use_container_width=True):
+        st.switch_page("pages/2_Production.py")
 
 with col_center3:
     st.markdown("""
@@ -523,8 +523,8 @@ with col_center3:
         <p>Analyse croisee et correlations</p>
     </div>
     """, unsafe_allow_html=True)
-    if st.button("Acceder a Climat-Production", key="nav_climat_rendement", use_container_width=True):
-        st.switch_page("pages/3_Climat_Rendement.py")
+    if st.button("Acceder à Climat-Production", key="nav_climat_production", use_container_width=True):
+        st.switch_page("pages/3_Climat_Production.py")
 
 
 # =====================================================
