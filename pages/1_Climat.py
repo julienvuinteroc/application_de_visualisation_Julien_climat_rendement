@@ -835,7 +835,6 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
         zone_str = str(int(zone))
         color = ZONE_COLOR_MAP.get(zone_str, "#333333")
         label = ZONE_LABELS.get(zone_str, f"Zone {zone_str}")
-
         if not df_hist.empty:
             ax.plot(
                 df_hist["Year"].astype(int),
@@ -954,7 +953,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 color ="black"
             )
             ax.bar(x, hist_vals, color="red", alpha=0.85, width=0.8)
-            ax.bar(x, trend_vals, bottom=hist_vals, color="blue", alpha=0.85, width=0.8)
+            ax.bar(x, trend_vals, bottom=hist_vals, color= "#74BDDA", alpha=0.85, width=0.8)
     ax.set_xticks(x)
     ax.set_xlabel("Zone")
     ax.set_ylabel(indicator_label(indicator))
@@ -1355,9 +1354,9 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
             <div>
-                <span style="color:#0000FF">⬤</span> ecart des precipitations passe-futur<br>
+                <span style="color:#74BDDA">⬤</span> Ecart des precipitations passe-futur<br>
                 <span style="color:#FFFF00">⬤</span> Temperatures historiques<br>
-                <span style="color:#FF0000">⬤</span> ecart des temperatures/Precipitations passe-futur<br>
+                <span style="color:#FF0000">⬤</span> Ecart des temperatures passe-futur/Precipitations totales futures<br>
 
             </div>""",
             unsafe_allow_html=True
