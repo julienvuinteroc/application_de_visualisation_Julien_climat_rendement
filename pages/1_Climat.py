@@ -1083,7 +1083,7 @@ with tab_histo_2008_2024:
                 map_title = f"{indicator_label(map_indicator_hist)} - {int(selected_year)}"
 
             map_hist = create_zone_map(zone_values_hist, map_indicator_hist, map_title)
-            components.html(map_hist._repr_html_(), height=400)
+            components.html(map_hist._repr_html_(), height=500)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
@@ -1396,7 +1396,7 @@ with tab_future:
                 map_indicator_proj,
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
-            components.html(map_proj._repr_html_(), height=400)
+            components.html(map_proj._repr_html_(), height=500)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
@@ -1556,7 +1556,7 @@ with tab_future:
                 map_indicator_proj,
                 f"{indicator_label(map_indicator_proj)} - {scenario_period}",
             )
-            components.html(map_proj._repr_html_(), height=400)
+            components.html(map_proj._repr_html_(), height=500)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
@@ -1603,7 +1603,7 @@ with tab_future:
                 map_indicator_proj,
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
-            components.html(map_proj._repr_html_(), height=400)
+            components.html(map_proj._repr_html_(), height=500)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
