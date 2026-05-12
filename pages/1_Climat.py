@@ -1122,7 +1122,7 @@ with tab_histo_2008_2024:
             fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator)
             st.pyplot(fig_hist)
             st.markdown("""
-            <div style="text-align: center; border: 1px solid #dee2e6; border-radius: 0px; padding: 10px; display: inline-block; width: 100%;">
+            <div style="text-align: center; border: 1px solid #dee2e6; border-radius: 0px; padding: 10px; display: inline-block; width: fit-content;">
                 <span style="color:#000000">x</span> Tendance zone 1<br>
                 <span style="color:#FF0000">x</span> Tendance zone 2<br>
                 <span style="color:#1A8F2A">x</span> Tendance zone 3<br>
