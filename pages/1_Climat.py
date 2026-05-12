@@ -562,7 +562,7 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     gdf = gdf.dropna(subset=["zone"]).copy()
 
     if gdf.empty:
-        return folium.Map(location=[43.7, 3.5], zoom_start=6)
+        return folium.Map(location=[43.7, 3.5], zoom_start=7)
 
     zone_geom = gdf[["zone", "geometry"]].dissolve(by="zone", as_index=False)
 
@@ -576,7 +576,7 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     zones_gdf["indicator_fmt"] = zones_gdf[indicator].apply(lambda x: format_value(x, indicator))
     bounds = zones_gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-    m = folium.Map(location=center, tiles=None, zoom_start=6)
+    m = folium.Map(location=center, tiles=None, zoom_start=7)
     colormap = build_indicator_colormap(zones_gdf[indicator], indicator)
     if colormap is None:
         return m
@@ -651,7 +651,7 @@ def create_communes_map(
     gdf = gdf.merge(df_values[["code_commune", "value"]], on="code_commune", how="left")
     bounds = gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-    m = folium.Map(location=center, zoom_start=6, tiles=None)
+    m = folium.Map(location=center, zoom_start=7, tiles=None)
     colormap = build_indicator_colormap(gdf["value"], indicator)
     if colormap is None:
         return m
@@ -1122,16 +1122,16 @@ with tab_histo_2008_2024:
             fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator)
             st.pyplot(fig_hist)
             st.markdown("""
-                <div style="text-align: center;">
-                    <span style="color:#000000">x</span> Tendance zone 1<br>
-                    <span style="color:#FF0000">x</span> Tendance zone 2<br>
-                    <span style="color:#1A8F2A">x</span> Tendance zone 3<br>
-                    <span style="color:#0033CC">x</span> Tendance zone 4<br>
-                    <span style="color:#AFC6D9">x</span> Tendance zone 5<br>
-                    <span style="color:#7A1FA2">x</span> Tendance zone 6<br>
-                    <span style="color:#FFD800">x</span> Tendance zone 7
-                </div>
-                """, unsafe_allow_html=True)
+            <div style="text-align: center; border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; display: inline-block; width: 100%;">
+                <span style="color:#000000">x</span> Tendance zone 1<br>
+                <span style="color:#FF0000">x</span> Tendance zone 2<br>
+                <span style="color:#1A8F2A">x</span> Tendance zone 3<br>
+                <span style="color:#0033CC">x</span> Tendance zone 4<br>
+                <span style="color:#AFC6D9">x</span> Tendance zone 5<br>
+                <span style="color:#7A1FA2">x</span> Tendance zone 6<br>
+                <span style="color:#FFD800">x</span> Tendance zone 7
+            </div>
+            """, unsafe_allow_html=True)
             plt.close(fig_hist)
         except Exception as e:
             st.error(f"Erreur graphique historique : {e}")
