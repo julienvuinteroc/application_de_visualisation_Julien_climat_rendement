@@ -13,6 +13,7 @@ from branca.colormap import linear, LinearColormap
 from utils.db import get_conn
 from config.constants import ZONE_COLOR_MAP, ZONE_LABELS
 
+
 st.markdown("""
 <style> 
     .main-header {

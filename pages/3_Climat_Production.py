@@ -9,8 +9,13 @@ from utils.db import get_conn
 from modules.data_loader import load_geojson
 from modules.ai_engine import AIAnalyzer
 
-st.set_page_config(layout="wide", page_title="Climat - Production - Pays d'Oc IGP")
 
+st.set_page_config(
+    page_title="Observatoire Viticole - Pays d'Oc IGP",
+    page_icon="🍇",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 # Style CSS personnalise
 st.markdown("""
 <style> 
@@ -66,14 +71,12 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
 st.markdown("""
 <div class="main-header">
     <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
-    <p>Analyse des rendements et volumes par zone pedoclimatique, couleur et cepage</p>
+    <p>Mise en relation entre le climat et la production viticole</p>
 </div>
 """, unsafe_allow_html=True)
-st.title("Analyse Climat - Production")
 st.markdown("---")
 
 
@@ -917,7 +920,7 @@ with st.expander("Tableau de synthese par zone et annee", expanded=False):
             rendement=("rendement", "mean"),
             temp_moyenne=("temp_moyenne", "mean"),
             precipitation_total=("precipitation_total", "mean")
-        )
+        ).round(1)
         .sort_values(["zone", "annee"])
     )
     table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
