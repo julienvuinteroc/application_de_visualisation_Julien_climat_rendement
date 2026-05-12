@@ -921,7 +921,12 @@ with st.expander("Tableau de synthese par zone et annee", expanded=False):
         .sort_values(["zone", "annee"])
     )
     table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
-    st.dataframe(table_zone_year_display.round(2), width="stretch", hide_index=True, row_height=20, height=750)
+    if "temp_moyenne" in table_zone_year_display.columns:
+        table_zone_year_display["temp_moyenne"] = table_zone_year_display["temp_moyenne"].round(1)
+    if "precipitation_total" in table_zone_year_display.columns or "rendement" in table_zone_year_display.columns:
+        table_zone_year_display["precipitation_total"] = table_zone_year_display["precipitation_total"].round(0)
+        table_zone_year_display["rendement"] = table_zone_year_display["rendement"].round(0)
+    st.dataframe(table_zone_year_display, width="stretch", hide_index=True, row_height=20, height=750)
 
 
 # =====================================================
@@ -965,9 +970,8 @@ with st.expander("Analyse automatique", expanded=False):
         Sur la periode analysee :
 
         - **Zone la mieux classee** : Zone {int(top_zone['zone'])} avec un score global de {top_zone['score_final']:.1f} (classe {top_zone['classe_final']})
-        - **Zone la plus productive** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.2f} hl/ha
-        - **Zone la plus stable** : Zone {int(most_stable['zone'])} (variation de {most_stable['rendement_std']:.2f})
-        
+        - **Zone la plus productive** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.0f} hl/ha
+        - **Zone la plus stable** : Zone {int(most_stable['zone'])} (variation de {most_stable['rendement_std']:.0f})
         {best_color_text}
         {best_cepage_text}
         """
