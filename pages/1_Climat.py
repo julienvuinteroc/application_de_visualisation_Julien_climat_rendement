@@ -1364,7 +1364,7 @@ with tab_future:
             )
             plt.close(fig_scenario)
     if view_future == "Projection des scenarios – cartes":
-        st.markdown("**Evolution des tendances climatiques futures à court et à moyen terme par zone**")
+        st.markdown("**Evolution des tendances climatiques futures à court et moyen terme par zone**")
         map_scenario = st.selectbox(
             "Scenario etudie",
             options=["optimiste", "neutre", "pessimiste"],
