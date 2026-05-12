@@ -831,7 +831,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 color_scope.groupby(["zone", "code_couleur"], as_index=False)
                 .agg(rendement=("rendement", "mean"))
             )
-            
+            color_zone["rendement"] = color_zone["rendement"].round(0)
             fig_color = px.bar(
                 color_zone,
                 x="zone",
@@ -858,7 +858,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     100 * color_ratio["volume"] / total_volume,
                     np.nan,
                 )
-                
+                color_ratio["ratio_volume_pct"] = color_ratio["ratio_volume_pct"].round(1)
                 fig_color_ratio = px.pie(
                     color_ratio,
                     values="ratio_volume_pct",
@@ -891,7 +891,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 cepage_scope.groupby(["annee", "zone", "code_cepage"], as_index=False)["volume"]
                 .sum()
             )
-            
+            cepage_zone_year["volume"] = cepage_zone_year["volume"].round(0)
             fig_cepage = px.bar(
                 cepage_zone_year,
                 x="annee",

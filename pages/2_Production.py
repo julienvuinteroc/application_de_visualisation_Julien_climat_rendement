@@ -1073,8 +1073,8 @@ with tab_quant:
     vol_rdt = base["rendement"].std()
     share_hors = (base["statut_plafond"].eq("Hors plafond").mean() * 100) if base["rendement"].notna().any() else np.nan
     
-    col_k1.metric("Productivite moyenne", f"{prod_global:.1f} hl/ha" if pd.notna(prod_global) else "N/A")
-    col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.2f}" if pd.notna(corr_vr) else "N/A")
+    col_k1.metric("Productivite moyenne", f"{prod_global:.0f} hl/ha" if pd.notna(prod_global) else "N/A")
+    col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
     col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f}" if pd.notna(vol_rdt) else "N/A")
     col_k4.metric("% Hors plafond", f"{share_hors:.1f}%" if pd.notna(share_hors) else "N/A")
     
@@ -1166,7 +1166,7 @@ with tab_quant:
             st.info(f"""
             **Interpretation :**
             - La correlation entre surface et volume est de {tmp["surface"].corr(tmp["volume"]):.2f}
-            - La productivite moyenne est de {prod_global:.1f} hl/ha
+            - La productivite moyenne est de {prod_global:.0f} hl/ha
             - La zone la plus productive est {prod_zone.loc[prod_zone["productivite"].idxmax(), "Zone"]} avec {prod_zone["productivite"].max():.0f} hl/ha
             - La couleur la plus productive est le {WINE_CORRESPONDANCE.get(prod_couleur.loc[prod_couleur["productivite"].idxmax(), "code_couleur"])} avec {prod_couleur["productivite"].max():.0f} hl/ha
             """)
@@ -1425,7 +1425,7 @@ with tab_quant:
             'volume': 'sum',
             'rendement': 'mean',
             'prod_hl_ha': 'mean'
-        }).round(2).reset_index()
+        }).round(0).reset_index()
         
         summary['% volume'] = (summary['volume'] / summary['volume'].sum() * 100).round(1)
         summary = get_zones_1_7(summary)
