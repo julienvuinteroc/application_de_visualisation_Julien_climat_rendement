@@ -596,7 +596,7 @@ with st.expander("Cartographie climat-production", expanded=True):
                     "zone": "Zone",
                     "rendement": label_of("rendement"),
                 },
-                height=550
+                height=500
             )
             fig_map.update_geos(fitbounds="locations", visible=False)
             fig_map.update_layout(
@@ -841,7 +841,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 color_discrete_map=WINE_COLOR_MAP,
                 title="Rendement moyen par zone et par couleur",
                 labels={"zone": "Zone", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"},
-                height=450
+                height=500
             )
             st.plotly_chart(fig_color, key="color_bar_chart", use_container_width=True)
             
@@ -867,7 +867,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     color_discrete_map=WINE_COLOR_MAP,
                     title="Poids relatif de chaque couleur dans le volume total",
                     hole=0.4,
-                    height=450
+                    height=500
                 )
                 st.plotly_chart(fig_color_ratio, key="color_ratio_chart", use_container_width=True)
     

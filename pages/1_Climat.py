@@ -562,7 +562,7 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     gdf = gdf.dropna(subset=["zone"]).copy()
 
     if gdf.empty:
-        return folium.Map(location=[43.7, 3.5], zoom_start=7)
+        return folium.Map(location=[43.7, 3.5], zoom_start=6)
 
     zone_geom = gdf[["zone", "geometry"]].dissolve(by="zone", as_index=False)
 
@@ -576,7 +576,7 @@ def create_zone_map(df_zone_values: pd.DataFrame, indicator: str, title_label: s
     zones_gdf["indicator_fmt"] = zones_gdf[indicator].apply(lambda x: format_value(x, indicator))
     bounds = zones_gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-    m = folium.Map(location=center, tiles=None, zoom_start=7)
+    m = folium.Map(location=center, tiles=None, zoom_start=6)
     colormap = build_indicator_colormap(zones_gdf[indicator], indicator)
     if colormap is None:
         return m
@@ -651,7 +651,7 @@ def create_communes_map(
     gdf = gdf.merge(df_values[["code_commune", "value"]], on="code_commune", how="left")
     bounds = gdf.total_bounds
     center = [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]
-    m = folium.Map(location=center, zoom_start=7, tiles=None)
+    m = folium.Map(location=center, zoom_start=6, tiles=None)
     colormap = build_indicator_colormap(gdf["value"], indicator)
     if colormap is None:
         return m
@@ -1083,7 +1083,7 @@ with tab_histo_2008_2024:
                 map_title = f"{indicator_label(map_indicator_hist)} - {int(selected_year)}"
 
             map_hist = create_zone_map(zone_values_hist, map_indicator_hist, map_title)
-            components.html(map_hist._repr_html_(), height=350)
+            components.html(map_hist._repr_html_(), height=400)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
@@ -1396,7 +1396,7 @@ with tab_future:
                 map_indicator_proj,
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
-            components.html(map_proj._repr_html_(), height=350)
+            components.html(map_proj._repr_html_(), height=400)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
@@ -1556,7 +1556,7 @@ with tab_future:
                 map_indicator_proj,
                 f"{indicator_label(map_indicator_proj)} - {scenario_period}",
             )
-            components.html(map_proj._repr_html_(), height=350)
+            components.html(map_proj._repr_html_(), height=400)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
@@ -1603,7 +1603,7 @@ with tab_future:
                 map_indicator_proj,
                 f"{indicator_label(map_indicator_proj)} - {map_scenario} - {scenario_period}",
             )
-            components.html(map_proj._repr_html_(), height=350)
+            components.html(map_proj._repr_html_(), height=400)
             st.markdown("**Legende**")
             st.markdown("""
                 <div>
