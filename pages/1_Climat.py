@@ -879,20 +879,16 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
         zone_str = str(int(zone))
         color = ZONE_COLOR_MAP.get(zone_str, "#333333")
         label = ZONE_LABELS.get(zone_str, f"Zone {zone_str}")
-        if not df_hist.empty and len (df_hist) >= 2:
-            x = df_hist["Year"].to_numpy(dtype=float)
-            y = df_hist["value"].to_numpy(dtype=float)
-            slope , intercept = np.polyfit(x, y, 1)
-            trend = slope * x + intercept
+        if not df_hist.empty:
             ax.plot(
                 df_hist["Year"].astype(int),
-                trend,
-                marker ="x",
-                linestyle="--",
+                df_hist["value"],
+                marker="o",
                 linewidth=3,
                 color=color,
-                label=label
+                label=label,
             )
+
         if not df_proj.empty:
             ax.plot(
                 df_proj["Year"].astype(int),
