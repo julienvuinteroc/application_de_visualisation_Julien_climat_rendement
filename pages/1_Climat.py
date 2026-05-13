@@ -756,23 +756,15 @@ def plot_historical_curves(
 
         if indicator == "Climatic_Dryness_Index":
             grouped = grouped[grouped["Year"] >= 2011]
-
         grouped = grouped[grouped["Year"] >= 2008]
-
         grouped["Year"] = grouped["Year"].astype(int)
-
         zone_str = str(int(zone))
-
-        # =========================
-        # HISTORIQUE
-        # =========================
         if mode == "Historique":
-
             ax.plot(
                 grouped["Year"],
                 grouped[indicator],
                 marker="o",
-                linewidth=2,
+                linewidth=3,
                 color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
                 label=ZONE_LABELS.get(
                     zone_str,
@@ -808,21 +800,9 @@ def plot_historical_curves(
         f"{title} - {indicator_label(indicator)}"
     )
     ax.set_xlabel("Annee")
-    ax.set_ylabel(
-        indicator_label(indicator)
-    )
-    ax.grid(
-        axis="y",
-        linestyle="--",
-        alpha=0.5
-    )
-    ax.legend(
-        fontsize=17,
-        bbox_to_anchor=(0.5, -0.15),
-        loc="upper center",
-        title="Legende",
-        title_fontsize=19
-    )
+    ax.set_ylabel(indicator_label(indicator))
+    ax.grid(axis="y",linestyle="--",alpha=0.5)
+    ax.legend(fontsize=17,bbox_to_anchor=(0.5, -0.15),loc="upper center",title="Legende",title_fontsize=19)
     fig.subplots_adjust(bottom=0.28)
     return fig
 
@@ -904,7 +884,7 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
                 df_hist["Year"].astype(int),
                 df_hist["value"],
                 marker="o",
-                linewidth=2,
+                linewidth=3,
                 color=color,
                 label=label,
             )
@@ -915,7 +895,7 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
                 df_proj["value"],
                 marker="x",
                 linestyle="--",
-                linewidth=2,
+                linewidth=3,
                 color=color,
             )
 
@@ -923,7 +903,7 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
     ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y", linestyle="--", alpha=0.5)
-    ax.legend(fontsize=15, bbox_to_anchor=(0.5, -0.15), loc="upper center", title="Legende", title_fontsize=15)
+    ax.legend(fontsize=17, bbox_to_anchor=(0.5, -0.15), loc="upper center", title="Legende", title_fontsize=19)
     fig.tight_layout()
     return fig
 
