@@ -920,14 +920,15 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 projection+0.4,
                 f"{projection:.1f}",
                 ha="center",
-                va ="bottom"
+                va ="bottom",
+                fontsize=14
             )
             ax.text(
                 x[i],
                 hist_vals[i] + trend_vals[i] / 2,
                 f"{trend_vals[i]:.1f} °C",
                 ha="center",
-                fontsize=8,
+                fontsize=14,
                 fontweight="bold",
                 color ="black"
             )
@@ -940,6 +941,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 x[i],
                 projection,
                 f"{projection:.0f}",
+                fontsize=14,
                 ha="center",
                 va="bottom"
             )
@@ -949,12 +951,12 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 f"{trend_vals[i]:.0f} %",
                 ha="center",
                 va="center",
-                fontsize=8,
+                fontsize=14,
                 fontweight="bold",
                 color ="black"
             )
-            ax.bar(x, hist_vals, color="red", alpha=0.85, width=0.8)
-            ax.bar(x, trend_vals, bottom=hist_vals, color= "#74BDDA", alpha=0.85, width=0.8)
+            ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
+            ax.bar(x, trend_vals, bottom=hist_vals, color= "red", alpha=0.85, width=0.8)
     ax.set_xticks(x)
     ax.set_xlabel("Zone")
     ax.set_ylabel(indicator_label(indicator))
@@ -978,7 +980,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 tab_details, tab_histo_2008_2024, tab_future = st.tabs(["Details",
-    "Historique 2008-2024", "Futur"
+    "Historique 2008-2024", "Projections"
 ])
 st.markdown("""
     <style>
@@ -987,12 +989,14 @@ st.markdown("""
         }
         </style>
     """, unsafe_allow_html=True)
-
+@st.dialog("Carte des zones pédoclimatiques")
+def show_carte_inrae_clusters():
+    st.image("carte_zones_pedoclimatiques_.png", width="stretch")
+    
+  
 with st.sidebar:
-    # POPUP carte des zones
-    with st.expander("Carte des zones pedoclimatiques"):
-        if st.button("Afficher la carte", key="show_zone_map_btn"):
-            st.image("carte_zones_pedoclimatiques_.png")
+    if st.button("Carte des zones pédoclimatiques"):
+        show_carte_inrae_clusters()
     
 with tab_details:
     
@@ -1122,17 +1126,6 @@ with tab_histo_2008_2024:
         try:
             fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator)
             st.pyplot(fig_hist)
-            st.markdown("""
-            <div style="text-align: center; border: 1px solid #dee2e6; border-radius: 0px; padding: 10px; display: inline-block; width: 100%;">
-                <span style="color:#000000">x</span> Tendance zone 1<br>
-                <span style="color:#FF0000">x</span> Tendance zone 2<br>
-                <span style="color:#1A8F2A">x</span> Tendance zone 3<br>
-                <span style="color:#0033CC">x</span> Tendance zone 4<br>
-                <span style="color:#AFC6D9">x</span> Tendance zone 5<br>
-                <span style="color:#7A1FA2">x</span> Tendance zone 6<br>
-                <span style="color:#FFD800">x</span> Tendance zone 7
-            </div>
-            """, unsafe_allow_html=True)
             plt.close(fig_hist)
         except Exception as e:
             st.error(f"Erreur graphique historique : {e}")
@@ -1355,9 +1348,8 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
             <div>
-                <span style="color:#74BDDA">⬤</span> Ecart des precipitations passe-futur<br>
-                <span style="color:#FFFF00">⬤</span> Temperatures historiques<br>
-                <span style="color:#FF0000">⬤</span> Ecart des temperatures passe-futur/Precipitations totales futures<br>
+                <span style="color:#FFFF00">⬤</span> Donnees historiques<br>
+                <span style="color:#FF0000">⬤</span> Ecart entre le passé et les prédictions<br>
 
             </div>""",
             unsafe_allow_html=True

@@ -80,7 +80,6 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
     # Graphique
     fig = go.Figure()
     fig.update_layout(template="plotly_white")
-
     results = []
 
     for g in sel:
@@ -251,6 +250,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         yaxis_title=f"{var_lbl} ({'hl/ha' if var == 'rendement' else 'hl'})",
         height=550,
         hovermode="x unified",
+        yaxis=dict(rangemode="tozero"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
 

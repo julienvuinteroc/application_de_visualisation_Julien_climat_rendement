@@ -335,13 +335,16 @@ if df_fusion.empty:
 # =====================================================
 # SIDEBAR - FILTRES
 # =====================================================
+@st.dialog("Carte des zones pédoclimatiques")
+def show_carte_inrae_clusters():
+    st.image("carte_zones_pedoclimatiques_.png", width="stretch")
+    
 
 with st.sidebar:
     st.header("Filtres")
     st.divider()
-    with st.expander("Carte des zones pedoclimatiques"):
-        if st.button("Afficher la carte", key="show_zone_map_btn"):
-            st.image("carte_zones_pedoclimatiques_.png")
+    if st.button("Carte des zones pédoclimatiques"):
+        show_carte_inrae_clusters()
     available_zones = sorted([int(z) for z in df_geo["zone"].dropna().unique()])
     selected_zones = st.multiselect(
         "Zones pedoclimatiques",

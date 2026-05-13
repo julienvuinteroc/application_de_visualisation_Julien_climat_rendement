@@ -188,16 +188,17 @@ def create_cepage_map(df, df_all, indicator, level, year, couleur, cepage=None):
 # =====================================================
 # SIDEBAR - FILTRES
 # =====================================================
+@st.dialog("Carte des zones pédoclimatiques")
+def show_carte_inrae_clusters():
+    st.image("carte_zones_pedoclimatiques_.png", width="stretch")
 
 with st.sidebar:
     st.header("Filtres")
     st.divider()
-    
     # POPUP carte des zones
     show_ref_map = False
-    with st.expander("Carte des zones pedoclimatiques"):
-        if st.button("Afficher la carte", key="show_zone_map_btn"):
-            st.image("carte_zones_pedoclimatiques_.png")
+    if st.button("Carte des zones pédoclimatiques"):
+        show_carte_inrae_clusters()
     # Filtres principaux
     departements = st.multiselect(
         "Departements",
@@ -366,7 +367,6 @@ tab_rdt, tab_vol, tab_pred, tab_map, tab_quant = st.tabs([
 
 with tab_rdt:
     st.header("Analyse des rendements")
-    st.caption("Analyse des rendements en hl/ha - Donnees DECR (Declarations de recolte)")
     
     decr = df[df["type_mvt"] == "DECR"].copy()
     
@@ -414,7 +414,8 @@ with tab_rdt:
             st.info("Veuillez selectionner au moins un element a analyser")
         else:
             data = decr[decr[col_map].isin(selections)].copy()
-            
+            data["code_departement"] = data["code_departement"].astype(str)
+            data = data[data["code_departement"].isin(["11", "30", "34", "66"])]
             # Verification des plafonds
             with st.expander("Verification des plafonds reglementaires", expanded=False):
                 plafond_check = data.groupby("code_couleur")["rendement"].agg(['max', 'count']).round(2)
@@ -422,11 +423,9 @@ with tab_rdt:
                 plafond_check['conforme'] = plafond_check['max'] <= plafond_check['plafond']
                 plafond_check = plafond_check.rename(columns={'max': 'Rendement max', 'count': 'Nb observations'})
                 st.dataframe(plafond_check[['Rendement max', 'plafond', 'conforme', 'Nb observations']], width="stretch")
-            
             # Graphique d'evolution
             evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
             evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MIN, YEAR_MAX)
-            
             if use_moving_average:
                 evol_full["rendement"] = evol_full.groupby(col_map)["rendement"].transform(
                     lambda x: x.rolling(5, min_periods=1).mean()
@@ -483,6 +482,10 @@ with tab_rdt:
             # Histogramme rendement par departement et couleur
             st.markdown("#### Rendement par departement et couleur")
             dept_color_rdt = data.groupby(["code_departement", "code_couleur"])["rendement"].mean().reset_index()
+            dept_color_rdt["code_departement"] = pd.Categorical(
+                dept_color_rdt["code_departement"], 
+                categories=["11", "30", "34", "66"]
+            )
             dept_color_rdt["rendement"] = dept_color_rdt["rendement"].round(0)
             fig_dept_color = px.bar(
                 dept_color_rdt,
@@ -494,6 +497,7 @@ with tab_rdt:
                 title="Rendement moyen par departement et couleur",
                 labels={"code_departement": "Departement", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
+            fig_dept_color.update_layout(xaxis_type="category")
             st.plotly_chart(fig_dept_color, key="dept_color_rdt", width="stretch")
             
             # Histogramme rendement par zone et couleur
@@ -511,6 +515,7 @@ with tab_rdt:
                 title="Rendement moyen par zone et couleur",
                 labels={"Zone": "Zone", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
+            
             st.plotly_chart(fig_zone_color, key="zone_color_rdt", width="stretch")
             
             # Analyse IA
@@ -532,10 +537,7 @@ with tab_rdt:
 
 with tab_vol:
     st.header("Analyse des volumes")
-    st.caption("Analyse des volumes en hectolitres - Donnees REVE (Revendications)")
-    
     reve = df[(df["type_mvt"] == "REVE") & (df["volume"] > 0)].copy()
-    
     if reve.empty:
         st.warning("Aucune donnee de volume disponible avec les filtres actuels")
     else:
@@ -574,15 +576,14 @@ with tab_vol:
             st.info("Veuillez selectionner au moins un element a analyser")
         else:
             data = reve[reve[col_map].isin(selections)].copy()
-            
+            data["code_departement"] = data["code_departement"].astype(str)
+            data = data[data["code_departement"].isin(["11", "30", "34", "66"])]
             evol = data.groupby(["annee", col_map])["volume"].sum().reset_index()
             evol_full = complete_years(evol, col_map, "volume", "sum", YEAR_MIN, YEAR_MAX)
-            
             if use_moving_average:
                 evol_full["volume"] = evol_full.groupby(col_map)["volume"].transform(
                     lambda x: x.rolling(5, min_periods=1).mean()
                 )
-            
             # Utilisation des couleurs selon le mode
             if mode == "Couleur":
                 fig = px.line(
@@ -614,6 +615,7 @@ with tab_vol:
                     markers=True,
                     title="Evolution des volumes par departement"
                 )
+                
             else:
                 fig = create_volume_chart(evol_full, col_map, mode)
             
@@ -631,6 +633,10 @@ with tab_vol:
             # Volume par departement et couleur
             st.markdown("#### Volume par departement et couleur")
             dept_color_vol = data.groupby(["code_departement", "code_couleur"])["volume"].sum().reset_index()
+            dept_color_vol["code_departement"] = pd.Categorical(
+                dept_color_vol["code_departement"], 
+                categories=["11", "30", "34", "66"]
+            )
             fig_dept_color_vol = px.bar(
                 dept_color_vol,
                 x="code_departement",
@@ -641,6 +647,7 @@ with tab_vol:
                 title="Volume total par departement et couleur",
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
+            fig_dept_color_vol.update_layout(xaxis_type="category")
             st.plotly_chart(fig_dept_color_vol, key="dept_color_vol", width="stretch")
             
             # Volume par zone et couleur
@@ -674,7 +681,6 @@ with tab_vol:
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
             st.plotly_chart(fig_zone_cepage, key="zone_cepage_vol", width="stretch")
-            
             # Volume par departement et cepage
             st.markdown("#### Volume par departement et cepage (Top 10 cepages)")
             dept_cepage_vol = data[data["code_cepage"].isin(top10_cepages)].groupby(["code_departement", "code_cepage"])["volume"].sum().reset_index()
@@ -687,6 +693,7 @@ with tab_vol:
                 title="Volume par departement et cepage (Top 10)",
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
+            fig_dept_cepage.update_layout(xaxis_type="category")
             st.plotly_chart(fig_dept_cepage, key="dept_cepage_vol", width="stretch")
             
             # Analyse IA
@@ -716,6 +723,7 @@ with tab_vol:
             y="volume",
             color="code_cepage",
             title="Top 20 cepages par volume produit (5 dernieres annees)",
+            
             color_discrete_sequence=px.colors.qualitative.Set3,
             height=500
         )
