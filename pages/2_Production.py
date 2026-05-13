@@ -1266,7 +1266,6 @@ with tab_quant:
             ax6.set_xlabel("Zone", fontsize=12)
             ax6.set_ylabel("Productivite moyenne (hl/ha)", fontsize=12)
             ax6.set_title("Productivite moyenne par zone (avec ecart-type)", fontsize=14, fontweight="bold")
-            ax6.set_ylim(0, 100)
             ax6.grid(axis="y", alpha=0.3)
             
             # Ajout des valeurs
