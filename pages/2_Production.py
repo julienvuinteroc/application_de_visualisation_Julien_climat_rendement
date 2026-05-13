@@ -1247,13 +1247,12 @@ with tab_quant:
     with tab_q3:
         st.subheader("Productivite par zone")
         st.markdown("*Analyse comparative de la productivite (volume/surface) entre les zones*")
-        
         tmp = base.dropna(subset=["prod_hl_ha", "Zone"]).copy()
         tmp = get_zones_1_7(tmp)
-        
         if not tmp.empty:
             # Graphique 1: Barres avec ecart-type
             prod_stats = tmp.groupby("Zone")["prod_hl_ha"].agg(['mean', 'std', 'count']).reset_index()
+            prod_stats = prod_stats[prod_stats["Zone"] != "1"]
             prod_stats = get_zones_1_7(prod_stats)
             prod_stats = prod_stats.sort_values("mean", ascending=False)
             
