@@ -760,11 +760,12 @@ def plot_historical_curves(
         grouped["Year"] = grouped["Year"].astype(int)
         zone_str = str(int(zone))
         if mode == "Historique":
+    
             ax.plot(
                 grouped["Year"],
                 grouped[indicator],
                 marker="o",
-                linewidth=3,
+                linewidth=2,
                 color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
                 label=ZONE_LABELS.get(
                     zone_str,
