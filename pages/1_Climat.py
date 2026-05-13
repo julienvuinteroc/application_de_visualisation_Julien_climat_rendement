@@ -921,14 +921,14 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 f"{projection:.1f}",
                 ha="center",
                 va ="bottom",
-                fontsize=14
+                fontsize=15,
             )
             ax.text(
                 x[i],
                 hist_vals[i] + trend_vals[i] / 2,
                 f"{trend_vals[i]:.1f} °C",
                 ha="center",
-                fontsize=14,
+                fontsize=15,
                 fontweight="bold",
                 color ="black"
             )
@@ -941,7 +941,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 x[i],
                 projection,
                 f"{projection:.0f}",
-                fontsize=14,
+                fontsize=18,
                 ha="center",
                 va="bottom"
             )
@@ -951,7 +951,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 f"{trend_vals[i]:.0f} %",
                 ha="center",
                 va="center",
-                fontsize=14,
+                fontsize=18,
                 fontweight="bold",
                 color ="black"
             )
@@ -1348,7 +1348,7 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
             <div>
-                <span style="color:#FFFF00">⬤</span> Donnees historiques<br>
+                <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures/Projections sur les précipitations<br>
                 <span style="color:#FF0000">⬤</span> Ecart entre le passé et les prédictions<br>
 
             </div>""",

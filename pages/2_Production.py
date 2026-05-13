@@ -481,39 +481,41 @@ with tab_rdt:
             
             # Histogramme rendement par departement et couleur
             st.markdown("#### Rendement par departement et couleur")
-            dept_color_rdt = data.groupby(["code_departement", "code_couleur"])["rendement"].mean().reset_index()
+            dept_color_rdt = data.groupby(["code_departement", "code_couleur"])["rendement"].agg(["mean", "std"]).reset_index()
             dept_color_rdt["code_departement"] = pd.Categorical(
                 dept_color_rdt["code_departement"], 
                 categories=["11", "30", "34", "66"]
             )
-            dept_color_rdt["rendement"] = dept_color_rdt["rendement"].round(0)
+            dept_color_rdt["mean"] = dept_color_rdt["mean"].round(0)
             fig_dept_color = px.bar(
                 dept_color_rdt,
                 x="code_departement",
-                y="rendement",
+                y="mean",
                 color="code_couleur",
                 barmode="group",
+                error_y="std",
                 color_discrete_map=COLOR_MAP,
                 title="Rendement moyen par departement et couleur",
-                labels={"code_departement": "Departement", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"}
+                labels={"code_departement": "Departement", "mean": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
             fig_dept_color.update_layout(xaxis_type="category")
             st.plotly_chart(fig_dept_color, key="dept_color_rdt", width="stretch")
             
             # Histogramme rendement par zone et couleur
             st.markdown("#### Rendement par zone et couleur")
-            zone_color_rdt = data.groupby(["Zone", "code_couleur"])["rendement"].mean().reset_index()
+            zone_color_rdt = data.groupby(["Zone", "code_couleur"])["rendement"].agg(["mean", "std"]).reset_index()
             zone_color_rdt = get_zones_1_7(zone_color_rdt)
-            zone_color_rdt["rendement"] = zone_color_rdt["rendement"].round(0)
+            zone_color_rdt["mean"] = zone_color_rdt["mean"].round(0)
             fig_zone_color = px.bar(
                 zone_color_rdt,
                 x="Zone",
-                y="rendement",
+                y="mean",
                 color="code_couleur",
                 barmode="group",
+                error_y="std",
                 color_discrete_map=COLOR_MAP,
                 title="Rendement moyen par zone et couleur",
-                labels={"Zone": "Zone", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"}
+                labels={"Zone": "Zone", "mean": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
             
             st.plotly_chart(fig_zone_color, key="zone_color_rdt", width="stretch")
@@ -1138,9 +1140,9 @@ with tab_quant:
                 fig2, ax2 = plt.subplots(figsize=(16, 6))
                 bars = ax2.bar(prod_zone["Zone"].astype(str), prod_zone["productivite"], 
                               color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_zone["Zone"]])
-                ax2.set_xlabel("Zone", fontsize=12)
-                ax2.set_ylabel("Productivite (hl/ha)", fontsize=12)
-                ax2.set_title("Productivite moyenne par zone", fontsize=14, fontweight="bold")
+                ax2.set_xlabel("Zone", fontsize=13)
+                ax2.set_ylabel("Productivite (hl/ha)", fontsize=15)
+                ax2.set_title("Productivite moyenne par zone", fontsize=17, fontweight="bold")
                 ax2.grid(axis="y", alpha=0.3)
                 
                 # Ajout des valeurs sur les barres
@@ -1266,7 +1268,7 @@ with tab_quant:
             
             fig6, ax6 = plt.subplots(figsize=(16, 6))
             bars = ax6.bar(prod_stats["Zone"].astype(str), prod_stats["mean"], 
-                          yerr=prod_stats["std"], capsize=5,
+                          capsize=5,
                           color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_stats["Zone"]],
                           edgecolor="black", linewidth=1)
             
