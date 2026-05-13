@@ -1193,15 +1193,15 @@ with tab_future:
     st.header(
             "Analyse des perspectives climatiques des zones"
     )
-    view_future = st.radio(" ", 
-                           options=["Projection des tendances passees", "Projection des scenarios – graphiques", 
-                                    "Projection des scenarios – cartes"], 
-                           index=0, 
+    view_future = st.radio(" ",
+                           options=["Projections des tendances passees", "Projections des scenarios – graphiques",
+                                    "Projections – cartes"],
+                           index=0,
                            horizontal=True,
                            label_visibility="collapsed"
                            )
     
-    if view_future == "Projection des tendances passees":
+    if view_future == "Projections des tendances passees":
         st.markdown("**Quel sera le climat si les tendances actuelles se poursuivent d'ici 2040 ?**")
         available_zones = sorted([int(z) for z in df_climat["cluster"].dropna().unique()])
         selected_zones = st.multiselect(
@@ -1240,7 +1240,7 @@ with tab_future:
 
         except Exception as e:
             st.error(f"Erreur projection sans scenario : {e}")
-    if view_future == "Projection des scenarios – graphiques":
+    if view_future == "Projections des scenarios – graphiques":
     # =====================================================
     # SCeNARIOS
     # =====================================================
@@ -1410,7 +1410,7 @@ with tab_future:
             unsafe_allow_html=True
             )
             plt.close(fig_scenario)
-    if view_future == "Projection des scenarios – cartes":
+    if view_future == "Projections – cartes":
         st.markdown("**Evolution des tendances climatiques futures à court et moyen terme par zone**")
         map_scenario = st.selectbox(
             "Scenario etudie",
