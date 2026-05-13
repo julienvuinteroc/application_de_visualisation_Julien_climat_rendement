@@ -544,7 +544,15 @@ def build_indicator_colormap(values: pd.Series, indicator: str):
     elif indicator == "stress_climatique":
         colormap = LinearColormap(colors=["white", "orange", "red"], vmin=0, vmax=100)
         colormap = colormap.to_step(index=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-
+    elif indicator == "temp_moyenne":
+        colormap = LinearColormap(colors=["white","yellow", "orange", "red"], vmin=9, vmax=20)
+        colormap = colormap.to_step(index=[9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+    elif indicator == "tmax_mean":
+        colormap = LinearColormap(colors=["white","yellow", "orange", "red"], vmin=13, vmax=25)
+        colormap = colormap.to_step(index=[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25])
+    elif indicator == "tmin_mean":
+        colormap = LinearColormap(colors=["white", "yellow", "orange", "red"], vmin=5, vmax=17)
+        colormap = colormap.to_step(index=[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])
     else:
         if min_val == max_val:
             max_val = min_val + 1.0
