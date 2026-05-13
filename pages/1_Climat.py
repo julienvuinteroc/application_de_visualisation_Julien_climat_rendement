@@ -723,7 +723,7 @@ def create_communes_map(
     return m
 
 
-def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicator: str):
+def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicator: str, mode: str):
     fig, ax = plt.subplots(figsize=(16, 6))
     df["Year"] = pd.to_numeric(df["Year"], errors="coerce").astype("Int64")
     for zone in selected_zones:
@@ -744,24 +744,26 @@ def plot_historical_curves(df: pd.DataFrame, selected_zones: list[int], indicato
         grouped = grouped[grouped["Year"] >= 2008]
         grouped["Year"] = grouped["Year"].astype(int)
         zone_str = str(int(zone))
-        ax.plot(
-            grouped["Year"],
-            grouped[indicator],
-            marker="o",
-            linewidth=2,
-            color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
-            label=ZONE_LABELS.get(zone_str, f"Zone {zone_str}"),
-        )
-        x = grouped["Year"].to_numpy(dtype=float)
-        y = grouped[indicator].to_numpy(dtype=float)
-        slope, _ = np.polyfit(x, y, 1)
-        first_val = grouped[indicator].iloc[0]
-        for i, year in enumerate(range(2007 + 1, 2025), start=1):
-            value = slope * i + first_val
-            ax.plot(year, value, marker="x",
-                linestyle="--",
+        if mode == "Historique":
+            ax.plot(
+                grouped["Year"],
+                grouped[indicator],
+                marker="o",
                 linewidth=2,
-                color=ZONE_COLOR_MAP.get(zone_str, "#333333"))
+                color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
+                label=ZONE_LABELS.get(zone_str, f"Zone {zone_str}"),
+            )
+        elif mode == "Tendance":
+            x = grouped["Year"].to_numpy(dtype=float)
+            y = grouped[indicator].to_numpy(dtype=float)
+            slope, _ = np.polyfit(x, y, 1)
+            first_val = grouped[indicator].iloc[0]
+            for i, year in enumerate(range(2007 + 1, 2025), start=1):
+                value = slope * i + first_val
+                ax.plot(year, value, marker="x",
+                    linestyle="--",
+                    linewidth=2,
+                    color=ZONE_COLOR_MAP.get(zone_str, "#333333"))
     ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
     ax.set_title(f"Historique - {indicator_label(indicator)}")
     ax.set_xlabel("Annee")
@@ -1131,8 +1133,20 @@ with tab_histo_2008_2024:
             format_func=indicator_label,
             label_visibility="collapsed"
         )
+        graph_mode = st.radio(
+            "Type de graphique",
+            options=["Fluctuations historiques", "Courbes de tendance"],
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+
+        mode_map = {
+            "Fluctuations historiques": "Historique",
+            "Courbes de tendance": "Tendance"
+        }
+
         try:
-            fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator)
+            fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator, mode_map[graph_mode])
             st.pyplot(fig_hist)
             plt.close(fig_hist)
         except Exception as e:
