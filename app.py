@@ -257,7 +257,7 @@ with col_s3:
 with col_s4:
     st.markdown("""
     <div class="stat-card">
-        <div class="stat-number">2007-2024</div>
+        <div class="stat-number">2008-2024</div>
         <div class="stat-label">Periode d'analyse</div>
     </div>
     """, unsafe_allow_html=True)
@@ -540,7 +540,7 @@ with col_info1:
     **Sources de donnees**
     - Donnees climatiques : Meteo France
     - Donnees viticoles : Declarations de recolte (DECR/REVE)
-    - Periode : 2000 - 2024
+    - Periode : 2008 - 2024
     """)
 
 with col_info2:
