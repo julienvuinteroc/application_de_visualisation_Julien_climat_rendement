@@ -783,11 +783,8 @@ def plot_historical_curves(
 
             x = grouped["Year"].to_numpy(dtype=float)
             y = grouped[indicator].to_numpy(dtype=float)
-
             slope, intercept = np.polyfit(x, y, 1)
-
             trend = slope * x + intercept
-
             ax.plot(
                 grouped["Year"],
                 trend,
@@ -810,7 +807,6 @@ def plot_historical_curves(
     ax.set_title(
         f"{title} - {indicator_label(indicator)}"
     )
-
     ax.set_xlabel("Annee")
     ax.set_ylabel(
         indicator_label(indicator)
@@ -828,7 +824,6 @@ def plot_historical_curves(
         title_fontsize=19
     )
     fig.subplots_adjust(bottom=0.28)
-
     return fig
 
 
