@@ -1505,7 +1505,7 @@ with tab_future:
         selected_zones = st.multiselect(
             "Zones",
             options=available_zones,
-            default=available_zones[:3] if len(available_zones) >= 3 else available_zones,
+            default=available_zones[:7] if len(available_zones) >= 3 else available_zones,
             key="histo_zones_future",
             label_visibility="collapsed"
         )
