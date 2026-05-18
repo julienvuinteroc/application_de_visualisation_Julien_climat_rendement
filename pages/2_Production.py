@@ -196,8 +196,8 @@ def show_carte_inrae_clusters():
     st.markdown("""
         <style>
         div[data-testid="stDialog"] > div > div {
-            max-width: 70vw !important;
-            width: 70vw !important;
+            max-width: 67vw !important;
+            width: 67vw !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -207,7 +207,7 @@ def show_carte_inrae_clusters():
         <img id="img" src="data:image/png;base64,{img_data}" 
              style="width:90%; cursor:zoom-in;"
              onclick="this.style.width = this.style.width=='90%' ? '110%' : '90%'">
-    """, height=600, scrolling=True)
+    """, height=750, scrolling=True)
 
 with st.sidebar:
     st.header("Filtres")
