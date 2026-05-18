@@ -1036,8 +1036,8 @@ st.markdown("""
 @st.dialog("Carte des zones pédoclimatiques")
 def show_carte_inrae_clusters():
     st.image("carte_zones_pedoclimatiques_.png", width="stretch")
-    
-  
+
+
 with st.sidebar:
     if st.button("Carte des zones pédoclimatiques"):
         show_carte_inrae_clusters()
