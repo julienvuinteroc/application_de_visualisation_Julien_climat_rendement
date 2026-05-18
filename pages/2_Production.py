@@ -4,6 +4,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+import base64
+import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
@@ -41,7 +43,7 @@ st.markdown("""
         border-left: 4px solid #2c3e50;
     }
     .metric-value {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         font-weight: bold;
         color: #2c3e50;
     }
@@ -69,7 +71,8 @@ st.markdown("""
 
 st.markdown("""
 <div class="main-header">
-    <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
+    <h1>Observatoire Viticole</h1>
+    <h2>Pays d'Oc IGP</h2>
     <p>Analyse des rendements et volumes par zone pedoclimatique, couleur et cepage</p>
 </div>
 """, unsafe_allow_html=True)
@@ -190,7 +193,13 @@ def create_cepage_map(df, df_all, indicator, level, year, couleur, cepage=None):
 # =====================================================
 @st.dialog("Carte des zones pédoclimatiques")
 def show_carte_inrae_clusters():
-    st.image("carte_zones_pedoclimatiques_.png", width="stretch")
+    with open("carte_zones_pedoclimatiques_.png", "rb") as f:
+        img_data = base64.b64encode(f.read()).decode()
+    components.html(f"""
+        <img id="img" src="data:image/png;base64,{img_data}" 
+             style="width:125%; cursor:zoom-in;"
+             onclick="this.style.width = this.style.width=='125%' ? '140%' : '125%'">
+    """, height=500, scrolling=True)
 
 with st.sidebar:
     st.header("Filtres")
@@ -530,7 +539,7 @@ with tab_rdt:
             with st.expander("Statistiques descriptives", expanded=False):
                 stats_df = data.groupby(col_map)["rendement"].describe(percentiles=[.25, .5, .75]).round(2)
                 stats_df = stats_df[['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']]
-                stats_df.columns = ['Occurrence', 'Moyenne', 'Ecart-type', 'Min', 'Q1', 'Mediane', 'Q3', 'Max']
+                stats_df.columns = ['Occurrence', 'Moyenne', 'Ecart-type', 'Valeur minimale', '1er quartile', 'Mediane', '3ème quartile', 'Valeur maximale']
                 st.dataframe(stats_df, width="stretch")
 
 # =====================================================
@@ -1422,11 +1431,12 @@ with tab_quant:
                     "Zone": "Zone",
                     "mean": st.column_config.NumberColumn("Rendement moyen (hl/ha)", format="%.1f"),
                     "std": st.column_config.NumberColumn("Ecart-type", format="%.1f"),
-                    "Coefficient de variation du rendement": st.column_config.NumberColumn("Coef. variation (%)", format="%.1f")
+                    "Coefficient de variation du rendement": st.column_config.NumberColumn("Coeficient variation(%)", format="%.1f")
                 },
                 width="stretch",
                 hide_index=True
             )
+            st.write ("N.B: cv: Coefficient de variation (en %)")
     
     with tab_q5:
         st.subheader("Tableau de bord analytique")

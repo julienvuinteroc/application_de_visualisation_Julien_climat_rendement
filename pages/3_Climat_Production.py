@@ -3,7 +3,9 @@ import gc
 import numpy as np
 import pandas as pd
 import streamlit as st
+import base64
 import plotly.express as px
+import streamlit.components.v1 as components
 import plotly.graph_objects as go
 from utils.db import get_conn
 from modules.data_loader import load_geojson
@@ -40,7 +42,7 @@ st.markdown("""
         border-left: 4px solid #2c3e50;
     }
     .metric-value {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         font-weight: bold;
         color: #2c3e50;
     }
@@ -73,7 +75,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("""
 <div class="main-header">
-    <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
+    <h1>Observatoire Viticole</h1>
+    <h2>Pays d'Oc IGP</h2>
     <p>Mise en relation entre le climat et la production viticole</p>
 </div>
 """, unsafe_allow_html=True)
@@ -337,7 +340,13 @@ if df_fusion.empty:
 # =====================================================
 @st.dialog("Carte des zones pédoclimatiques")
 def show_carte_inrae_clusters():
-    st.image("carte_zones_pedoclimatiques_.png", width="stretch")
+    with open("carte_zones_pedoclimatiques_.png", "rb") as f:
+        img_data = base64.b64encode(f.read()).decode()
+    components.html(f"""
+        <img id="img" src="data:image/png;base64,{img_data}" 
+             style="width:125%; cursor:zoom-in;"
+             onclick="this.style.width = this.style.width=='125%' ? '140%' : '125%'">
+    """, height=500, scrolling=True)
     
 
 with st.sidebar:

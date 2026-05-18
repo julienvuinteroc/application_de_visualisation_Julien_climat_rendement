@@ -248,10 +248,10 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         title=f"Evolution et prediction du {var_lbl} par {group.lower()}",
         xaxis_title="Annee",
         yaxis_title=f"{var_lbl} ({'hl/ha' if var == 'rendement' else 'hl'})",
-        height=550,
+        height=650,
         hovermode="x unified",
         yaxis=dict(range=[0, 100]),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        legend=dict(orientation="h", yanchor="bottom", y=0.94, xanchor="right", x=1.2)
     )
 
     st.plotly_chart(fig, key="prediction_chart", width="stretch")

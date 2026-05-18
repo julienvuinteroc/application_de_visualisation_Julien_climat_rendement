@@ -8,6 +8,7 @@ import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import folium
+import base64
 import geopandas as gpd
 from branca.colormap import linear, LinearColormap
 from utils.db import get_conn
@@ -938,16 +939,16 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
     sorted_zones = sorted(df["zone"].unique())
     x = np.arange(len(sorted_zones))
     hist_col_map = {
-        "temp_moyenne": "Temperature moyenne 2007-2024 (°C)",
-        "tmax_mean": "Temperature maximale 2007-2024 (°C)",
-        "tmin_mean": "Temperature minimale 2007-2024 (°C)",
-        "precipitation_total": "Precipitations moyennes 2007-2024 (mm)",
+        "temp_moyenne": "Temperature 2008-2024 (°C)",
+        "tmax_mean": "Temperature 2008-2024 (°C)",
+        "tmin_mean": "Temperature 2008-2024 (°C)",
+        "precipitation_total": "Precipitations 2008-2024 (mm)"
     }
     trend_col_map = {
-        "temp_moyenne": "Tendance temperature moyenne (°C)",
-        "tmax_mean": "Tendance temperature maximale (°C)",
-        "tmin_mean": "Tendance temperature minimale (°C)",
-        "precipitation_total": "Tendance precipitations (en %)",
+        "temp_moyenne": "Tendance temperature (°C)",
+        "tmax_mean": "Tendance temperature (°C)",
+        "tmin_mean": "Tendance temperature (°C)",
+        "precipitation_total": "Tendance precipitations (mm)"
     }
     hist_col = hist_col_map[indicator]
     trend_col = trend_col_map[indicator]
@@ -1018,7 +1019,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
 
 st.markdown("""
 <div class="main-header">
-    <h1>Observatoire Viticole - Pays d'Oc IGP</h1>
+    <h1>Observatoire Viticole</h1>
+    <h2>Pays d'Oc IGP</h2>
     <p>Analyse du climat</p>
 </div>
 """, unsafe_allow_html=True)
@@ -1033,9 +1035,16 @@ st.markdown("""
         }
         </style>
     """, unsafe_allow_html=True)
+
 @st.dialog("Carte des zones pédoclimatiques")
 def show_carte_inrae_clusters():
-    st.image("carte_zones_pedoclimatiques_.png", width="stretch")
+    with open("carte_zones_pedoclimatiques_.png", "rb") as f:
+        img_data = base64.b64encode(f.read()).decode()
+    components.html(f"""
+        <img id="img" src="data:image/png;base64,{img_data}" 
+             style="width:125%; cursor:zoom-in;"
+             onclick="this.style.width = this.style.width=='125%' ? '140%' : '125%'">
+    """, height=500, scrolling=True)
 
 
 with st.sidebar:
@@ -1277,16 +1286,16 @@ with tab_future:
             "Precipitations totales (mm)": "precipitation_total",
         }
         hist_map = {
-            "temp_moyenne": "Temperature moyenne 2007-2024 (°C)",
-            "tmax_mean": "Temperature maximale 2007-2024 (°C)",
-            "tmin_mean": "Temperature minimale 2007-2024 (°C)",
-            "precipitation_total": "Precipitations moyennes 2007-2024 (mm)",
+            "temp_moyenne": "Temperature 2008-2024 (°C)",
+            "tmax_mean": "Temperature 2008-2024 (°C)",
+            "tmin_mean": "Temperature 2008-2024 (°C)",
+            "precipitation_total": "Precipitations 2008-2024 (mm)"
         }
         trend_map = {
-            "temp_moyenne": "Tendance temperature moyenne (°C)",
-            "tmax_mean": "Tendance temperature maximale (°C)",
-            "tmin_mean": "Tendance temperature minimale (°C)",
-            "precipitation_total": "Tendance precipitations (en %)",
+            "temp_moyenne": "Tendance temperature (°C)",
+            "tmax_mean": "Tendance temperature (°C)",
+            "tmin_mean": "Tendance temperature (°C)",
+            "precipitation_total": "Tendance precipitations (mm)"
         }
         label_map = {
             "temp_moyenne": "Temperature moyenne (°C)",
@@ -1377,7 +1386,12 @@ with tab_future:
                 display_col
             ]
             scenario_table_display = scenario_table_display[cols_to_keep]
-            st.dataframe(scenario_table_display, width="stretch", height=475, row_height=15)
+            st.dataframe(
+                scenario_table_display,
+                width="stretch",
+                height=475,
+                row_height=15
+            )
             map_scenario = st.selectbox(
                 "Scenario etudie",
                 options=["optimiste", "neutre", "pessimiste", "sans scenario"],
@@ -1404,7 +1418,7 @@ with tab_future:
             st.markdown("**Legende**")
             st.markdown("""
             <div>
-                <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures/Projections sur les précipitations<br>
+                <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures/Projections sur les precipitations<br>
                 <span style="color:#FF0000">⬤</span> Ecart entre le passé et les prédictions<br>
 
             </div>""",
@@ -1477,16 +1491,16 @@ with tab_future:
             "Precipitations totales (mm)": "precipitation_total"
         }
         hist_map = {
-            "temp_moyenne": "Temperature moyenne 2007-2024 (°C)",
-            "tmax_mean": "Temperature maximale 2007-2024 (°C)",
-            "tmin_mean": "Temperature minimale 2007-2024 (°C)",
-            "precipitation_total": "Precipitations totales 2007-2024 (mm)"
+            "temp_moyenne": "Temperature 2008-2024 (°C)",
+            "tmax_mean": "Temperature 2008-2024 (°C)",
+            "tmin_mean": "Temperature 2008-2024 (°C)",
+            "precipitation_total": "Precipitations 2008-2024 (mm)"
         }
         trend_map = {
-            "temp_moyenne": "Tendance temperature moyenne (°C)",
-            "tmax_mean": "Tendance temperature maximale (°C)",
-            "tmin_mean": "Tendance temperature minimale (°C)",
-            "precipitation_total": "Tendance precipitations totales (mm)"
+            "temp_moyenne": "Tendance temperature (°C)",
+            "tmax_mean": "Tendance temperature (°C)",
+            "tmin_mean": "Tendance temperature (°C)",
+            "precipitation_total": "Tendance precipitations (mm)"
         }
         label_map = {
             "temp_moyenne": "Temperature moyenne (°C)",
