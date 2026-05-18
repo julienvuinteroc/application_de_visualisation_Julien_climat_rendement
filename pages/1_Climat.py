@@ -973,7 +973,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
             projection = hist_vals[i] + trend_vals[i]
             ax.text(
                 x[i],
-                projection,
+                projection + 0.4,
                 f"{projection:.0f}",
                 fontsize=18,
                 ha="center",
