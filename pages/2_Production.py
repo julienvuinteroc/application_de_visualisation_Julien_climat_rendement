@@ -1268,7 +1268,7 @@ with tab_quant:
             **Interpretation :**
             - La correlation entre rendement et volume est de {corr_value:.2f}
             - Un rendement eleve n'implique pas automatiquement un volume eleve
-            - La zone avec le rendement median le plus eleve est a identifier sur le boxplot
+            - La zone avec le rendement median le plus eleve est a identifier sur la boite à moustaches
             """)
     
     with tab_q3:
@@ -1499,7 +1499,7 @@ with tab_quant:
         )
         
         if zones_to_compare:
-            fig10, ax10 = plt.subplots(figsize=(16, 6), subplot_kw=dict(projection='polar'))
+            fig10, ax10 = plt.subplots(figsize=(16, 4), subplot_kw=dict(projection='polar'))
             
             angles = np.linspace(0, 2 * np.pi, len(indicators), endpoint=False).tolist()
             angles += angles[:1]
@@ -1516,7 +1516,7 @@ with tab_quant:
                     ax10.fill(angles, values, alpha=0.15, color=color)
             
             ax10.set_xticks(angles[:-1])
-            ax10.set_xticklabels(["Rendement normalise", "Productivite normalisee", "Part volume normalisee"], fontsize=10)
+            ax10.set_xticklabels(["Rendement normalise", "Productivite normalisee", "Part volume normalisee"], fontsize=9)
             ax10.set_ylim(0, 100)
             ax10.set_title("Comparaison des zones", fontsize=14, fontweight="bold", pad=20)
             ax10.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
@@ -1538,7 +1538,7 @@ with tab_quant:
         X = cluster_df[["rendement", "volume", "surface"]]
         X_scaled = StandardScaler().fit_transform(X)
         
-        k = st.slider("Nombre de clusters", 2, 4, 3, key="cluster_slider")
+        k = st.slider("Nombre de classes", 2, 4, 3, key="cluster_slider")
         
         kmeans = KMeans(n_clusters=k, random_state=42)
         cluster_df["cluster"] = kmeans.fit_predict(X_scaled)
@@ -1560,7 +1560,7 @@ with tab_quant:
         plt.close(fig_cluster)
         
         # Tableau d'interpretation
-        st.subheader("Interpretation des clusters")
+        st.subheader("Interpretation des classes")
         for i in range(k):
             zones_cluster = cluster_df[cluster_df["cluster"] == i]["Zone"].tolist()
             avg_rendement = cluster_df[cluster_df["cluster"] == i]["rendement"].mean()
@@ -1568,8 +1568,9 @@ with tab_quant:
             
             st.markdown(f"""
             <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin: 10px 0;">
-                <b>Cluster {i}</b> : Zones {', '.join([f'Zone {int(z)}' for z in zones_cluster])}<br>
-                <span style="color: #555;">Rendement moyen: {avg_rendement:.0f} hl/ha | Volume moyen: {avg_volume:,.0f} hl</span>
+                <b>Classe {i}</b> : Zones {', '.join([f'{int(z)}' for z in zones_cluster])}<br>
+                <span style="color: #555;">Rendement moyen: {avg_rendement:.0f} hl/ha,</span>
+                <span style="color: #555;"> Volume moyen: {avg_volume:.0f} hl</span>
             </div>
             """, unsafe_allow_html=True)
 
