@@ -730,7 +730,7 @@ def plot_historical_curves(
     mode: str
 ):
 
-    fig, ax = plt.subplots(figsize=(16, 6))
+    fig, ax = plt.subplots(figsize=(16, 10))
 
     df["Year"] = pd.to_numeric(
         df["Year"],
@@ -804,7 +804,7 @@ def plot_historical_curves(
     ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y",linestyle="--",alpha=0.5)
-    ax.legend(fontsize=17,bbox_to_anchor=(0.5, -0.15),loc="upper center",title="Legende",title_fontsize=19)
+    ax.legend(fontsize=13,bbox_to_anchor=(0.5, -0.15),loc="upper center",title="Legende",title_fontsize=15)
     fig.subplots_adjust(bottom=0.28)
     return fig
 
@@ -851,7 +851,7 @@ def build_no_scenario_projection(df_hist: pd.DataFrame, zones: list[int], indica
                 slope, _ = np.polyfit(x, y, 1)
                 last_year = int(grouped["Year"].max())
                 last_val = grouped[indicator].iloc[-1]
-                for i, year in enumerate(range(last_year + 1, 2041), start=1):
+                for i, year in enumerate(range(2007 + 1, 2041), start=1):
                     value = slope * i + last_val
                     rows.append(
                         {
@@ -867,7 +867,7 @@ def build_no_scenario_projection(df_hist: pd.DataFrame, zones: list[int], indica
 
 
 def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[int], indicator: str):
-    fig, ax = plt.subplots(figsize=(16, 6))
+    fig, ax = plt.subplots(figsize=(16, 10))
 
     for zone in selected_zones:
         df_zone = df_no_scenario[
@@ -876,21 +876,10 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
 
         if df_zone.empty:
             continue
-        df_hist = df_zone[df_zone["type"] == "historique"].sort_values("Year")
         df_proj = df_zone[df_zone["type"] == "projection_sans_scenario"].sort_values("Year")
         zone_str = str(int(zone))
         color = ZONE_COLOR_MAP.get(zone_str, "#333333")
         label = ZONE_LABELS.get(zone_str, f"Zone {zone_str}")
-        if not df_hist.empty:
-            ax.plot(
-                df_hist["Year"].astype(int),
-                df_hist["value"],
-                marker="o",
-                linewidth=3,
-                color=color,
-                label=label,
-            )
-
         if not df_proj.empty:
             ax.plot(
                 df_proj["Year"].astype(int),
@@ -899,13 +888,13 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
                 linestyle="--",
                 linewidth=3,
                 color=color,
+                label=label,
             )
-
     ax.set_title(f"Projection sans scenario - {indicator_label(indicator)}")
     ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y", linestyle="--", alpha=0.5)
-    ax.legend(fontsize=17, bbox_to_anchor=(0.5, -0.15), loc="upper center", title="Legende", title_fontsize=19)
+    ax.legend(fontsize=15, bbox_to_anchor=(0.5, -0.15), loc="upper center", title="Legende", title_fontsize=17)
     fig.tight_layout()
     return fig
 
