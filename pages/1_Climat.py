@@ -1027,12 +1027,20 @@ st.markdown("""
 
 @st.dialog("Carte des zones pédoclimatiques")
 def show_carte_inrae_clusters():
+    st.markdown("""
+        <style>
+        div[data-testid="stDialog"] > div > div {
+            max-width: 70vw !important;
+            width: 70vw !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
     with open("carte_zones_pedoclimatiques_.png", "rb") as f:
         img_data = base64.b64encode(f.read()).decode()
     components.html(f"""
         <img id="img" src="data:image/png;base64,{img_data}" 
-             style="width:150%; cursor:zoom-in;"
-             onclick="this.style.width = this.style.width=='150%' ? '175%' : '150%'">
+             style="width:90%; cursor:zoom-in;"
+             onclick="this.style.width = this.style.width=='90%' ? '110%' : '90%'">
     """, height=600, scrolling=True)
 
 
@@ -1248,7 +1256,7 @@ with tab_future:
         selected_zones = st.multiselect(
             "Zones",
             options=available_zones,
-            default=available_zones[:3] if len(available_zones) >= 3 else available_zones,
+            default=available_zones[:7] if len(available_zones) >= 3 else available_zones,
             key="histo_zones_future",
             label_visibility="collapsed"
         )
