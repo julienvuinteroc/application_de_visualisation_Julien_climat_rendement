@@ -344,9 +344,9 @@ def show_carte_inrae_clusters():
         img_data = base64.b64encode(f.read()).decode()
     components.html(f"""
         <img id="img" src="data:image/png;base64,{img_data}" 
-             style="width:125%; cursor:zoom-in;"
-             onclick="this.style.width = this.style.width=='125%' ? '140%' : '125%'">
-    """, height=500, scrolling=True)
+             style="width:150%; cursor:zoom-in;"
+             onclick="this.style.width = this.style.width=='150%' ? '175%' : '150%'">
+    """, height=600, scrolling=True)
     
 
 with st.sidebar:
