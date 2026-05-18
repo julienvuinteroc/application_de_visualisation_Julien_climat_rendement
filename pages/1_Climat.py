@@ -1386,8 +1386,8 @@ with tab_future:
             st.dataframe(
                 scenario_table_display,
                 width="stretch",
-                height=475,
-                row_height=15
+                height=600,
+                row_height=20
             )
             map_scenario = st.selectbox(
                 "Scenario etudie",
@@ -1413,14 +1413,24 @@ with tab_future:
 
             st.pyplot(fig_scenario)
             st.markdown("**Legende**")
-            st.markdown("""
-            <div>
-                <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures/Projections sur les precipitations<br>
-                <span style="color:#FF0000">⬤</span> Ecart entre le passe et les predictions<br>
+            if col == "precipitation_total":
+                st.markdown("""
+                <div>
+                    <span style="color:#FFFF00">⬤</span> Projections sur les precipitations<br>
+                    <span style="color:#FF0000">⬤</span> Ecart entre le passe et les predictions<br>
 
-            </div>""",
-            unsafe_allow_html=True
-            )
+                </div>""",
+                unsafe_allow_html=True
+                )
+            else:
+                st.markdown("""
+                <div>
+                    <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures<br>
+                    <span style="color:#FF0000">⬤</span> Ecart entre le passe et les predictions<br>
+
+                </div>""",
+                unsafe_allow_html=True
+                )
             plt.close(fig_scenario)
     if view_future == "Projections – cartes":
         st.markdown("**Evolution des tendances climatiques futures à court et moyen terme par zone**")
