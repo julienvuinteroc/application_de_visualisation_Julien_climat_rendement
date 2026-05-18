@@ -1408,7 +1408,7 @@ with tab_future:
             st.markdown("""
             <div>
                 <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures/Projections sur les precipitations<br>
-                <span style="color:#FF0000">⬤</span> Ecart entre le passé et les prédictions<br>
+                <span style="color:#FF0000">⬤</span> Ecart entre le passe et les predictions<br>
 
             </div>""",
             unsafe_allow_html=True
