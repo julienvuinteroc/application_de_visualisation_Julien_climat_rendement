@@ -456,11 +456,13 @@ class AIAnalyzer:
                 Zone 5: zone de sols de qualité moyenne dans l’arrière-pays,
                 Zone 6: *zone de sols profonds sur côtes tempérées,
                 Zone 7: *zone avec le plus grand nombre de jours très chauds mais sols profonds,
-            - Utilise uniquement des régions viticoles réelles internationales hors France
+            - Utilise uniquement des régions viticoles réelles internationales hors France 
+            - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
             - Utiliser les cépages autorisées en Pays d'Oc pour ta réponse sur les cépages résistants
             - https://info.agriculture.gouv.fr/boagri/document_administratif-9231994c-2220-475c-b784-b51d291c7c7c
-            - Ne pas mettre de régions viticoles françaises dans tes réponses
+            - Ne pas mettre de régions viticoles françaises dans tes réponses 
+            - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Etre fiable sur la topographie de la région
             - Ne pas inventer de noms de régions
             - Justifie chaque analogie par le climat
