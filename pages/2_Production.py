@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import base64
+import matplotlib.ticker as mticker
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -1188,6 +1189,12 @@ with tab_quant:
             
             ax1.set_xlabel("Surface (ha)", fontsize=12)
             ax1.set_ylabel("Volume (hl)", fontsize=12)
+            ax1.xaxis.set_major_formatter(
+                mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+            )
+            ax1.yaxis.set_major_formatter(
+                mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+            )
             ax1.set_title("Relation Surface - Volume par couleur", fontsize=14, fontweight="bold")
             ax1.legend()
             ax1.grid(True, alpha=0.3)
@@ -1274,9 +1281,12 @@ with tab_quant:
                     p = np.poly1d(z)
                     ax4.plot(sorted(subset["rendement"]), p(sorted(subset["rendement"])), 
                             "--", color=color, linewidth=1.5)
-            
+            ax4.set_xlim(0, 100)
             ax4.set_xlabel("Rendement (hl/ha)", fontsize=12)
             ax4.set_ylabel("Volume (hl)", fontsize=12)
+            ax4.yaxis.set_major_formatter(
+                mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+            )
             ax4.set_title("Relation Rendement - Volume par couleur", fontsize=14, fontweight="bold")
             ax4.legend()
             ax4.grid(True, alpha=0.3)
@@ -1527,22 +1537,6 @@ with tab_quant:
             width="stretch",
             hide_index=True
         )
-        
-        # Graphique radar simplifie pour la comparaison des zones
-        st.subheader("Profil comparatif des zones")
-        
-        # Normalisation des indicateurs pour le radar
-        radar_data = summary.copy()
-        indicators = ["rendement", "prod_hl_ha", "% volume"]
-        
-        for ind in indicators:
-            min_val = radar_data[ind].min()
-            max_val = radar_data[ind].max()
-            if max_val > min_val:
-                radar_data[f"{ind}_norm"] = (radar_data[ind] - min_val) / (max_val - min_val) * 100
-            else:
-                radar_data[f"{ind}_norm"] = 50
-        
         # Selection des zones a comparer (max 5 pour lisibilite)
         zones_to_compare = st.multiselect(
             "Selectionner les zones a comparer (max 5)",
@@ -1550,32 +1544,6 @@ with tab_quant:
             default=sorted(summary["Zone"].unique(), key=lambda x: int(x))[:3],
             label_visibility="collapsed"
         )
-        
-        if zones_to_compare:
-            fig10, ax10 = plt.subplots(figsize=(16, 4), subplot_kw=dict(projection='polar'))
-            
-            angles = np.linspace(0, 2 * np.pi, len(indicators), endpoint=False).tolist()
-            angles += angles[:1]
-            
-            for zone in zones_to_compare:
-                zone_data = radar_data[radar_data["Zone"] == zone]
-                if not zone_data.empty:
-                    values = [zone_data[f"{ind}_norm"].iloc[0] for ind in indicators]
-                    values += values[:1]
-                    
-                    zone_str = str(int(zone))
-                    color = ZONE_COLOR_MAP.get(zone_str, "#808080")
-                    ax10.plot(angles, values, 'o-', linewidth=2, color=color, label=f"Zone {zone}")
-                    ax10.fill(angles, values, alpha=0.15, color=color)
-            
-            ax10.set_xticks(angles[:-1])
-            ax10.set_xticklabels(["Rendement normalise", "Productivite normalisee", "Part volume normalisee"], fontsize=9)
-            ax10.set_ylim(0, 100)
-            ax10.set_title("Comparaison des zones", fontsize=14, fontweight="bold", pad=20)
-            ax10.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
-            st.pyplot(fig10)
-            plt.close(fig10)
-    
     # Clustering des zones
     st.divider()
     st.subheader("Classification automatique des zones")
@@ -1623,7 +1591,7 @@ with tab_quant:
             <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin: 10px 0;">
                 <b>Classe {i}</b> : Zones {', '.join([f'{int(z)}' for z in zones_cluster])}<br>
                 <span style="color: #555;">Rendement moyen: {avg_rendement:.0f} hl/ha,</span>
-                <span style="color: #555;"> Volume moyen: {avg_volume:.0f} hl</span>
+                <span style="color: #555;"> Volume moyen: {f"{avg_volume:,.0f}".replace(",", " ")} hl</span>
             </div>
             """, unsafe_allow_html=True)
 
