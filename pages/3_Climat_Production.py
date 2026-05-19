@@ -77,7 +77,7 @@ st.markdown("""
 <div class="main-header">
     <h1>Observatoire Viticole</h1>
     <h2>Pays d'Oc IGP</h2>
-    <p>Mise en relation entre le climat et la production viticole</p>
+    <p>Mise en relation entre le climat et la production viticole sur les 5 dernières années</p>
 </div>
 """, unsafe_allow_html=True)
 st.markdown("---")
@@ -549,16 +549,19 @@ with st.expander("Scoring intelligent des zones", expanded=True):
     ).round(1)
 
     zone_scoring["classe_final"] = zone_scoring["score_final"].apply(class_from_score)
-    zone_color_dict = build_zone_color_dict(zone_scoring["zone"].tolist())
+    zone_scoring["zone_label"] = zone_scoring["zone"].astype(int).astype(str)
+    color_map = {
+        str(k): v for k, v in ZONE_COLOR_MAP.items()
+    }
     fig_score = px.bar(
         zone_scoring.sort_values("score_final", ascending=False),
-        x="zone",
+        x="zone_label",
         y="score_final",
-        color="zone",
-        color_discrete_map=zone_color_dict,
+        color="zone_label",
+        color_discrete_map=color_map,
         text="classe_final",
         title="Classement qualitatif des zones",
-        labels={"zone": "Zone", "score_final": "Score global"},
+        labels={"zone_label": "Zone", "score_final": "Score global"},
         height=500
     )
     fig_score.update_traces(textposition="outside", textfont_size=14)
@@ -937,7 +940,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
             )
             fig_cepage.update_xaxes(title_font=dict(size=17))
             fig_cepage.update_yaxes(title_font=dict(size=17))
-            fig_cepage.update_yaxes(range=[0, y_limit])
+            fig_cepage.update_yaxes(range=[0, y_lim])
             st.plotly_chart(fig_cepage, key="cepage_evolution_chart", use_container_width=True)
 
 
