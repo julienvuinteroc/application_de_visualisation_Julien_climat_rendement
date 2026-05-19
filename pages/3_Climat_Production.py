@@ -384,14 +384,14 @@ with st.sidebar:
     with col_year1:
         year_min = st.number_input(
             "Annee min",
-            min_value=int(min(available_years)),
-            max_value=int(max(available_years)),
-            value=int(min(available_years))
+            min_value=int(max(available_years))-4,
+            max_value=int(max(available_years))-4,
+            value=int(max(available_years))-4
         )
     with col_year2:
         year_max = st.number_input(
             "Annee max",
-            min_value=int(min(available_years)),
+            min_value=int(max(available_years)),
             max_value=int(max(available_years)),
             value=int(max(available_years))
         )
@@ -716,13 +716,6 @@ else:
     )
     
     st.plotly_chart(fig_evolution, key="evolution_chart", use_container_width=True)
-    
-    # Tableau recapitulatif par zone
-    with st.expander("Tableau recapitulatif par zone", expanded=False):
-        recap = evol_data.groupby("zone")[evol_indicator].agg(["mean", "std", "min", "max"]).round(2).reset_index()
-        recap.columns = ["zone", "Moyenne", "Ecart-type", "Minimum", "Maximum"]
-
-        st.dataframe(recap, width="stretch", hide_index=True)
 
 
 # =====================================================
@@ -924,7 +917,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 facet_row="zone" if len(selected_zones) <= 4 else None,
                 title="Evolution des cepages par zone",
                 labels={"volume": "Volume (hl)", "annee": "Annee", "code_cepage": "Cepage"},
-                height=500
+                height=800
             )
             st.plotly_chart(fig_cepage, key="cepage_evolution_chart", use_container_width=True)
 
@@ -987,9 +980,7 @@ with st.expander("Analyse automatique", expanded=False):
         
         narrative = f"""
         ### Synthese de l'analyse
-        
         Sur la periode analysee :
-
         - **Zone la mieux classee** : Zone {int(top_zone['zone'])} avec un score global de {top_zone['score_final']:.1f} (classe {top_zone['classe_final']})
         - **Zone la plus productive** : Zone {int(best_yield['zone'])} avec {best_yield['rendement_moy']:.0f} hl/ha
         - **Zone la plus stable** : Zone {int(most_stable['zone'])} (variation de {most_stable['rendement_std']:.0f})
