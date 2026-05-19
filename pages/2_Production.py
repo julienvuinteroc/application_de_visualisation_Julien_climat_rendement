@@ -547,8 +547,9 @@ with tab_rdt:
             
             # Statistiques descriptives
             with st.expander("Statistiques descriptives", expanded=False):
-                stats_df = data.groupby(col_map)["rendement"].describe(percentiles=[.25, .5, .75]).round(2)
+                stats_df = data.groupby(col_map)["rendement"].describe(percentiles=[.25, .5, .75]).round(1)
                 stats_df = stats_df[['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']]
+                stats_df['std'] = stats_df['std'].round(0)
                 stats_df.columns = ['Occurrence', 'Moyenne', 'Ecart-type', 'Valeur minimale', '1er quartile', 'Mediane', '3ème quartile', 'Valeur maximale']
                 st.dataframe(stats_df, width="stretch")
 
@@ -616,6 +617,13 @@ with tab_vol:
                     markers=True,
                     title="Evolution des volumes"
                 )
+                fig.update_layout(
+                    separators=". "
+                )
+
+                fig.update_yaxes(
+                    tickformat=",.0f"
+                )
             elif mode == "Zone":
                 fig = px.line(
                     evol_full,
@@ -625,6 +633,13 @@ with tab_vol:
                     color_discrete_map=ZONE_COLOR_MAP,
                     markers=True,
                     title="Evolution des volumes par zone"
+                )
+                fig.update_layout(
+                    separators=". "
+                )
+
+                fig.update_yaxes(
+                    tickformat=",.0f"
                 )
             elif mode == "Departement":
                 fig = px.line(
@@ -636,7 +651,13 @@ with tab_vol:
                     markers=True,
                     title="Evolution des volumes par departement"
                 )
-                
+                fig.update_layout(
+                    separators=". "
+                )
+
+                fig.update_yaxes(
+                    tickformat=",.0f"
+                )
             else:
                 fig = create_volume_chart(evol_full, col_map, mode)
             
@@ -670,10 +691,10 @@ with tab_vol:
             )
             fig_dept_color_vol.update_layout(xaxis_type="category")
             fig_dept_color_vol.update_layout(
-                yaxis_tickformat=".0f"
+                separators=". "
             )
             fig_dept_color_vol.update_yaxes(
-                separatethousands=True
+                tickformat=",.0f"
             )
             st.plotly_chart(fig_dept_color_vol, key="dept_color_vol", width="stretch")
             
@@ -692,10 +713,11 @@ with tab_vol:
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
             fig_zone_color_vol.update_layout(
-                yaxis_tickformat=".0f"
+                separators=". "
             )
+
             fig_zone_color_vol.update_yaxes(
-                separatethousands=True
+                tickformat=",.0f"
             )
             st.plotly_chart(fig_zone_color_vol, key="zone_color_vol", width="stretch")
             
@@ -714,10 +736,11 @@ with tab_vol:
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
             fig_zone_cepage.update_layout(
-                yaxis_tickformat=".0f"
+                separators=". "
             )
+
             fig_zone_cepage.update_yaxes(
-                separatethousands=True
+                tickformat=",.0f"
             )
             st.plotly_chart(fig_zone_cepage, key="zone_cepage_vol", width="stretch")
             # Volume par departement et cepage
@@ -734,10 +757,11 @@ with tab_vol:
             )
             fig_dept_cepage.update_layout(xaxis_type="category")
             fig_dept_cepage.update_layout(
-                yaxis_tickformat=".0f"
+                separators=". "
             )
+
             fig_dept_cepage.update_yaxes(
-                separatethousands=True
+                tickformat=",.0f"
             )
             st.plotly_chart(fig_dept_cepage, key="dept_cepage_vol", width="stretch")
             
@@ -771,10 +795,10 @@ with tab_vol:
         )
         fig_top_last5.update_layout(showlegend=False, xaxis_title="Cepage", yaxis_title="Volume (hl)")
         fig_top_last5.update_layout(
-            yaxis_tickformat=".0f"
+            separators=". "
         )
         fig_top_last5.update_yaxes(
-            separatethousands=True
+            tickformat=",.0f"
         )
         st.plotly_chart(fig_top_last5, key="top20_last5", width="stretch")
 

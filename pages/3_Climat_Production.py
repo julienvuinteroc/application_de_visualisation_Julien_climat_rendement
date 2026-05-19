@@ -455,7 +455,7 @@ with col1:
     rendement_moy = df_geo_filtered["rendement"].mean()
     st.markdown(f"""
     <div class="metric-card">
-        <div class="metric-value">{format_number(rendement_moy, 0)} hl</div>
+        <div class="metric-value">{format_number(rendement_moy, 0)} hl/ha</div>
         <div class="metric-label">Rendement moyen</div>
     </div>
     """, unsafe_allow_html=True)
@@ -937,6 +937,12 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     else annot
                     for annot in fig_cepage.layout.annotations
                 ]
+            )
+            fig_cepage.update_layout(
+                separators=". "
+            )
+            fig_cepage.update_yaxes(
+                tickformat=",.0f"
             )
             fig_cepage.update_xaxes(title_font=dict(size=17))
             fig_cepage.update_yaxes(title_font=dict(size=17))

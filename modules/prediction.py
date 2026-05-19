@@ -14,13 +14,13 @@ from config.constants import COLOR_MAP, ZONE_COLOR_MAP, DEPT_COLOR_MAP
 
 def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
-    st.header("Facteurs influant sur l'évolution future du volume et du rendement")
+    st.header("Facteurs influant sur l'évolution future du rendement")
 
     # Parametres
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        var_lbl = st.radio("Variable a predire", ["Rendement", "Volume"], horizontal=True, key="pred_var", label_visibility="collapsed")
+        var_lbl = st.radio("Variable a predire", ["Rendement"], horizontal=True, key="pred_var", label_visibility="collapsed")
 
     with col2:
         group = st.radio(
@@ -42,7 +42,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
     }[group]
 
     # Variable a predire
-    var = "rendement" if var_lbl == "Rendement" else "volume"
+    var = "rendement" if var_lbl == "Rendement" else None
     mvt = "DECR" if var == "rendement" else "REVE"
 
     # Filtrage des donnees
@@ -230,8 +230,8 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
 
             results.append({
                 "Groupe": group_name,
-                "Tendance (hl/ha/an)": round(trend_slope, 2),
-                "Erreur moyenne": round(avg_mae, 2) if not np.isnan(avg_mae) else 0,
+                "Tendance (hl/ha/an)": round(trend_slope, 0),
+                "Erreur moyenne": round(avg_mae, 0) if not np.isnan(avg_mae) else 0,
                 "Prediction" + str(int(future_years[0])): round(future_values[0], 1)
             })
 
@@ -253,9 +253,10 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         yaxis=dict(range=[0, 100]),
         legend=dict(orientation="h", yanchor="bottom", y=0.94, xanchor="right", x=1.2)
     )
-
+    fig.update_yaxes(
+        tickformat=",.0f"
+    )
     st.plotly_chart(fig, key="prediction_chart", width="stretch")
-
     # Resultats
     if results:
         res = pd.DataFrame(results)
@@ -294,8 +295,8 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
             st.markdown("---")
             st.markdown("""
             **Recommandations :**
-            - Moins les erreurs moyennes sur le rendement et le volume sont elevees, plus la prediction est fiable
-            - En cas de forte variabilite de ces 2 grandeurs, nous allons privilegier des horizons de prediction courts (1 an par exemple)
+            - Moins les erreurs moyennes sur le rendement sont elevees, plus la prediction est fiable
+            - En cas de forte variabilite de cette grandeur, nous allons privilegier des horizons de prediction courts (1 an par exemple)
             """)
 
         return res
