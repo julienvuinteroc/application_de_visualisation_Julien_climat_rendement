@@ -1157,8 +1157,8 @@ with tab_quant:
     
     col_k1.metric("Productivite moyenne", f"{prod_global:.0f} hl/ha" if pd.notna(prod_global) else "N/A")
     col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
-    col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f}" if pd.notna(vol_rdt) else "N/A")
-    col_k4.metric("% Hors plafond", f"{share_hors:.1f}%" if pd.notna(share_hors) else "N/A")
+    col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} %" if pd.notna(vol_rdt) else "N/A")
+    col_k4.metric("% Hors plafond", f"{share_hors:.1f} %" if pd.notna(share_hors) else "N/A")
     
     tab_q1, tab_q2, tab_q3, tab_q4, tab_q5 = st.tabs([
         "Surface vs Volume", "Rendement vs Volume", "Productivite par zone", "Volatilite", "Tableau de bord"
@@ -1490,8 +1490,8 @@ with tab_quant:
                 vol_stats,
                 column_config={
                     "Zone": "Zone",
-                    "mean": st.column_config.NumberColumn("Rendement moyen (hl/ha)", format="%.1f"),
-                    "std": st.column_config.NumberColumn("Ecart-type", format="%.1f"),
+                    "mean": st.column_config.NumberColumn("Rendement moyen (hl/ha)", format="%.0f"),
+                    "std": st.column_config.NumberColumn("Ecart-type", format="%.0f"),
                     "Coefficient de variation du rendement": st.column_config.NumberColumn("Coeficient variation(%)", format="%.1f")
                 },
                 width="stretch",
