@@ -911,6 +911,9 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 .sum()
             )
             cepage_zone_year["volume"] = cepage_zone_year["volume"].round(0)
+            y_max = cepage_zone_year["volume"].max()
+            y_lim = y_max * 1.1
+            cepage_zone_year["volume"] = cepage_zone_year["volume"].round(0)
             fig_cepage = px.bar(
                 cepage_zone_year,
                 x="annee",
@@ -934,6 +937,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
             )
             fig_cepage.update_xaxes(title_font=dict(size=17))
             fig_cepage.update_yaxes(title_font=dict(size=17))
+            fig_cepage.update_yaxes(range=[0, y_limit])
             st.plotly_chart(fig_cepage, key="cepage_evolution_chart", use_container_width=True)
 
 
