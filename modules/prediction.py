@@ -251,7 +251,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         height=650,
         hovermode="x unified",
         yaxis=dict(range=[0, 100]),
-        legend=dict(orientation="h", yanchor="bottom", y=0.94, xanchor="right", x=1.2)
+        legend=dict(orientation="h", yanchor="bottom", y=0.94, xanchor="center", x=0.5)
     )
     fig.update_yaxes(
         tickformat=",.0f"

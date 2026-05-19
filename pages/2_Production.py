@@ -1189,6 +1189,8 @@ with tab_quant:
             
             ax1.set_xlabel("Surface (ha)", fontsize=12)
             ax1.set_ylabel("Volume (hl)", fontsize=12)
+            ax1.set_ylim(0, 200000)
+            ax1.set_xlim(0, 4000)
             ax1.xaxis.set_major_formatter(
                 mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
             )
@@ -1292,50 +1294,19 @@ with tab_quant:
             ax4.grid(True, alpha=0.3)
             st.pyplot(fig4)
             plt.close(fig4)
+        # Interpretation
+        corr_value = tmp["rendement"].corr(tmp["volume"])
+        st.info(f"""
+        **Interpretation :**
+        - La correlation entre rendement et volume est de {corr_value:.2f}
+        - Un rendement eleve n'implique pas automatiquement un volume eleve
+        - La zone avec le rendement median le plus eleve est a identifier sur la boite à moustaches
+        """)
             
-            # Graphique 2: Distribution du rendement par zone (boxplot simplifie)
-            st.subheader("Distribution du rendement par zone")
-            
-            fig5, ax5 = plt.subplots(figsize=(16, 6))
-            tmp_zone = tmp[~tmp["Zone"].isin(["0", "None", "nan"])].copy()
-            zones_sorted = sorted(tmp_zone["Zone"].unique(), key=lambda x: int(x))
-            
-            box_data = []
-            positions = []
-            colors_box = []
-            for i, zone in enumerate(zones_sorted):
-                zone_data = tmp_zone[tmp_zone["Zone"] == zone]["rendement"].dropna()
-                if not zone_data.empty:
-                    box_data.append(zone_data)
-                    positions.append(i + 1)
-                    colors_box.append(ZONE_COLOR_MAP.get(str(int(zone)), "#808080"))
-            
-            bp = ax5.boxplot(box_data, positions=positions, widths=0.6, patch_artist=True)
-            for patch, color in zip(bp['boxes'], colors_box):
-                patch.set_facecolor(color)
-                patch.set_alpha(0.7)
-            
-            ax5.set_xticks(positions)
-            ax5.set_xticklabels([f"Zone {int(z)}" for z in zones_sorted])
-            ax5.set_xlabel("Zone", fontsize=12)
-            ax5.set_ylim(0,100)
-            ax5.set_ylabel("Rendement (hl/ha)", fontsize=12)
-            ax5.set_title("Distribution du rendement par zone", fontsize=14, fontweight="bold")
-            ax5.grid(axis="y", alpha=0.3)
-            st.pyplot(fig5)
-            plt.close(fig5)
-            
-            # Interpretation
-            corr_value = tmp["rendement"].corr(tmp["volume"])
-            st.info(f"""
-            **Interpretation :**
-            - La correlation entre rendement et volume est de {corr_value:.2f}
-            - Un rendement eleve n'implique pas automatiquement un volume eleve
-            - La zone avec le rendement median le plus eleve est a identifier sur la boite à moustaches
-            """)
     
     with tab_q3:
         st.subheader("Productivite par zone")
+        
         st.markdown("*Analyse comparative de la productivite (volume/surface) entre les zones*")
         tmp = base.dropna(subset=["prod_hl_ha", "Zone"]).copy()
         tmp = get_zones_1_7(tmp)
@@ -1393,6 +1364,38 @@ with tab_quant:
                         <span style="color: #c62828;">(Ecart-type: {row['std']:.0f})</span>
                     </div>
                     """, unsafe_allow_html=True)
+            # Graphique 2: Distribution du rendement par zone (boxplot simplifie)
+            st.subheader("Distribution du rendement par zone")
+            
+            fig5, ax5 = plt.subplots(figsize=(16, 6))
+            tmp_zone = tmp[~tmp["Zone"].isin(["0", "None", "nan"])].copy()
+            zones_sorted = sorted(tmp_zone["Zone"].unique(), key=lambda x: int(x))
+            
+            box_data = []
+            positions = []
+            colors_box = []
+            for i, zone in enumerate(zones_sorted):
+                zone_data = tmp_zone[tmp_zone["Zone"] == zone]["rendement"].dropna()
+                if not zone_data.empty:
+                    box_data.append(zone_data)
+                    positions.append(i + 1)
+                    colors_box.append(ZONE_COLOR_MAP.get(str(int(zone)), "#808080"))
+            
+            bp = ax5.boxplot(box_data, positions=positions, widths=0.6, patch_artist=True)
+            for patch, color in zip(bp['boxes'], colors_box):
+                patch.set_facecolor(color)
+                patch.set_alpha(0.7)
+            
+            ax5.set_xticks(positions)
+            ax5.set_xticklabels([f"Zone {int(z)}" for z in zones_sorted])
+            ax5.set_xlabel("Zone", fontsize=12)
+            ax5.set_ylim(0,100)
+            ax5.set_ylabel("Rendement (hl/ha)", fontsize=12)
+            ax5.set_title("Distribution du rendement par zone", fontsize=14, fontweight="bold")
+            ax5.grid(axis="y", alpha=0.3)
+            st.pyplot(fig5)
+            plt.close(fig5)
+            
             
             # Tableau complet
             st.subheader("Tableau detaille par zone")
@@ -1407,6 +1410,68 @@ with tab_quant:
                 width="stretch",
                 hide_index=True
             )
+            st.divider()
+            st.subheader("Classification automatique des zones")
+            
+            cluster_df = df.groupby("Zone").agg({
+                "rendement": "mean",
+                "volume": "sum",
+                "surface": "sum"
+            }).dropna().reset_index()
+            cluster_df = get_zones_1_7(cluster_df)
+            
+            if len(cluster_df) >= 3:
+                X = cluster_df[["rendement", "volume", "surface"]]
+                X_scaled = StandardScaler().fit_transform(X)
+                
+                k = st.slider("Nombre de classes", 2, 4, 3, key="cluster_slider")
+                st.divider()
+                kmeans = KMeans(n_clusters=k, random_state=42)
+                cluster_df["cluster"] = kmeans.fit_predict(X_scaled)
+                
+                # Graphique simplifie
+                fig_cluster, ax_cluster = plt.subplots(figsize=(14, 6))
+                
+                for cluster in range(k):
+                    cluster_data = cluster_df[cluster_df["cluster"] == cluster]
+                    ax_cluster.scatter(cluster_data["rendement"], cluster_data["volume"], 
+                                    s=cluster_data["surface"]/100, alpha=0.6, label=f"Cluster {cluster}")
+                
+                ax_cluster.set_xlabel("Rendement (hl/ha)", fontsize=12)
+                ax_cluster.set_ylabel("Volume (hl)", fontsize=12)
+                ax_cluster.set_ylim(0,100000000)
+                ax_cluster.set_title("Classification des zones", fontsize=14, fontweight="bold")
+                ax_cluster.ticklabel_format(style='plain', axis='y')
+                ax_cluster.yaxis.set_major_formatter(
+                        mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+                )
+                ax_cluster.legend(
+                    loc="upper center",
+                    bbox_to_anchor=(0.5, -0.15),
+                    ncol=1,
+                    fontsize=10,
+                    markerscale=0.5,
+                    frameon=False,
+                    labelspacing=4
+                )
+                ax_cluster.grid(True, alpha=0.3)
+                st.pyplot(fig_cluster)
+                plt.close(fig_cluster)
+                
+                # Tableau d'interpretation
+                st.subheader("Interpretation des classes")
+                for i in range(k):
+                    zones_cluster = cluster_df[cluster_df["cluster"] == i]["Zone"].tolist()
+                    avg_rendement = cluster_df[cluster_df["cluster"] == i]["rendement"].mean()
+                    avg_volume = cluster_df[cluster_df["cluster"] == i]["volume"].mean()
+                    
+                    st.markdown(f"""
+                    <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin: 10px 0;">
+                        <b>Classe {i}</b> : Zones {', '.join([f'{int(z)}' for z in zones_cluster])}<br>
+                        <span style="color: #555;">Rendement moyen: {avg_rendement:.0f} hl/ha,</span>
+                        <span style="color: #555;"> Volume moyen: {f"{avg_volume:,.0f}".replace(",", " ")} hl</span>
+                    </div>
+                    """, unsafe_allow_html=True)
     
     with tab_q4:
         st.subheader("Volatilite du rendement par zone")
@@ -1537,64 +1602,7 @@ with tab_quant:
             width="stretch",
             hide_index=True
         )
-        # Selection des zones a comparer (max 5 pour lisibilite)
-        zones_to_compare = st.multiselect(
-            "Selectionner les zones a comparer (max 5)",
-            options=sorted(summary["Zone"].unique(), key=lambda x: int(x)),
-            default=sorted(summary["Zone"].unique(), key=lambda x: int(x))[:3],
-            label_visibility="collapsed"
-        )
-    # Clustering des zones
-    st.divider()
-    st.subheader("Classification automatique des zones")
     
-    cluster_df = df.groupby("Zone").agg({
-        "rendement": "mean",
-        "volume": "sum",
-        "surface": "sum"
-    }).dropna().reset_index()
-    cluster_df = get_zones_1_7(cluster_df)
-    
-    if len(cluster_df) >= 3:
-        X = cluster_df[["rendement", "volume", "surface"]]
-        X_scaled = StandardScaler().fit_transform(X)
-        
-        k = st.slider("Nombre de classes", 2, 4, 3, key="cluster_slider")
-        
-        kmeans = KMeans(n_clusters=k, random_state=42)
-        cluster_df["cluster"] = kmeans.fit_predict(X_scaled)
-        
-        # Graphique simplifie
-        fig_cluster, ax_cluster = plt.subplots(figsize=(16, 6))
-        
-        for cluster in range(k):
-            cluster_data = cluster_df[cluster_df["cluster"] == cluster]
-            ax_cluster.scatter(cluster_data["rendement"], cluster_data["volume"], 
-                              s=cluster_data["surface"]/100, alpha=0.6, label=f"Cluster {cluster}")
-        
-        ax_cluster.set_xlabel("Rendement (hl/ha)", fontsize=12)
-        ax_cluster.set_ylabel("Volume (hl)", fontsize=12)
-        ax_cluster.set_title("Classification des zones", fontsize=14, fontweight="bold")
-        ax_cluster.legend()
-        ax_cluster.grid(True, alpha=0.3)
-        st.pyplot(fig_cluster)
-        plt.close(fig_cluster)
-        
-        # Tableau d'interpretation
-        st.subheader("Interpretation des classes")
-        for i in range(k):
-            zones_cluster = cluster_df[cluster_df["cluster"] == i]["Zone"].tolist()
-            avg_rendement = cluster_df[cluster_df["cluster"] == i]["rendement"].mean()
-            avg_volume = cluster_df[cluster_df["cluster"] == i]["volume"].mean()
-            
-            st.markdown(f"""
-            <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin: 10px 0;">
-                <b>Classe {i}</b> : Zones {', '.join([f'{int(z)}' for z in zones_cluster])}<br>
-                <span style="color: #555;">Rendement moyen: {avg_rendement:.0f} hl/ha,</span>
-                <span style="color: #555;"> Volume moyen: {f"{avg_volume:,.0f}".replace(",", " ")} hl</span>
-            </div>
-            """, unsafe_allow_html=True)
-
 # Footer
 st.markdown("---")
 st.markdown(f"""
