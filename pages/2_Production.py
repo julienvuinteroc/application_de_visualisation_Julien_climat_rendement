@@ -727,9 +727,7 @@ with tab_vol:
     if not reve.empty:
         st.divider()
         st.subheader("Top 20 cepages - 5 dernieres annees")
-        
         last_5_years = get_last_5_years(reve)
-        
         top20_last5 = (
             last_5_years.groupby("code_cepage")["volume"]
             .sum()
@@ -737,7 +735,6 @@ with tab_vol:
             .head(20)
             .reset_index()
         )
-        
         fig_top_last5 = px.bar(
             top20_last5,
             x="code_cepage",
