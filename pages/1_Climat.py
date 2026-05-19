@@ -15,55 +15,6 @@ from utils.db import get_conn
 from config.constants import ZONE_COLOR_MAP, ZONE_LABELS
 
 
-st.markdown("""
-<style> 
-    .main-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        color: white;
-        text-align: center;
-    }
-    .main-header h1 {
-        color: white;
-        margin-bottom: 0.5rem;
-    }
-    .metric-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1rem;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border-left: 4px solid #2c3e50;
-    }
-    .metric-value {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #2c3e50;
-    }
-    .metric-label {
-        color: #6c757d;
-        font-size: 0.85rem;
-    }
-    hr {
-        margin: 1.5rem 0;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 20px 20px 0 0;
-        padding: 10px 20px;
-        background-color: #f1f3f5;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: white;
-        border-bottom: 3px solid #2c3e50;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = APP_DIR.parent.parent
 DB_PATH = PROJECT_ROOT / "db" / "mvttdb.duckdb"
@@ -132,6 +83,55 @@ HISTORICAL_INDICATORS = [
 
 # Style CSS personnalise
 st.markdown("""
+<style> 
+    .main-header {
+        background: linear-gradient(135deg, #ff4b00 0%, #ff4b00 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        color: white;
+        text-align: center;
+    }
+    .main-header h1 {
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+    .metric-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border-left: 4px solid #2c3e50;
+    }
+    .metric-value {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    .metric-label {
+        color: #6c757d;
+        font-size: 0.85rem;
+    }
+    hr {
+        margin: 1.5rem 0;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 20px 20px 0 0;
+        padding: 10px 20px;
+        background-color: #ff4b00;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: white;
+        border-bottom: 3px solid #2c3e50;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
 <style>
     /* Global */
     .main {
@@ -140,7 +140,7 @@ st.markdown("""
     
     /* Header */
     .main-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+        background: linear-gradient(135deg, #ff4b00 0%, #ff4b00 100%);
         padding: 2rem;
         border-radius: 15px;
         margin-bottom: 2rem;

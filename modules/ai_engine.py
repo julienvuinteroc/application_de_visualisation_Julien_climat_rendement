@@ -459,12 +459,15 @@ class AIAnalyzer:
             - Utilise uniquement des régions viticoles réelles internationales hors France 
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
-            - Utiliser les cépages autorisées en Pays d'Oc pour ta réponse sur les cépages résistants
+            - Utiliser les cépages autorisées en Pays d'Oc pour ta réponse sur les cépages résistants et qui sont autorisées dans ces sous-régions
             - https://info.agriculture.gouv.fr/boagri/document_administratif-9231994c-2220-475c-b784-b51d291c7c7c
             - Ne pas mettre de régions viticoles françaises dans tes réponses 
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Etre fiable sur la topographie de la région
             - Ne pas inventer de noms de régions
+            - Détaille sur besoin en irrigation si c'est critique dis le et donne les raisons
+            - S'il y a déjà eu des épisodes de sécheresse accrue dans ces sous-régions, mentionne les
+            - D'une zone à l'autre essaie d'imaginer des pratiques culturales variées
             - Justifie chaque analogie par le climat
             - Zone ID : {zone_id}
             - Température moyenne : {temperature_moyenne} °C

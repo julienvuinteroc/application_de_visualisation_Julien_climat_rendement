@@ -23,7 +23,7 @@ st.set_page_config(
 st.markdown("""
 <style> 
     .main-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+        background: linear-gradient(135deg, #ff4b00 0%, #ff4b00 100%);
         padding: 1.5rem;
         border-radius: 15px;
         margin-bottom: 2rem;
@@ -60,7 +60,7 @@ st.markdown("""
     .stTabs [data-baseweb="tab"] {
         border-radius: 20px 20px 0 0;
         padding: 10px 20px;
-        background-color: #f1f3f5;
+        background-color: #ff4b00;
     }
     .stTabs [aria-selected="true"] {
         background-color: white;
