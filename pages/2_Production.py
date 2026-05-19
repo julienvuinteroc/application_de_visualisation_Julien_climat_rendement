@@ -504,6 +504,7 @@ with tab_rdt:
                 categories=["11", "30", "34", "66"]
             )
             dept_color_rdt["mean"] = dept_color_rdt["mean"].round(0)
+            dept_color_rdt["std"] = dept_color_rdt["std"].round(0)
             fig_dept_color = px.bar(
                 dept_color_rdt,
                 x="code_departement",
@@ -523,6 +524,7 @@ with tab_rdt:
             zone_color_rdt = data.groupby(["Zone", "code_couleur"])["rendement"].agg(["mean", "std"]).reset_index()
             zone_color_rdt = get_zones_1_7(zone_color_rdt)
             zone_color_rdt["mean"] = zone_color_rdt["mean"].round(0)
+            zone_color_rdt["std"] = zone_color_rdt["std"].round(0)
             fig_zone_color = px.bar(
                 zone_color_rdt,
                 x="Zone",
@@ -1337,8 +1339,8 @@ with tab_quant:
                 prod_stats.round(1),
                 column_config={
                     "Zone": "Zone",
-                    "mean": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.1f"),
-                    "std": st.column_config.NumberColumn("Ecart-type", format="%.1f"),
+                    "mean": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f"),
+                    "std": st.column_config.NumberColumn("Ecart-type", format="%.0f"),
                     "count": st.column_config.NumberColumn("Nombre d'observations", format="%d")
                 },
                 width="stretch",
@@ -1467,8 +1469,8 @@ with tab_quant:
                 "Zone": st.column_config.TextColumn("Zone", width="small"),
                 "surface": st.column_config.NumberColumn("Surface (ha)", format="%.0f", width="medium"),
                 "volume": st.column_config.NumberColumn("Volume (hl)", format="%.0f", width="medium"),
-                "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.1f", width="medium"),
-                "prod_hl_ha": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.1f", width="medium"),
+                "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.0f", width="medium"),
+                "prod_hl_ha": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f", width="medium"),
                 "% volume": st.column_config.NumberColumn("% Volume", format="%.1f%%", width="small")
             },
             width="stretch",
