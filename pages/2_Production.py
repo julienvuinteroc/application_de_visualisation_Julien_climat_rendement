@@ -40,7 +40,7 @@ st.markdown("""
         padding: 1rem;
         text-align: center;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border-left: 4px solid #2c3e50;
+        border-left: 4px solid #ff4b00;
     }
     .metric-value {
         font-size: 1.2rem;
