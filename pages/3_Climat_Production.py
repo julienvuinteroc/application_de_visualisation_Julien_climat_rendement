@@ -889,7 +889,10 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
     
     with subtab2:
         cepage_scope = fusion_scope[fusion_scope["type_mvt"] == "REVE"].copy()
-        
+        cepage_scope = cepage_scope[
+            cepage_scope["code_cepage"].notna()
+            & (cepage_scope["code_cepage"] != "None")
+        ].copy()
         if cepage_scope.empty or cepage_scope["code_cepage"].dropna().empty:
             st.info("Aucune donnee cepage disponible.")
         else:
@@ -914,11 +917,23 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 y="volume",
                 color="code_cepage",
                 barmode="group",
-                facet_row="zone" if len(selected_zones) <= 4 else None,
+                facet_row="zone",
                 title="Evolution des cepages par zone",
                 labels={"volume": "Volume (hl)", "annee": "Annee", "code_cepage": "Cepage"},
-                height=800
+                height=750
             )
+            fig_cepage.update_layout(
+                annotations=[
+                    dict(
+                        font=dict(size=16),
+                    )
+                    if annot.text.startswith("zone")
+                    else annot
+                    for annot in fig_cepage.layout.annotations
+                ]
+            )
+            fig_cepage.update_xaxes(title_font=dict(size=17))
+            fig_cepage.update_yaxes(title_font=dict(size=17))
             st.plotly_chart(fig_cepage, key="cepage_evolution_chart", use_container_width=True)
 
 
