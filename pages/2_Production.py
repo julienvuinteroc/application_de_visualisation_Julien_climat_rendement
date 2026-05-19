@@ -669,6 +669,12 @@ with tab_vol:
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
             fig_dept_color_vol.update_layout(xaxis_type="category")
+            fig_dept_color_vol.update_layout(
+                yaxis_tickformat=".0f"
+            )
+            fig_dept_color_vol.update_yaxes(
+                separatethousands=True
+            )
             st.plotly_chart(fig_dept_color_vol, key="dept_color_vol", width="stretch")
             
             # Volume par zone et couleur
@@ -684,6 +690,12 @@ with tab_vol:
                 color_discrete_map=COLOR_MAP,
                 title="Volume total par zone et couleur",
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_couleur": "Couleur"}
+            )
+            fig_zone_color_vol.update_layout(
+                yaxis_tickformat=".0f"
+            )
+            fig_zone_color_vol.update_yaxes(
+                separatethousands=True
             )
             st.plotly_chart(fig_zone_color_vol, key="zone_color_vol", width="stretch")
             
@@ -701,6 +713,12 @@ with tab_vol:
                 title="Volume par zone et cepage (Top 10)",
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
+            fig_zone_cepage.update_layout(
+                yaxis_tickformat=".0f"
+            )
+            fig_zone_cepage.update_yaxes(
+                separatethousands=True
+            )
             st.plotly_chart(fig_zone_cepage, key="zone_cepage_vol", width="stretch")
             # Volume par departement et cepage
             st.markdown("#### Volume par departement et cepage (Top 10 cepages)")
@@ -715,6 +733,12 @@ with tab_vol:
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
             fig_dept_cepage.update_layout(xaxis_type="category")
+            fig_dept_cepage.update_layout(
+                yaxis_tickformat=".0f"
+            )
+            fig_dept_cepage.update_yaxes(
+                separatethousands=True
+            )
             st.plotly_chart(fig_dept_cepage, key="dept_cepage_vol", width="stretch")
             
             # Analyse IA
@@ -746,6 +770,12 @@ with tab_vol:
             height=500
         )
         fig_top_last5.update_layout(showlegend=False, xaxis_title="Cepage", yaxis_title="Volume (hl)")
+        fig_top_last5.update_layout(
+            yaxis_tickformat=".0f"
+        )
+        fig_top_last5.update_yaxes(
+            separatethousands=True
+        )
         st.plotly_chart(fig_top_last5, key="top20_last5", width="stretch")
 
 # =====================================================
