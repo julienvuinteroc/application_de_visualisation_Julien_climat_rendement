@@ -766,12 +766,6 @@ with tab_vol:
                 tickformat=",.0f"
             )
             st.plotly_chart(fig_dept_cepage, key="dept_cepage_vol", width="stretch")
-            
-            # Analyse IA
-            with st.expander("Analyse IA du volume", expanded=False):
-                with st.spinner("Analyse en cours..."):
-                    ai_analysis = ai_analyzer.analyze_volume(data, mode, selections)
-                    st.markdown(ai_analysis['natural_analysis'])
     
     # Top 20 cepages des 5 dernieres annees
     if not reve.empty:

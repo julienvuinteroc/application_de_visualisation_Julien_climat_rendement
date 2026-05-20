@@ -388,9 +388,6 @@ class AIAnalyzer:
             share = cross_analysis.get(groupe, {}).get('share', 0)
             lines.append(f"**{groupe}** :")
             lines.append(f"  • Volume total : **{stat['total']:,.0f} hl** ({share:.1f}% du total)")
-            lines.append(f"  • Moyenne annuelle : **{stat['mean']:,.0f} hl**")
-            if stat['cv'] > 30:
-                lines.append(f"  • Forte variation (Indice de stabilité du rendement={stat['cv']:.0f}%)")
             lines.append("")
         
         natural_analysis = "\n".join(lines)
