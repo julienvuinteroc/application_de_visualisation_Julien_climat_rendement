@@ -1327,10 +1327,6 @@ with tab_quant:
             
             st.pyplot(fig6)
             plt.close(fig6)
-            
-            # Graphique 2: Classement simplifie
-            st.subheader("Classement des zones")
-            
             col_rank1, col_rank2 = st.columns(2)
             
             with col_rank1:
