@@ -441,8 +441,8 @@ with tab_rdt:
                 plafond_check = data.groupby("code_couleur")["rendement"].agg(['max', 'count']).round(2)
                 plafond_check['plafond'] = plafond_check.index.map(lambda x: 90 if x in ['BL', 'RG'] else 100)
                 plafond_check['conforme'] = plafond_check['max'] <= plafond_check['plafond']
-                plafond_check = plafond_check.rename(columns={'max': 'Rendement max', 'count': 'Nb observations'})
-                st.dataframe(plafond_check[['Rendement max', 'plafond', 'conforme', 'Nb observations']], width="stretch")
+                plafond_check = plafond_check.rename(columns={'max': 'Rendement max'})
+                st.dataframe(plafond_check[['Rendement max', 'plafond', 'conforme']], width="stretch")
             # Graphique d'evolution
             evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
             evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MIN, YEAR_MAX)
