@@ -12,6 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+
 # Style CSS personnalise
 st.markdown("""
 <style>
@@ -19,10 +20,9 @@ st.markdown("""
     .main {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
-    
     /* Header */
     .main-header {
-        background: linear-gradient(135deg, #ff4b00 0%, #ff4b00 100%);
+        background: linear-gradient(135deg, #ff8800 0%, #ff8800 100%);
         padding: 2rem;
         border-radius: 15px;
         margin-bottom: 2rem;
@@ -161,7 +161,7 @@ st.markdown("""
         padding: 1rem;
         text-align: center;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border-left: 4px solid #ff4b00;
+        border-left: 4px solid #ff8800;
     }
     
     .stat-number {
