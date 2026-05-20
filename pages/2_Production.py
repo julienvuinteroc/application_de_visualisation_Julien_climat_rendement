@@ -1571,8 +1571,8 @@ with tab_quant:
             summary,
             column_config={
                 "Zone": st.column_config.TextColumn("Zone", width="small"),
-                "surface": st.column_config.TextColumn("Surface (ha)", format="%.0f", width="medium"),
-                "volume": st.column_config.TextColumn("Volume (hl)", format="%.0f", width="medium"),
+                "surface": st.column_config.NumberColumn("Surface (ha)", format="%.0f", width="medium"),
+                "volume": st.column_config.NumberColumn("Volume (hl)", format="%.0f", width="medium"),
                 "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.0f", width="medium"),
                 "prod_hl_ha": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f", width="medium"),
                 "% volume": st.column_config.NumberColumn("% Volume", format="%.1f", width="small")
