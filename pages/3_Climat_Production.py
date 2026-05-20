@@ -22,7 +22,7 @@ st.set_page_config(
 st.markdown("""
 <style> 
     .main-header {
-        background: linear-gradient(135deg, #ff8800 0%, #ff8800 100%);
+        background: linear-gradient(135deg, #ff7900 0%, #ff7900 100%);
         padding: 1.5rem;
         border-radius: 15px;
         margin-bottom: 2rem;
@@ -39,7 +39,7 @@ st.markdown("""
         padding: 1rem;
         text-align: center;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border-left: 4px solid #ff8800;
+        border-left: 4px solid #ff7900;
     }
     .metric-value {
         font-size: 1.2rem;
@@ -59,7 +59,7 @@ st.markdown("""
     .stTabs [data-baseweb="tab"] {
         border-radius: 20px 20px 0 0;
         padding: 10px 20px;
-        background-color: #ff8800;
+        background-color: #ff7900;
     }
     .stTabs [aria-selected="true"] {
         background-color: white;
@@ -547,7 +547,6 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         + 0.10 * zone_scoring["score_temp_equilibre"]
         + 0.05 * zone_scoring["score_precip_equilibre"]
     ).round(1)
-
     zone_scoring["classe_final"] = zone_scoring["score_final"].apply(class_from_score)
     zone_scoring["zone_label"] = zone_scoring["zone"].astype(int).astype(str)
     color_map = {

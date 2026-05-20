@@ -25,7 +25,7 @@ st.set_page_config(
 st.markdown("""
 <style> 
     .main-header {
-        background: linear-gradient(135deg, #ff8800 0%, #ff8800 100%);
+        background: linear-gradient(135deg, #ff7900 0%, #ff7900 100%);
         padding: 1.5rem;
         border-radius: 15px;
         margin-bottom: 2rem;
@@ -42,7 +42,7 @@ st.markdown("""
         padding: 1rem;
         text-align: center;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border-left: 4px solid #ff8800;
+        border-left: 4px solid #ff7900;
     }
     .metric-value {
         font-size: 1.2rem;
@@ -62,7 +62,7 @@ st.markdown("""
     .stTabs [data-baseweb="tab"] {
         border-radius: 20px 20px 0 0;
         padding: 10px 20px;
-        background-color: #ff8800;
+        background-color: #ff7900;
     }
     .stTabs [aria-selected="true"] {
         background-color: white;
@@ -428,6 +428,7 @@ with tab_rdt:
                 key="rdt_sel",
                 label_visibility="collapsed"
             )
+        
         
         if not selections:
             st.info("Veuillez selectionner au moins un element a analyser")
@@ -1320,10 +1321,10 @@ with tab_quant:
             ax5.set_xlabel("Zone", fontsize=12)
             ax5.set_ylim(0,100)
             ax5.set_ylabel("Rendement (hl/ha)", fontsize=12)
-            ax5.set_title("Distribution du rendement par zone (avec ecart-type)", fontsize=14, fontweight="bold")
+            ax5.set_title("Distribution du rendement par zone", fontsize=14, fontweight="bold")
             ax5.grid(axis="y", alpha=0.3)
             st.pyplot(fig5)
-            st.info ("Les zones ayant des rendements supérieurs aux seuils ont été exclus des analyses. N.B: cv: Coefficient de variation (en %)")
+            st.info ("N.B: cv: Coefficient de variation (en %)")
             plt.close(fig5)
             st.divider()
             st.subheader("Classification automatique des zones")
@@ -1413,10 +1414,6 @@ with tab_quant:
                         f"{val:.0f}", ha="center", va="bottom", fontsize=9)
             st.pyplot(fig20)
             plt.close(fig20)
-            st.info(f"""
-            **Interpretation :**
-            - La productivite moyenne est de {prod_global:.0f} hl/ha
-            """)
             col_rank1, col_rank2 = st.columns(2)
             with col_rank1:
                 # Top 1 zone
