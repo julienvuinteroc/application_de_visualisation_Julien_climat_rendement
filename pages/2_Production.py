@@ -1562,16 +1562,20 @@ with tab_quant:
         summary["volume"] = summary["volume"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
         summary["rendement"] = summary["rendement"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
         summary["prod_hl_ha"] = summary["prod_hl_ha"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
+        summary = summary.sort_values(
+            "Zone",
+            key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0)
+        )
         # Version simplifiee avec mise en forme conditionnelle
         st.dataframe(
             summary,
             column_config={
                 "Zone": st.column_config.TextColumn("Zone", width="small"),
-                "surface": st.column_config.TextColumn("Surface (ha)", width="medium"),
-                "volume": st.column_config.TextColumn("Volume (hl)", width="medium"),
-                "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", width="medium"),
-                "prod_hl_ha": st.column_config.NumberColumn("Productivite (hl/ha)", width="medium"),
-                "% volume": st.column_config.NumberColumn("% Volume", width="small")
+                "surface": st.column_config.TextColumn("Surface (ha)", format="%.0f", width="medium"),
+                "volume": st.column_config.TextColumn("Volume (hl)", format="%.0f", width="medium"),
+                "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.0f", width="medium"),
+                "prod_hl_ha": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f", width="medium"),
+                "% volume": st.column_config.NumberColumn("% Volume", format="%.1f", width="small")
             },
             width="stretch",
             hide_index=True
