@@ -81,8 +81,6 @@ HISTORICAL_INDICATORS = [
     "Soil_pH",
     "jours_pluie",
 ]
-
-
 # Style CSS personnalise
 st.markdown("""
 <style> 
