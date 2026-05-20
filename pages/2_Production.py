@@ -554,11 +554,17 @@ with tab_rdt:
             # Analyse IA
             with st.expander("Analyse IA du rendement", expanded=False):
                 with st.spinner("Analyse en cours..."):
+                    if use_moving_average:
+                        last_year = data["annee"].max()
+                        data = data[data["annee"] >= last_year - 4]
                     ai_analysis = ai_analyzer.analyze_rendement(data, mode, selections)
                     st.markdown(ai_analysis['natural_analysis'])
             
             # Statistiques descriptives
             with st.expander("Statistiques descriptives", expanded=False):
+                if use_moving_average:
+                    last_year = data["annee"].max()
+                    data = data[data["annee"] >= last_year - 4]
                 stats_df = data.groupby(col_map)["rendement"].describe(percentiles=[.25, .5, .75]).round(1)
                 stats_df = stats_df[['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']]
                 stats_df['std'] = stats_df['std'].round(0)
