@@ -1478,6 +1478,7 @@ with tab_quant:
         if not tmp.empty:
             # CORRECTION: Calcul des statistiques de volatilite
             vol_stats = tmp.groupby("Zone")["rendement"].agg(['mean', 'std']).reset_index()
+            vol_stats = vol_stats[vol_stats["Zone"] != "1"]
             vol_stats['cv'] = (vol_stats['std'] / vol_stats['mean'] * 100).round(1)
             vol_stats = get_zones_1_7(vol_stats)
             vol_stats = vol_stats.sort_values("cv")
