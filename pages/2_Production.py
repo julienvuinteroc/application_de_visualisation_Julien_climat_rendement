@@ -791,35 +791,36 @@ with tab_vol:
             st.plotly_chart(fig_dept_cepage, key="dept_cepage_vol", width="stretch")
     
     # Top 20 cepages des 5 dernieres annees
-    if not reve.empty:
-        st.divider()
-        st.subheader("Top 20 cepages - 5 dernieres annees")
-        last_5_years = get_last_5_years(reve)
-        top20_last5 = (
-            last_5_years.groupby("code_cepage")["volume"]
-            .sum()
-            .sort_values(ascending=False)
-            .head(20)
-            .reset_index()
-        )
-        fig_top_last5 = px.bar(
-            top20_last5,
-            x="code_cepage",
-            y="volume",
-            color="code_cepage",
-            title="Top 20 cepages par volume produit (5 dernieres annees)",
-            
-            color_discrete_sequence=px.colors.qualitative.Set3,
-            height=500
-        )
-        fig_top_last5.update_layout(showlegend=False, xaxis_title="Cepage", yaxis_title="Volume (hl)")
-        fig_top_last5.update_layout(
-            separators=". "
-        )
-        fig_top_last5.update_yaxes(
-            tickformat=",.0f"
-        )
-        st.plotly_chart(fig_top_last5, key="top20_last5", width="stretch")
+    if use_moving_average:
+        if not reve.empty:
+            st.divider()
+            st.subheader("Top 20 cepages - 5 dernieres annees")
+            last_5_years = get_last_5_years(reve)
+            top20_last5 = (
+                last_5_years.groupby("code_cepage")["volume"]
+                .sum()
+                .sort_values(ascending=False)
+                .head(20)
+                .reset_index()
+            )
+            fig_top_last5 = px.bar(
+                top20_last5,
+                x="code_cepage",
+                y="volume",
+                color="code_cepage",
+                title="Top 20 cepages par volume produit (5 dernieres annees)",
+                
+                color_discrete_sequence=px.colors.qualitative.Set3,
+                height=500
+            )
+            fig_top_last5.update_layout(showlegend=False, xaxis_title="Cepage", yaxis_title="Volume (hl)")
+            fig_top_last5.update_layout(
+                separators=". "
+            )
+            fig_top_last5.update_yaxes(
+                tickformat=",.0f"
+            )
+            st.plotly_chart(fig_top_last5, key="top20_last5", width="stretch")
 
 # =====================================================
 # PREDICTION
