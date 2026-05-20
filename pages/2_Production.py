@@ -1389,6 +1389,7 @@ with tab_quant:
             ax5.set_title("Distribution du rendement par zone", fontsize=14, fontweight="bold")
             ax5.grid(axis="y", alpha=0.3)
             st.pyplot(fig5)
+            st.info ("Les zones ayant des rendements supérieurs aux seuils ont été exclus des analyses.")
             plt.close(fig5)
             
             
@@ -1485,10 +1486,15 @@ with tab_quant:
             
             # Graphique 1: Coefficient de variation
             fig7, ax7 = plt.subplots(figsize=(16, 6))
-            
+            color_map_zones = {
+                str(k): v for k, v in ZONE_COLOR_MAP.items()
+            }
+            colors_zones = [
+                color_map_zones.get(str(int(z)), "#808080")
+                for z in vol_stats["Zone"]
+            ]
             colors_cv = ['#2e7d32' if cv < 15 else '#f9a825' if cv < 25 else '#c62828' for cv in vol_stats['cv']]
-            bars = ax7.bar(vol_stats["Zone"].astype(str), vol_stats["cv"], color=colors_cv, edgecolor="black")
-            
+            bars = ax7.bar(vol_stats["Zone"].astype(str), vol_stats["cv"], color=colors_zones, edgecolor="black")
             ax7.set_xlabel("Zone", fontsize=12)
             ax7.set_ylabel("Coefficient de variation (%)", fontsize=12)
             ax7.set_title("Stabilite du rendement par zone (CV plus petit = plus stable)", fontsize=14, fontweight="bold")
@@ -1498,15 +1504,14 @@ with tab_quant:
             ax7.axhline(y=15, color='green', linestyle='--', alpha=0.7, label='Seuil de stabilite (15%)')
             ax7.axhline(y=25, color='orange', linestyle='--', alpha=0.7, label='Seuil de variabilite (25%)')
             ax7.legend()
-            
             # Ajout des valeurs
             for bar, val in zip(bars, vol_stats["cv"]):
                 ax7.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.5,
                         f"{val:.0f}%", ha="center", va="bottom", fontsize=9)
             
             st.pyplot(fig7)
+            st.info ("Les zones ayant des stabilités de rendement anormalement élevées ont été exclus des analyses.")
             plt.close(fig7)
-            
             # Interpretation
             st.markdown("""
             **Guide de lecture :**
@@ -1526,13 +1531,14 @@ with tab_quant:
                 st.markdown(f"**Zone la plus stable : Zone {int(most_stable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmin(), 'cv']:.0f}%)**")
                 
                 df_stable = tmp[tmp["Zone"] == most_stable].groupby("annee")["rendement"].mean().reset_index()
-                
+                zone_str_most_stable = str(int(most_stable))
+                zone_color_stable = ZONE_COLOR_MAP.get(zone_str_most_stable, "#808080")
                 fig8, ax8 = plt.subplots(figsize=(16, 6))
-                ax8.plot(df_stable["annee"], df_stable["rendement"], 'o-', color="#2e7d32", linewidth=2, markersize=6)
+                ax8.plot(df_stable["annee"], df_stable["rendement"], 'o-', color=zone_color_stable, linewidth=2, markersize=6)
                 ax8.axhline(y=df_stable["rendement"].mean(), color='green', linestyle='--', alpha=0.7, label='Moyenne')
-                ax8.set_xlabel("Annee", fontsize=10)
-                ax8.set_ylabel("Rendement (hl/ha)", fontsize=10)
-                ax8.set_title(f"Evolution Zone {int(most_stable)}", fontsize=12)
+                ax8.set_xlabel("Annee", fontsize=16)
+                ax8.set_ylabel("Rendement (hl/ha)", fontsize=16)
+                ax8.set_title(f"Evolution Zone {int(most_stable)}", fontsize=18)
                 ax8.grid(True, alpha=0.3)
                 ax8.legend()
                 st.pyplot(fig8)
@@ -1544,8 +1550,10 @@ with tab_quant:
                 st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
                 
                 df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
+                zone_str_most_variable = str(int(most_variable))
+                zone_color_variable = ZONE_COLOR_MAP.get(zone_str_most_variable, "#808080")
                 fig9, ax9 = plt.subplots(figsize=(16, 6))
-                ax9.plot(df_variable["annee"], df_variable["rendement"], 'o-', color="#c62828", linewidth=2, markersize=6)
+                ax9.plot(df_variable["annee"], df_variable["rendement"], 'o-', color=zone_color_variable, linewidth=2, markersize=6)
                 ax9.axhline(y=df_variable["rendement"].mean(), color='red', linestyle='--', alpha=0.7, label='Moyenne')
                 ax9.set_xlabel("Annee", fontsize=10)
                 ax9.set_ylabel("Rendement (hl/ha)", fontsize=10)
