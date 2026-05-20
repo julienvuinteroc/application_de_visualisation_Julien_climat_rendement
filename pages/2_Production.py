@@ -1307,7 +1307,7 @@ with tab_quant:
         tmp = get_zones_1_7(tmp)
         if not tmp.empty:
             # Graphique 1: Barres avec ecart-type
-            prod_stats = tmp.groupby("Zone")["prod_hl_ha"].agg(['mean', 'std', 'count']).reset_index()
+            prod_stats = tmp.groupby("Zone")["prod_hl_ha"].agg(['mean', 'std']).reset_index()
             prod_stats = prod_stats[prod_stats["Zone"] != "1"]
             prod_stats = get_zones_1_7(prod_stats)
             prod_stats = prod_stats.sort_values("mean", ascending=False)
@@ -1389,9 +1389,6 @@ with tab_quant:
             st.pyplot(fig5)
             st.info ("Les zones ayant des rendements supérieurs aux seuils ont été exclus des analyses.")
             plt.close(fig5)
-            
-            
-            # Tableau complet
             st.subheader("Tableau detaille par zone")
             st.dataframe(
                 prod_stats.round(1),
@@ -1519,60 +1516,39 @@ with tab_quant:
             
             # Graphique 2: Evolution temporelle pour les zones les plus/moins stables
             st.subheader("Evolution temporelle comparative")
+            # Zone la plus stable
+            most_stable = vol_stats.loc[vol_stats["cv"].idxmin(), "Zone"]
+            st.markdown(f"**Zone la plus stable : Zone {int(most_stable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmin(), 'cv']:.0f}%)**")
             
-            col_evol1, col_evol2 = st.columns(2)
-            
-            with col_evol1:
-                # Zone la plus stable
-                most_stable = vol_stats.loc[vol_stats["cv"].idxmin(), "Zone"]
-                st.markdown(f"**Zone la plus stable : Zone {int(most_stable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmin(), 'cv']:.0f}%)**")
-                
-                df_stable = tmp[tmp["Zone"] == most_stable].groupby("annee")["rendement"].mean().reset_index()
-                zone_str_most_stable = str(int(most_stable))
-                zone_color_stable = ZONE_COLOR_MAP.get(zone_str_most_stable, "#808080")
-                fig8, ax8 = plt.subplots(figsize=(16, 6))
-                ax8.plot(df_stable["annee"], df_stable["rendement"], 'o-', color=zone_color_stable, linewidth=2, markersize=6)
-                ax8.axhline(y=df_stable["rendement"].mean(), color='green', linestyle='--', alpha=0.7, label='Moyenne')
-                ax8.set_xlabel("Annee", fontsize=16)
-                ax8.set_ylabel("Rendement (hl/ha)", fontsize=16)
-                ax8.set_title(f"Evolution Zone {int(most_stable)}", fontsize=18)
-                ax8.grid(True, alpha=0.3)
-                ax8.legend()
-                st.pyplot(fig8)
-                plt.close(fig8)
-            
-            with col_evol2:
-                # Zone la plus variable
-                most_variable = vol_stats.loc[vol_stats["cv"].idxmax(), "Zone"]
-                st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
-                
-                df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
-                zone_str_most_variable = str(int(most_variable))
-                zone_color_variable = ZONE_COLOR_MAP.get(zone_str_most_variable, "#808080")
-                fig9, ax9 = plt.subplots(figsize=(16, 6))
-                ax9.plot(df_variable["annee"], df_variable["rendement"], 'o-', color=zone_color_variable, linewidth=2, markersize=6)
-                ax9.axhline(y=df_variable["rendement"].mean(), color='red', linestyle='--', alpha=0.7, label='Moyenne')
-                ax9.set_xlabel("Annee", fontsize=10)
-                ax9.set_ylabel("Rendement (hl/ha)", fontsize=10)
-                ax9.set_title(f"Evolution Zone {int(most_variable)}", fontsize=12)
-                ax9.grid(True, alpha=0.3)
-                ax9.legend()
-                st.pyplot(fig9)
-                plt.close(fig9)
-            
-            # Tableau complet
-            st.subheader("Tableau de synthese de la volatilite")
-            st.dataframe(
-                vol_stats,
-                column_config={
-                    "Zone": "Zone",
-                    "mean": st.column_config.NumberColumn("Rendement moyen (hl/ha)", format="%.0f"),
-                    "std": st.column_config.NumberColumn("Ecart-type", format="%.0f"),
-                    "Coefficient de variation du rendement": st.column_config.NumberColumn("Coeficient variation(%)", format="%.1f")
-                },
-                width="stretch",
-                hide_index=True
-            )
+            df_stable = tmp[tmp["Zone"] == most_stable].groupby("annee")["rendement"].mean().reset_index()
+            zone_str_most_stable = str(int(most_stable))
+            zone_color_stable = ZONE_COLOR_MAP.get(zone_str_most_stable, "#808080")
+            fig8, ax8 = plt.subplots(figsize=(16, 6))
+            ax8.plot(df_stable["annee"], df_stable["rendement"], 'o-', color=zone_color_stable, linewidth=2, markersize=6)
+            ax8.axhline(y=df_stable["rendement"].mean(), color='green', linestyle='--', alpha=0.7, label='Moyenne')
+            ax8.set_xlabel("Annee", fontsize=16)
+            ax8.set_ylabel("Rendement (hl/ha)", fontsize=20)
+            ax8.set_title(f"Evolution Zone {int(most_stable)}", fontsize=22)
+            ax8.grid(True, alpha=0.3)
+            ax8.legend()
+            st.pyplot(fig8)
+            plt.close(fig8)
+            # Zone la plus variable
+            most_variable = vol_stats.loc[vol_stats["cv"].idxmax(), "Zone"]
+            st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
+            df_variable = tmp[tmp["Zone"] == most_variable].groupby("annee")["rendement"].mean().reset_index()
+            zone_str_most_variable = str(int(most_variable))
+            zone_color_variable = ZONE_COLOR_MAP.get(zone_str_most_variable, "#808080")
+            fig9, ax9 = plt.subplots(figsize=(16, 6))
+            ax9.plot(df_variable["annee"], df_variable["rendement"], 'o-', color=zone_color_variable, linewidth=2, markersize=6)
+            ax9.axhline(y=df_variable["rendement"].mean(), color='red', linestyle='--', alpha=0.7, label='Moyenne')
+            ax9.set_xlabel("Annee", fontsize=10)
+            ax9.set_ylabel("Rendement (hl/ha)", fontsize=10)
+            ax9.set_title(f"Evolution Zone {int(most_variable)}", fontsize=12)
+            ax9.grid(True, alpha=0.3)
+            ax9.legend()
+            st.pyplot(fig9)
+            plt.close(fig9)
             st.write ("N.B: cv: Coefficient de variation (en %)")
     
     with tab_q5:
