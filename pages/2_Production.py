@@ -1360,8 +1360,6 @@ with tab_quant:
                     </div>
                     """, unsafe_allow_html=True)
             # Graphique 2: Distribution du rendement par zone (boxplot simplifie)
-            st.subheader("Distribution du rendement par zone")
-            
             fig5, ax5 = plt.subplots(figsize=(16, 6))
             tmp_zone = tmp[~tmp["Zone"].isin(["0", "None", "nan"])].copy()
             zones_sorted = sorted(tmp_zone["Zone"].unique(), key=lambda x: int(x))
@@ -1386,7 +1384,7 @@ with tab_quant:
             ax5.set_xlabel("Zone", fontsize=12)
             ax5.set_ylim(0,100)
             ax5.set_ylabel("Rendement (hl/ha)", fontsize=12)
-            ax5.set_title("Distribution du rendement par zone", fontsize=14, fontweight="bold")
+            ax5.set_title("Distribution du rendement par zone (avec ecart-type)", fontsize=14, fontweight="bold")
             ax5.grid(axis="y", alpha=0.3)
             st.pyplot(fig5)
             st.info ("Les zones ayant des rendements supérieurs aux seuils ont été exclus des analyses.")
@@ -1400,8 +1398,7 @@ with tab_quant:
                 column_config={
                     "Zone": "Zone",
                     "mean": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f"),
-                    "std": st.column_config.NumberColumn("Ecart-type", format="%.0f"),
-                    "count": st.column_config.NumberColumn("Nombre d'observations", format="%d")
+                    "std": st.column_config.NumberColumn("Ecart-type", format="%.0f")
                 },
                 width="stretch",
                 hide_index=True
