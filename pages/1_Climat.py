@@ -1431,7 +1431,7 @@ with tab_future:
             else:
                 st.markdown("""
                 <div>
-                    <span style="color:#FFFF00">⬤</span> Donnees historiques pour les temperatures<br>
+                    <span style="color:#FFFF00">⬤</span> Donnees historiques des temperatures<br>
                     <span style="color:#FF0000">⬤</span> Ecart entre le passe et les predictions<br>
 
                 </div>""",
