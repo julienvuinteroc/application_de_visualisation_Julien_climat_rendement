@@ -447,9 +447,8 @@ with tab_rdt:
             evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
             evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MIN, YEAR_MAX)
             if use_moving_average:
-                evol_full["rendement"] = evol_full.groupby(col_map)["rendement"].transform(
-                    lambda x: x.rolling(5, min_periods=1).mean()
-                )
+                evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
+                evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MAX-4, YEAR_MAX)
             evol_full["rendement"] = evol_full["rendement"].round(0)
             # Utilisation des couleurs selon le mode
             if mode == "Couleur":
@@ -1473,7 +1472,6 @@ with tab_quant:
                         f"{val:.0f}%", ha="center", va="bottom", fontsize=9)
             
             st.pyplot(fig7)
-            st.info ("Les zones ayant des stabilités de rendement anormalement élevées ont été exclus des analyses.")
             plt.close(fig7)
             # Interpretation
             st.markdown("""
