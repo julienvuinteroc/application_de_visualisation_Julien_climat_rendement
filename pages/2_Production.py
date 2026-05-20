@@ -1151,7 +1151,7 @@ with tab_quant:
     vol_rdt = base["rendement"].std()
     col_k1.metric("Productivite moyenne", f"{prod_global:.0f} hl/ha" if pd.notna(prod_global) else "N/A")
     col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
-    col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} %" if pd.notna(vol_rdt) else "N/A")
+    col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} hl/ha" if pd.notna(vol_rdt) else "N/A")
     
     tab_q1, tab_q2, tab_q3, tab_q4, tab_q5 = st.tabs([
         "Surface vs Volume", "Rendement vs Volume", "Productivite par zone", "Volatilite", "Tableau de bord"
