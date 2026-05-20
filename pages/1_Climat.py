@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import matplotlib.patches as mpatches
 import folium
 import base64
@@ -801,6 +802,9 @@ def plot_historical_curves(
     ax.set_title(
         f"{title} - {indicator_label(indicator)}"
     )
+    ax.yaxis.set_major_formatter(
+        mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+    )
     ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y",linestyle="--",alpha=0.5)
@@ -892,6 +896,9 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
             )
     ax.set_title(f"Projection sans scenario - {indicator_label(indicator)}")
     ax.set_xlabel("Annee")
+    ax.yaxis.set_major_formatter(
+        mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+    )
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.legend(fontsize=15, bbox_to_anchor=(0.5, -0.15), loc="upper center", title="Legende", title_fontsize=17)
