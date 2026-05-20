@@ -1149,12 +1149,9 @@ with tab_quant:
     prod_global = (base["volume"].sum() / base["surface"].sum()) if base["surface"].sum() > 0 else np.nan
     corr_vr = base[["volume", "rendement"]].dropna().corr().iloc[0, 1] if len(base[["volume", "rendement"]].dropna()) > 2 else np.nan
     vol_rdt = base["rendement"].std()
-    share_hors = (base["statut_plafond"].eq("Hors plafond").mean() * 100) if base["rendement"].notna().any() else np.nan
-    
     col_k1.metric("Productivite moyenne", f"{prod_global:.0f} hl/ha" if pd.notna(prod_global) else "N/A")
     col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
     col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} %" if pd.notna(vol_rdt) else "N/A")
-    col_k4.metric("% Hors plafond", f"{share_hors:.1f} %" if pd.notna(share_hors) else "N/A")
     
     tab_q1, tab_q2, tab_q3, tab_q4, tab_q5 = st.tabs([
         "Surface vs Volume", "Rendement vs Volume", "Productivite par zone", "Volatilite", "Tableau de bord"
