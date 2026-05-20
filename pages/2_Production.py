@@ -1153,8 +1153,8 @@ with tab_quant:
     col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
     col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} hl/ha" if pd.notna(vol_rdt) else "N/A")
     
-    tab_q1, tab_q2, tab_q3, tab_q4, tab_q5 = st.tabs([
-        "Surface vs Volume", "Rendement vs Volume", "Productivite par zone", "Volatilite", "Tableau de bord"
+    tab_q1, tab_q2, tab_q3, tab_q4, tab_q5, tab_q6 = st.tabs([
+        "Surface vs Volume", "Rendement vs Volume", "Productivite et rendement par zone", "Productivite par couleur", "Volatilite", "Tableau de bord"
     ])
     
     with tab_q1:
@@ -1194,64 +1194,10 @@ with tab_quant:
             ax1.grid(True, alpha=0.3)
             st.pyplot(fig1)
             plt.close(fig1)
-            
-            # Graphique 2: Barres de productivite par surface
-            st.subheader("Productivite par unite de surface")
-            col_prod1, col_prod2 = st.columns(2)
-            
-            with col_prod1:
-                # Productivite par zone
-                prod_zone = tmp.groupby("Zone").agg({
-                    "surface": "sum",
-                    "volume": "sum"
-                }).reset_index()
-                prod_zone["productivite"] = prod_zone["volume"] / prod_zone["surface"]
-                prod_zone = get_zones_1_7(prod_zone)
-                
-                fig2, ax2 = plt.subplots(figsize=(16, 6))
-                bars = ax2.bar(prod_zone["Zone"].astype(str), prod_zone["productivite"], 
-                              color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_zone["Zone"]])
-                ax2.set_xlabel("Zone", fontsize=13)
-                ax2.set_ylabel("Productivite (hl/ha)", fontsize=15)
-                ax2.set_title("Productivite moyenne par zone", fontsize=17, fontweight="bold")
-                ax2.grid(axis="y", alpha=0.3)
-                
-                # Ajout des valeurs sur les barres
-                for bar, val in zip(bars, prod_zone["productivite"]):
-                    ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                            f"{val:.0f}", ha="center", va="bottom", fontsize=9)
-                st.pyplot(fig2)
-                plt.close(fig2)
-            
-            with col_prod2:
-                # Productivite par couleur
-                prod_couleur = tmp.groupby("code_couleur").agg({
-                    "surface": "sum",
-                    "volume": "sum"
-                }).reset_index()
-                prod_couleur["productivite"] = prod_couleur["volume"] / prod_couleur["surface"]
-                
-                fig3, ax3 = plt.subplots(figsize=(16, 6))
-                colors_prod = [COLOR_MAP.get(c, "#808080") for c in prod_couleur["code_couleur"]]
-                bars = ax3.bar(prod_couleur["code_couleur"], prod_couleur["productivite"], color=colors_prod)
-                ax3.set_xlabel("Couleur", fontsize=12)
-                ax3.set_ylabel("Productivite (hl/ha)", fontsize=12)
-                ax3.set_title("Productivite moyenne par couleur", fontsize=14, fontweight="bold")
-                ax3.grid(axis="y", alpha=0.3)
-                
-                for bar, val in zip(bars, prod_couleur["productivite"]):
-                    ax3.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                            f"{val:.0f}", ha="center", va="bottom", fontsize=9)
-                st.pyplot(fig3)
-                plt.close(fig3)
-            
             # Interpretation automatique
             st.info(f"""
             **Interpretation :**
             - La correlation entre surface et volume est de {tmp["surface"].corr(tmp["volume"]):.2f}
-            - La productivite moyenne est de {prod_global:.0f} hl/ha
-            - La zone la plus productive est {prod_zone.loc[prod_zone["productivite"].idxmax(), "Zone"]} avec {prod_zone["productivite"].max():.0f} hl/ha
-            - La couleur la plus productive est le {WINE_CORRESPONDANCE.get(prod_couleur.loc[prod_couleur["productivite"].idxmax(), "code_couleur"])} avec {prod_couleur["productivite"].max():.0f} hl/ha
             """)
     
     with tab_q2:
@@ -1292,7 +1238,6 @@ with tab_quant:
         **Interpretation :**
         - La correlation entre rendement et volume est de {corr_value:.2f}
         - Un rendement eleve n'implique pas automatiquement un volume eleve
-        - La zone avec le rendement median le plus eleve est a identifier sur la boite à moustaches
         """)
             
     
@@ -1300,58 +1245,56 @@ with tab_quant:
         st.subheader("Productivite par zone")
         
         st.markdown("*Analyse comparative de la productivite (volume/surface) entre les zones*")
-        tmp = base.dropna(subset=["prod_hl_ha", "Zone"]).copy()
-        tmp = get_zones_1_7(tmp)
+        tmp = base.dropna(subset=["surface", "volume", "code_couleur"]).copy()
         if not tmp.empty:
-            # Graphique 1: Barres avec ecart-type
-            prod_stats = tmp.groupby("Zone")["prod_hl_ha"].agg(['mean', 'std']).reset_index()
-            prod_stats = prod_stats[prod_stats["Zone"] != "1"]
-            prod_stats = get_zones_1_7(prod_stats)
-            prod_stats = prod_stats.sort_values("mean", ascending=False)
+            # Productivite par zone
+            prod_zone = tmp.groupby("Zone").agg({
+                "surface": "sum",
+                "volume": "sum"
+            }).reset_index()
+            prod_zone["productivite"] = prod_zone["volume"] / prod_zone["surface"]
+            prod_zone = get_zones_1_7(prod_zone)
             
-            fig6, ax6 = plt.subplots(figsize=(16, 6))
-            bars = ax6.bar(prod_stats["Zone"].astype(str), prod_stats["mean"], 
-                          capsize=5,
-                          color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_stats["Zone"]],
-                          edgecolor="black", linewidth=1)
+            fig2, ax2 = plt.subplots(figsize=(16, 6))
+            bars = ax2.bar(prod_zone["Zone"].astype(str), prod_zone["productivite"], 
+                            color=[ZONE_COLOR_MAP.get(str(int(z)), "#808080") for z in prod_zone["Zone"]])
+            ax2.set_xlabel("Zone", fontsize=13)
+            ax2.set_ylabel("Productivite (hl/ha)", fontsize=15)
+            ax2.set_title("Productivite moyenne par zone", fontsize=17, fontweight="bold")
+            ax2.grid(axis="y", alpha=0.3)
             
-            ax6.set_xlabel("Zone", fontsize=12)
-            ax6.set_ylabel("Productivite moyenne (hl/ha)", fontsize=12)
-            ax6.set_title("Productivite moyenne par zone", fontsize=14, fontweight="bold")
-            ax6.grid(axis="y", alpha=0.3)
-            
-            # Ajout des valeurs
-            for bar, val in zip(bars, prod_stats["mean"]):
-                ax6.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 2,
-                        f"{val:.0f}", ha="center", va="bottom", fontsize=10, fontweight="bold")
-            
-            st.pyplot(fig6)
-            plt.close(fig6)
+            # Ajout des valeurs sur les barres
+            for bar, val in zip(bars, prod_zone["productivite"]):
+                ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
+                        f"{val:.0f}", ha="center", va="bottom", fontsize=9)
+            st.pyplot(fig2)
+            plt.close(fig2)
+            # Interpretation automatique
+            st.info(f"""
+            **Interpretation :**
+            - La productivite moyenne est de {prod_global:.0f} hl/ha
+            """)
             col_rank1, col_rank2 = st.columns(2)
             
             with col_rank1:
                 # Top 1 zone
-                top1 = prod_stats.nlargest(1, "mean")
+                top1 = prod_zone.loc[prod_zone["productivite"].idxmax()]
                 st.markdown("**La zone la plus productive**")
-                for i, row in top1.iterrows():
-                    st.markdown(f"""
-                    <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
-                        <b>Zone {int(row['Zone'])}</b> : {row['mean']:.0f} hl/ha
-                        <span style="color: #2e7d32;">(Ecart-type: {row['std']:.0f})</span>
-                    </div>
-                    """, unsafe_allow_html=True)
+                st.markdown(f"""
+                <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                    <b>Zone {int(top1['Zone'])}</b> : {top1['productivite']:.0f} hl/ha
+                </div>
+                """, unsafe_allow_html=True)
             
             with col_rank2:
                 # Bottom 1 zone
-                bottom1 = prod_stats.nsmallest(1, "mean")
+                bottom1 = prod_zone.loc[prod_zone["productivite"].idxmin()]
                 st.markdown("**La zone la moins productive**")
-                for i, row in bottom1.iterrows():
-                    st.markdown(f"""
-                    <div style="background: #ffebee; padding: 10px; border-radius: 8px; margin: 5px 0;">
-                        <b>Zone {int(row['Zone'])}</b> : {row['mean']:.0f} hl/ha
-                        <span style="color: #c62828;">(Ecart-type: {row['std']:.0f})</span>
-                    </div>
-                    """, unsafe_allow_html=True)
+                st.markdown(f"""
+                <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                    <b>Zone {int(bottom1['Zone'])}</b> : {bottom1['productivite']:.0f} hl/ha
+                </div>
+                """, unsafe_allow_html=True)
             # Graphique 2: Distribution du rendement par zone (boxplot simplifie)
             fig5, ax5 = plt.subplots(figsize=(16, 6))
             tmp_zone = tmp[~tmp["Zone"].isin(["0", "None", "nan"])].copy()
@@ -1380,23 +1323,12 @@ with tab_quant:
             ax5.set_title("Distribution du rendement par zone (avec ecart-type)", fontsize=14, fontweight="bold")
             ax5.grid(axis="y", alpha=0.3)
             st.pyplot(fig5)
-            st.info ("Les zones ayant des rendements supérieurs aux seuils ont été exclus des analyses.")
+            st.info ("Les zones ayant des rendements supérieurs aux seuils ont été exclus des analyses. N.B: cv: Coefficient de variation (en %)")
             plt.close(fig5)
-            st.subheader("Tableau detaille par zone")
-            st.dataframe(
-                prod_stats.round(1),
-                column_config={
-                    "Zone": "Zone",
-                    "mean": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f"),
-                    "std": st.column_config.NumberColumn("Ecart-type", format="%.0f")
-                },
-                width="stretch",
-                hide_index=True
-            )
             st.divider()
             st.subheader("Classification automatique des zones")
             
-            cluster_df = df.groupby("Zone").agg({
+            cluster_df = tmp.groupby("Zone").agg({
                 "rendement": "mean",
                 "volume": "sum",
                 "surface": "sum"
@@ -1455,18 +1387,65 @@ with tab_quant:
                         <span style="color: #555;"> Volume moyen: {f"{avg_volume:,.0f}".replace(",", " ")} hl</span>
                     </div>
                     """, unsafe_allow_html=True)
-    
     with tab_q4:
+        st.subheader("Productivite par couleur")
+        st.markdown("*Analyse comparative de la productivite (volume/surface) entre les couleurs*")
+        tmp = base.dropna(subset=["surface", "volume", "code_couleur"]).copy()
+        if not tmp.empty:
+            # Productivite par couleur
+            prod_couleur = tmp.groupby("code_couleur").agg({
+                "surface": "sum",
+                "volume": "sum"
+            }).reset_index()
+            prod_couleur["productivite"] = prod_couleur["volume"] / prod_couleur["surface"]
+            
+            fig20, ax2 = plt.subplots(figsize=(16, 6))
+            bars = ax2.bar(prod_couleur["code_couleur"].astype(str), prod_couleur["productivite"],
+                            color=[COLOR_MAP.get(c, "#808080") for c in prod_couleur["code_couleur"]])
+            ax2.set_xlabel("Couleur", fontsize=13)
+            ax2.set_ylabel("Productivite (hl/ha)", fontsize=15)
+            ax2.set_title("Productivite moyenne par couleur", fontsize=17, fontweight="bold")
+            ax2.grid(axis="y", alpha=0.3)
+            
+            # Ajout des valeurs sur les barres
+            for bar, val in zip(bars, prod_couleur["productivite"]):
+                ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
+                        f"{val:.0f}", ha="center", va="bottom", fontsize=9)
+            st.pyplot(fig20)
+            plt.close(fig20)
+            st.info(f"""
+            **Interpretation :**
+            - La productivite moyenne est de {prod_global:.0f} hl/ha
+            """)
+            col_rank1, col_rank2 = st.columns(2)
+            with col_rank1:
+                # Top 1 zone
+                top1 = prod_couleur.loc[prod_couleur["productivite"].idxmax()]
+                st.markdown("**La couleur la plus productive**")
+                st.markdown(f"""
+                <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                    <b>Couleur {top1['code_couleur']}</b> : {top1['productivite']:.0f} hl/ha
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col_rank2:
+                # Bottom 1 zone
+                bottom1 = prod_couleur.loc[prod_couleur["productivite"].idxmin()]
+                st.markdown("**La couleur la moins productive**")
+                st.markdown(f"""
+                <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                    <b>Couleur {bottom1['code_couleur']}</b> : {bottom1['productivite']:.0f} hl/ha
+                </div>
+                """, unsafe_allow_html=True)
+    with tab_q5:
         st.subheader("Volatilite du rendement par zone")
         st.markdown("*Analyse de la stabilite interannuelle du rendement*")
-        
         tmp = base.dropna(subset=["rendement", "Zone", "annee"]).copy()
         tmp = get_zones_1_7(tmp)
         
         if not tmp.empty:
             # CORRECTION: Calcul des statistiques de volatilite
             vol_stats = tmp.groupby("Zone")["rendement"].agg(['mean', 'std']).reset_index()
-            vol_stats = vol_stats[vol_stats["Zone"] != "1"]
             vol_stats['cv'] = (vol_stats['std'] / vol_stats['mean'] * 100).round(1)
             vol_stats = get_zones_1_7(vol_stats)
             vol_stats = vol_stats.sort_values("cv")
@@ -1542,45 +1521,46 @@ with tab_quant:
             ax9.legend()
             st.pyplot(fig9)
             plt.close(fig9)
-            st.write ("N.B: cv: Coefficient de variation (en %)")
+            
     
-    with tab_q5:
+    with tab_q6:
         st.subheader("Tableau de bord analytique")
+        tmp = base.dropna(subset=["surface", "volume", "code_couleur"]).copy()
+        if not tmp.empty:
+            # Productivite par zone
+            prod_zone = tmp.groupby("Zone").agg({
+                "surface": "sum",
+                "volume": "sum",
+                "rendement": "mean",
+            }).reset_index()
+            prod_zone["productivite"] = prod_zone["volume"] / prod_zone["surface"]
+            prod_zone = get_zones_1_7(prod_zone)
+            prod_zone['% volume'] = (prod_zone['volume'] / prod_zone['volume'].sum() * 100).round(1)
+            prod_zone = get_zones_1_7(prod_zone)
+            prod_zone = prod_zone[prod_zone["Zone"] != "1"]
+            prod_zone = prod_zone.sort_values("Zone", key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0))
+            prod_zone["surface"] = prod_zone["surface"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
+            prod_zone["rendement"] = prod_zone["rendement"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
+            prod_zone["volume"] = prod_zone["volume"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
+            prod_zone = prod_zone.sort_values(
+                "Zone",
+                key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0)
+            )
+            # Version simplifiee avec mise en forme conditionnelle
+            st.dataframe(
+                prod_zone,
+                column_config={
+                    "Zone": st.column_config.TextColumn("Zone", width="small"),
+                    "surface": st.column_config.TextColumn("Surface (ha)", width="medium"),
+                    "volume": st.column_config.TextColumn("Volume (hl)", width="medium"),
+                    "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.0f", width="medium"),
+                    "productivite": st.column_config.NumberColumn("productivite", format="%.0f", width="medium"),
+                    "% volume": st.column_config.NumberColumn("% Volume", format="%.1f", width="small")
+                },
+                width="stretch",
+                hide_index=True
+            )
         
-        summary = base.groupby("Zone").agg({
-            'surface': 'sum',
-            'volume': 'sum',
-            'rendement': 'mean',
-            'prod_hl_ha': 'mean'
-        }).round(0).reset_index()
-        
-        summary['% volume'] = (summary['volume'] / summary['volume'].sum() * 100).round(1)
-        summary = get_zones_1_7(summary)
-        summary = summary[summary["Zone"] != "1"]
-        summary = summary.sort_values("Zone", key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0))
-        summary["surface"] = summary["surface"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-        summary["volume"] = summary["volume"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-        summary["rendement"] = summary["rendement"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-        summary["prod_hl_ha"] = summary["prod_hl_ha"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-        summary = summary.sort_values(
-            "Zone",
-            key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0)
-        )
-        # Version simplifiee avec mise en forme conditionnelle
-        st.dataframe(
-            summary,
-            column_config={
-                "Zone": st.column_config.TextColumn("Zone", width="small"),
-                "surface": st.column_config.NumberColumn("Surface (ha)", format="%.0f", width="medium"),
-                "volume": st.column_config.NumberColumn("Volume (hl)", format="%.0f", width="medium"),
-                "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.0f", width="medium"),
-                "prod_hl_ha": st.column_config.NumberColumn("Productivite (hl/ha)", format="%.0f", width="medium"),
-                "% volume": st.column_config.NumberColumn("% Volume", format="%.1f", width="small")
-            },
-            width="stretch",
-            hide_index=True
-        )
-    
 # Footer
 st.markdown("---")
 st.markdown(f"""

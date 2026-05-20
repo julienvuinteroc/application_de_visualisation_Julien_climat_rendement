@@ -32,7 +32,7 @@ def run_prediction(df: pd.DataFrame) -> Optional[pd.DataFrame]:
         )
 
     with col3:
-        horizon = st.slider("Horizon de prediction (annees)", 1, 2, 1, key="pred_h")
+        horizon = st.slider("Horizon de prediction (annees)", 1, 3, 1, key="pred_h")
 
     # Mapping des colonnes
     col_map = {

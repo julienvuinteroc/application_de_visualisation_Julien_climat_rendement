@@ -766,7 +766,7 @@ def plot_historical_curves(
                 grouped["Year"],
                 grouped[indicator],
                 marker="o",
-                linewidth=2,
+                linewidth=1,
                 color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
                 label=ZONE_LABELS.get(
                     zone_str,
@@ -783,7 +783,7 @@ def plot_historical_curves(
                 grouped["Year"],
                 trend,
                 linestyle="--",
-                linewidth=3,
+                linewidth=2,
                 color=ZONE_COLOR_MAP.get(zone_str, "#333333"),
                 label=ZONE_LABELS.get(
                     zone_str,
@@ -889,7 +889,7 @@ def plot_no_scenario_curves(df_no_scenario: pd.DataFrame, selected_zones: list[i
                 df_proj["value"],
                 marker="x",
                 linestyle="--",
-                linewidth=3,
+                linewidth=2,
                 color=color,
                 label=label,
             )
