@@ -1334,10 +1334,10 @@ with tab_quant:
             col_rank1, col_rank2 = st.columns(2)
             
             with col_rank1:
-                # Top 3 zones
-                top3 = prod_stats.nlargest(3, "mean")
-                st.markdown("**Top 3 zones les plus productives**")
-                for i, row in top3.iterrows():
+                # Top 1 zone
+                top1 = prod_stats.nlargest(1, "mean")
+                st.markdown("**La zone la plus productive**")
+                for i, row in top1.iterrows():
                     st.markdown(f"""
                     <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin: 5px 0;">
                         <b>Zone {int(row['Zone'])}</b> : {row['mean']:.0f} hl/ha
@@ -1346,10 +1346,10 @@ with tab_quant:
                     """, unsafe_allow_html=True)
             
             with col_rank2:
-                # Bottom 3 zones
-                bottom3 = prod_stats.nsmallest(3, "mean")
-                st.markdown("**3 zones les moins productives**")
-                for i, row in bottom3.iterrows():
+                # Bottom 1 zone
+                bottom1 = prod_stats.nsmallest(1, "mean")
+                st.markdown("**La zone la moins productive**")
+                for i, row in bottom1.iterrows():
                     st.markdown(f"""
                     <div style="background: #ffebee; padding: 10px; border-radius: 8px; margin: 5px 0;">
                         <b>Zone {int(row['Zone'])}</b> : {row['mean']:.0f} hl/ha
