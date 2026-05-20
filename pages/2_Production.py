@@ -1143,9 +1143,9 @@ with tab_quant:
     base["prod_hl_ha"] = np.where(base["surface"] > 0, base["volume"] / base["surface"], np.nan)
     
     st.subheader("Indicateurs cles de performance")
-    
-    col_k1, col_k2, col_k3, col_k4 = st.columns(4)
-    
+
+    col_k1, col_k2, col_k3 = st.columns(3)
+
     prod_global = (base["volume"].sum() / base["surface"].sum()) if base["surface"].sum() > 0 else np.nan
     corr_vr = base[["volume", "rendement"]].dropna().corr().iloc[0, 1] if len(base[["volume", "rendement"]].dropna()) > 2 else np.nan
     vol_rdt = base["rendement"].std()
