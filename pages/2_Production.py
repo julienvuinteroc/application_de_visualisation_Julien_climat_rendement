@@ -1556,6 +1556,7 @@ with tab_quant:
         
         summary['% volume'] = (summary['volume'] / summary['volume'].sum() * 100).round(1)
         summary = get_zones_1_7(summary)
+        summary = summary[summary["Zone"] != "1"]
         summary = summary.sort_values("Zone", key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0))
         summary["surface"] = summary["surface"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
         summary["volume"] = summary["volume"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
