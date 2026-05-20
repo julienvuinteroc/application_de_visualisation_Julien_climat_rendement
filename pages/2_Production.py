@@ -446,10 +446,12 @@ with tab_rdt:
             # Graphique d'evolution
             evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
             evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MIN, YEAR_MAX)
+            evol_full["annee"] = evol_full["annee"].astype(str)
             if use_moving_average:
                 evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
                 evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MAX-4, YEAR_MAX)
             evol_full["rendement"] = evol_full["rendement"].round(0)
+            evol_full["annee"] = evol_full["annee"].astype(str)
             # Utilisation des couleurs selon le mode
             if mode == "Couleur":
                 fig = px.line(
@@ -490,6 +492,7 @@ with tab_rdt:
                 hovermode="x unified",
                 height=500
             )
+            fig.update_xaxes(type="category")
             fig.add_hline(y=90, line_dash="dash", line_color="red", annotation_text="Plafond BL/RG (90 hl/ha)")
             fig.add_hline(y=100, line_dash="dash", line_color="orange", annotation_text="Plafond RS (100 hl/ha)")
             
@@ -500,6 +503,9 @@ with tab_rdt:
             
             # Histogramme rendement par departement et couleur
             st.markdown("#### Rendement par departement et couleur")
+            if use_moving_average:
+                last_year = data["annee"].max()
+                data = data[data["annee"] >= last_year - 4]
             dept_color_rdt = data.groupby(["code_departement", "code_couleur"])["rendement"].agg(["mean", "std"]).reset_index()
             dept_color_rdt["code_departement"] = pd.Categorical(
                 dept_color_rdt["code_departement"], 
@@ -523,7 +529,11 @@ with tab_rdt:
             
             # Histogramme rendement par zone et couleur
             st.markdown("#### Rendement par zone et couleur")
+            if use_moving_average:
+                last_year = data["annee"].max()
+                data = data[data["annee"] >= last_year - 4]
             zone_color_rdt = data.groupby(["Zone", "code_couleur"])["rendement"].agg(["mean", "std"]).reset_index()
+            
             zone_color_rdt = get_zones_1_7(zone_color_rdt)
             zone_color_rdt["mean"] = zone_color_rdt["mean"].round(0)
             zone_color_rdt["std"] = zone_color_rdt["std"].round(0)
@@ -604,10 +614,10 @@ with tab_vol:
             data = data[data["code_departement"].isin(["11", "30", "34", "66"])]
             evol = data.groupby(["annee", col_map])["volume"].sum().reset_index()
             evol_full = complete_years(evol, col_map, "volume", "sum", YEAR_MIN, YEAR_MAX)
+            evol_full["annee"] = evol_full["annee"].astype(str)
             if use_moving_average:
-                evol_full["volume"] = evol_full.groupby(col_map)["volume"].transform(
-                    lambda x: x.rolling(5, min_periods=1).mean()
-                )
+                evol = data.groupby(["annee", col_map])["volume"].sum().reset_index()
+                evol_full = complete_years(evol, col_map, "volume", "sum", YEAR_MAX-4, YEAR_MAX)
             # Utilisation des couleurs selon le mode
             if mode == "Couleur":
                 fig = px.line(
@@ -669,6 +679,7 @@ with tab_vol:
                 yaxis_title="Volume (hl)",
                 height=500
             )
+            fig.update_xaxes(type="category")
             st.plotly_chart(fig, key="volume_chart", width="stretch")
             
             # Histogrammes de comparaison
@@ -676,6 +687,9 @@ with tab_vol:
             
             # Volume par departement et couleur
             st.markdown("#### Volume par departement et couleur")
+            if use_moving_average:
+                last_year = data["annee"].max()
+                data = data[data["annee"] >= last_year - 4]
             dept_color_vol = data.groupby(["code_departement", "code_couleur"])["volume"].sum().reset_index()
             dept_color_vol["code_departement"] = pd.Categorical(
                 dept_color_vol["code_departement"], 
@@ -702,6 +716,9 @@ with tab_vol:
             
             # Volume par zone et couleur
             st.markdown("#### Volume par zone et couleur")
+            if use_moving_average:
+                last_year = data["annee"].max()
+                data = data[data["annee"] >= last_year - 4]
             zone_color_vol = data.groupby(["Zone", "code_couleur"])["volume"].sum().reset_index()
             zone_color_vol = get_zones_1_7(zone_color_vol)
             fig_zone_color_vol = px.bar(
