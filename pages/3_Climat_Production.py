@@ -253,7 +253,6 @@ def load_climate_yield_geo() -> pd.DataFrame:
 
 with st.spinner("Chargement des donnees"):
     df_geo = load_climate_yield_geo()
-    st.write(df_geo.shape)
     
 @st.cache_data
 def load_fusion_analysis() -> pd.DataFrame:
@@ -321,7 +320,6 @@ def load_fusion_analysis() -> pd.DataFrame:
 
 with st.spinner("Chargement des donnees fusion..."):
     df_fusion = load_fusion_analysis()
-    st.write(df_fusion.shape)
 
 if df_geo.empty:
     st.warning("Aucune donnee climat_rendement_geo disponible.")
