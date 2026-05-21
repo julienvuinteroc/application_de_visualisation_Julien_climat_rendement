@@ -241,6 +241,7 @@ def load_climate_yield_geo() -> pd.DataFrame:
     st.write("DEBUG columns", df.columns)
     st.write(df.head(3))
     st.write(df.isna().sum())
+    conn.close()
     return df
 
 
@@ -324,8 +325,16 @@ def load_fusion_analysis() -> pd.DataFrame:
 
 # Chargement des données
 with st.spinner("Chargement des donnees..."):
-    df_geo = load_climate_yield_geo()
-    df_fusion = load_fusion_analysis()
+    try:
+        df_geo = load_climate_yield_geo()
+    except Exception as e:
+        st.exception(e)
+        st.stop()
+    try:
+        df_fusion = load_fusion_analysis()
+    except Exception as e:
+        st.exception(e)
+        st.stop()
     st.write("DEBUG df_geo shape:", df_geo.shape)
     st.write("DEBUG df_fusion shape:", df_fusion.shape)
 
