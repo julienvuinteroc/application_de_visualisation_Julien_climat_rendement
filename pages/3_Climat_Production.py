@@ -210,8 +210,19 @@ def load_climate_yield_geo() -> pd.DataFrame:
     """Charge les donnees climat_rendement_geo"""
     conn = get_conn()
     try:
-        
-        df = conn.execute("SELECT * FROM climat_rendement_geo").df()
+        df = conn.execute(
+            """
+            SELECT
+                zone,
+                annee,
+                commune,
+                rendement,
+                code_departement,
+                temp_moyenne,
+                precipitation_total
+            FROM climat_rendement_geo
+            """
+        ).df()
     finally:
         pass
 
