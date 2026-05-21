@@ -1021,6 +1021,7 @@ with st.expander("Analyse automatique", expanded=False):
         {best_cepage_text}
         """
         st.markdown(narrative)
+        
         with st.expander("Analogie climatique et viticole", expanded=False):
             zone_focused = st.selectbox("Choisir une zone", selected_zones, label_visibility="collapsed")
             data_zone_answer = df_geo_filtered[df_geo_filtered["zone"] == zone_focused]
