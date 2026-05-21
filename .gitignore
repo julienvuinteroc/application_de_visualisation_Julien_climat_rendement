@@ -35,6 +35,7 @@ data/climat/dataset_clean_climat.csv
 # Ignore lourds
 *.parquet
 *.duckdb
+!db/mvttdb_light.duckdb
 
 # Logs
 *.log
