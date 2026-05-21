@@ -9,7 +9,6 @@ import streamlit.components.v1 as components
 import plotly.graph_objects as go
 from utils.db import get_conn
 from modules.data_loader import load_geojson
-from modules.ai_engine import AIAnalyzer
 
 
 st.set_page_config(
@@ -315,17 +314,6 @@ def load_fusion_analysis() -> pd.DataFrame:
 
     return df
 
-try:
-    ai_analyzer = AIAnalyzer()
-except Exception as e:
-    st.warning(f"IA indisponible : {e}")
-    ai_analyzer = None
-
-@st.cache_data
-def call_climate_ai(zone_id, temp, precip):
-    if ai_analyzer:
-        return ai_analyzer.agent_climate_similarity(zone_id, temp, precip)
-    return None
 
 # Chargement des données
 with st.spinner("Chargement des donnees..."):
@@ -1022,22 +1010,7 @@ with st.expander("Analyse automatique", expanded=False):
         """
         st.markdown(narrative)
         
-        with st.expander("Analogie climatique et viticole", expanded=False):
-            zone_focused = st.selectbox("Choisir une zone", selected_zones, label_visibility="collapsed")
-            data_zone_answer = df_geo_filtered[df_geo_filtered["zone"] == zone_focused]
-            if not data_zone_answer.empty:
-                temperature_moyenne = data_zone_answer["temp_moyenne"].mean()
-                precipitation_total = data_zone_answer["precipitation_total"].mean()
-                with st.spinner("Analyse analogie climatique et viticole en cours..."):
-                    st.markdown(f"**Analogie climatique et viticole pour la zone {zone_focused} :**")
-                    resul_analogy_climate_wine = call_climate_ai(
-                        zone_focused,
-                        temperature_moyenne,
-                        precipitation_total
-                    )
-                    st.markdown(resul_analogy_climate_wine)
-
-
+        
 st.markdown("---")
 st.caption(f"Analyse mise a jour le {pd.Timestamp.now().strftime('%d/%m/%Y %H:%M')}")
 
