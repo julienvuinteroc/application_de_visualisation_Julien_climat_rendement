@@ -570,7 +570,7 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         plot_bgcolor="rgba(0,0,0,0)",
         hoverlabel=dict(bgcolor="white", font_size=12)
     )
-    st.plotly_chart(fig_score, key="score_bar_chart", use_container_width=True)
+    st.plotly_chart(fig_score, key="score_bar_chart", width="stretch")
     with st.info(""):
         st.markdown("""
         **N.B :** Le score global traduit la performance globale de chaque zone en tenant compte des deux critères suivants :
@@ -628,7 +628,7 @@ with st.expander("Cartographie climat-production", expanded=True):
                 margin=dict(l=0, r=0, t=50, b=0),
                 coloraxis_colorbar=dict(title="Rendement (hl/ha)", thickness=15)
             )
-            st.plotly_chart(fig_map, key="climate_map", use_container_width=True)
+            st.plotly_chart(fig_map, key="climate_map", width="stretch")
 
     except Exception as e:
         st.warning(f"Carte indisponible : {e}")
@@ -717,7 +717,7 @@ else:
         yaxis=dict(showgrid=True, gridwidth=1, gridcolor="lightgray")
     )
     
-    st.plotly_chart(fig_evolution, key="evolution_chart", use_container_width=True)
+    st.plotly_chart(fig_evolution, key="evolution_chart", width="stretch")
 
 
 # =====================================================
@@ -792,7 +792,7 @@ with st.expander("Distributions des indicateurs", expanded=False):
             yaxis=dict(showgrid=True, gridwidth=1, gridcolor="lightgray")
         )
         
-        st.plotly_chart(fig_hist, key="histogram_chart", use_container_width=True)
+        st.plotly_chart(fig_hist, key="histogram_chart", width="stretch")
     else:
         st.info("Donnees insuffisantes pour l'histogramme.")
 
@@ -861,7 +861,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 labels={"zone": "Zone", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"},
                 height=500
             )
-            st.plotly_chart(fig_color, key="color_bar_chart", use_container_width=True)
+            st.plotly_chart(fig_color, key="color_bar_chart", width="stretch")
             
             color_reve = fusion_scope[fusion_scope["type_mvt"] == "REVE"].copy()
             if not color_reve.empty:
@@ -887,7 +887,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     hole=0.4,
                     height=500
                 )
-                st.plotly_chart(fig_color_ratio, key="color_ratio_chart", use_container_width=True)
+                st.plotly_chart(fig_color_ratio, key="color_ratio_chart", width="stretch")
     
     with subtab2:
         cepage_scope = fusion_scope[fusion_scope["type_mvt"] == "REVE"].copy()
@@ -946,7 +946,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
             fig_cepage.update_xaxes(title_font=dict(size=17))
             fig_cepage.update_yaxes(title_font=dict(size=17))
             fig_cepage.update_yaxes(range=[0, y_lim])
-            st.plotly_chart(fig_cepage, key="cepage_evolution_chart", use_container_width=True)
+            st.plotly_chart(fig_cepage, key="cepage_evolution_chart", width="stretch")
 
 
 # =====================================================
@@ -1016,20 +1016,7 @@ with st.expander("Analyse automatique", expanded=False):
         """
         st.markdown(narrative)
 
-with st.expander("Analogie climatique et viticole", expanded=False):
-    zone_focused = st.selectbox("Choisir une zone", selected_zones, label_visibility="collapsed")
-    data_zone_answer = df_geo_filtered[df_geo_filtered["zone"] == zone_focused]
-    if not data_zone_answer.empty:
-        temperature_moyenne = data_zone_answer["temp_moyenne"].mean()
-        precipitation_total = data_zone_answer["precipitation_total"].mean()
-        with st.spinner("Analyse analogie climatique et viticole en cours..."):
-            st.markdown(f"**Analogie climatique et viticole pour la zone {zone_focused} :**")
-            resul_analogy_climate_wine = call_climate_ai(
-                zone_focused,
-                temperature_moyenne,
-                precipitation_total
-            )
-            st.markdown(resul_analogy_climate_wine)
+
 
 st.markdown("---")
 st.caption(f"Analyse mise a jour le {pd.Timestamp.now().strftime('%d/%m/%Y %H:%M')}")
