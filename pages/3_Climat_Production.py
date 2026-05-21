@@ -212,7 +212,6 @@ def load_climate_yield_geo() -> pd.DataFrame:
     try:
         df = conn.execute("SELECT * FROM climat_rendement_geo").df()
     finally:
-        pass
         conn.close()
 
     df.columns = df.columns.astype(str).str.strip()
@@ -238,7 +237,6 @@ def load_climate_yield_geo() -> pd.DataFrame:
     for col in ["commune", "code_departement"]:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip()
-    conn.close()
     return df
 
 
@@ -272,7 +270,7 @@ def load_fusion_analysis() -> pd.DataFrame:
             """
         ).df()
     finally:
-        pass
+        conn.close()
 
     df.columns = df.columns.astype(str).str.strip()
 
