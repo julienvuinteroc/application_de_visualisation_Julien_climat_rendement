@@ -213,6 +213,7 @@ def load_climate_yield_geo() -> pd.DataFrame:
         df = conn.execute("SELECT * FROM climat_rendement_geo").df()
     finally:
         pass
+        conn.close()
 
     df.columns = df.columns.astype(str).str.strip()
 
@@ -237,10 +238,6 @@ def load_climate_yield_geo() -> pd.DataFrame:
     for col in ["commune", "code_departement"]:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip()
-    st.write("DEBUG geo shape", df.shape)
-    st.write("DEBUG columns", df.columns)
-    st.write(df.head(3))
-    st.write(df.isna().sum())
     conn.close()
     return df
 
@@ -316,10 +313,7 @@ def load_fusion_analysis() -> pd.DataFrame:
     for col in text_cols:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip()
-    st.write("DEBUG geo shape", df.shape)
-    st.write("DEBUG columns", df.columns)
-    st.write(df.head(3))
-    st.write(df.isna().sum())
+    conn.close()
     return df
 
 
@@ -329,12 +323,10 @@ with st.spinner("Chargement des donnees..."):
         df_geo = load_climate_yield_geo()
     except Exception as e:
         st.exception(e)
-        st.stop()
     try:
         df_fusion = load_fusion_analysis()
     except Exception as e:
         st.exception(e)
-        st.stop()
     st.write("DEBUG df_geo shape:", df_geo.shape)
     st.write("DEBUG df_fusion shape:", df_fusion.shape)
 
@@ -343,11 +335,9 @@ with st.spinner("Chargement des donnees..."):
 
 if df_geo.empty:
     st.warning("Aucune donnee climat_rendement_geo disponible.")
-    #st.stop()
 
 if df_fusion.empty:
     st.warning("Aucune donnee fusion disponible.")
-    #st.stop()
 
 
 # =====================================================
