@@ -210,9 +210,10 @@ def load_climate_yield_geo() -> pd.DataFrame:
     """Charge les donnees climat_rendement_geo"""
     conn = get_conn()
     try:
+        
         df = conn.execute("SELECT * FROM climat_rendement_geo").df()
     finally:
-        conn.close()
+        pass
 
     df.columns = df.columns.astype(str).str.strip()
 
@@ -239,7 +240,10 @@ def load_climate_yield_geo() -> pd.DataFrame:
             df[col] = df[col].astype(str).str.strip()
     return df
 
-
+with st.spinner("Chargement des donnees"):
+    df_geo = load_climate_yield_geo()
+    st.write(df_geo.shape)
+    
 @st.cache_data
 def load_fusion_analysis() -> pd.DataFrame:
     """Charge les donnees fusion"""
@@ -252,38 +256,28 @@ def load_fusion_analysis() -> pd.DataFrame:
                 code_couleur,
                 annee,
                 volume,
-                surface,
                 code_cepage,
-                cvi,
                 rendement,
                 commune,
                 zone,
                 code_departement,
-                departement,
-                Huglin_Index,
-                Hot_D,
                 Very_Hot_D,
-                Climatic_Dryness_Index,
                 temp_moyenne,
                 precipitation_total
             FROM fusion
             """
         ).df()
     finally:
-        conn.close()
+       pass
 
     df.columns = df.columns.astype(str).str.strip()
 
     numeric_cols = [
         "annee",
         "volume",
-        "surface",
         "rendement",
         "zone",
-        "Huglin_Index",
-        "Hot_D",
         "Very_Hot_D",
-        "Climatic_Dryness_Index",
         "temp_moyenne",
         "precipitation_total",
     ]
@@ -303,32 +297,20 @@ def load_fusion_analysis() -> pd.DataFrame:
         "code_couleur",
         "code_cepage",
         "commune",
-        "code_departement",
-        "departement",
-        "cvi",
+        "code_departement"
     ]
 
     for col in text_cols:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip()
-    conn.close()
     return df
 
 
-# Chargement des données
-with st.spinner("Chargement des donnees..."):
-    try:
-        df_geo = load_climate_yield_geo()
-        st.write("DEBUG df_geo shape:", df_geo.shape)
-        st.write("DEBUG df_geo columns:", df_geo.columns)
-    except Exception as e:
-        st.exception(e)
-    try:
-        df_fusion = load_fusion_analysis()
-        st.write("DEBUG df_fusion shape:", df_fusion.shape)
-        st.write("DEBUG df_fusion columns:", df_fusion.columns)
-    except Exception as e:
-        st.exception(e)
+
+
+with st.spinner("Chargement des donnees fusion..."):
+    df_fusion = load_fusion_analysis()
+    st.write(df_fusion.shape)
 
 if df_geo.empty:
     st.warning("Aucune donnee climat_rendement_geo disponible.")
@@ -831,7 +813,7 @@ corr_table["effet_rendement"] = np.where(corr_table["corr_rendement"] >= 0, "pos
 # Correlations volume
 reve_scope = fusion_scope[fusion_scope["type_mvt"] == "REVE"].copy()
 volume_corr_rows = []
-for var in ["temp_moyenne", "precipitation_total", "Hot_D", "Very_Hot_D", "Huglin_Index", "Climatic_Dryness_Index"]:
+for var in ["temp_moyenne", "precipitation_total", "Very_Hot_D"]:
     if var in reve_scope.columns:
         volume_corr_rows.append({
             "indicateur": var,
