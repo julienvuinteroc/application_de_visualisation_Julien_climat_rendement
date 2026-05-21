@@ -319,17 +319,16 @@ def load_fusion_analysis() -> pd.DataFrame:
 with st.spinner("Chargement des donnees..."):
     try:
         df_geo = load_climate_yield_geo()
+        st.write("DEBUG df_geo shape:", df_geo.shape)
+        st.write("DEBUG df_geo columns:", df_geo.columns)
     except Exception as e:
         st.exception(e)
     try:
         df_fusion = load_fusion_analysis()
+        st.write("DEBUG df_fusion shape:", df_fusion.shape)
+        st.write("DEBUG df_fusion columns:", df_fusion.columns)
     except Exception as e:
         st.exception(e)
-    st.write("DEBUG df_geo shape:", df_geo.shape)
-    st.write("DEBUG df_fusion shape:", df_fusion.shape)
-
-    st.write("DEBUG df_geo columns:", df_geo.columns)
-    st.write("DEBUG df_fusion columns:", df_fusion.columns)
 
 if df_geo.empty:
     st.warning("Aucune donnee climat_rendement_geo disponible.")
@@ -1037,8 +1036,8 @@ with st.expander("Analogie climatique et viticole", expanded=False):
         label_visibility="collapsed"
     )
 
-    data_zone_answer = df_geo_filtered[
-        df_geo_filtered["zone"] == zone_focused
+    data_zone_answer = df_fusion_filtered[
+        df_fusion_filtered["zone"] == zone_focused
     ]
 
     if not data_zone_answer.empty:
