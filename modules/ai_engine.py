@@ -463,7 +463,7 @@ class AIAnalyzer:
             - Ne pas mettre de régions viticoles françaises dans tes réponses 
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Etre fiable sur la topographie de la région
-            - Ne pas inventer de noms de régions et de sous-régions dans la partie Cépages utilisés dans ces sous-régions
+            - Ne pas inventer de noms de régions et de sous-régions dans la partie "Cépages utilisés dans ces sous-régions"
             - Facteurs limitantes dans ces sous-régions (manque d'eau ou autre chose)
             - Détaille sur besoin en irrigation si c'est critique dis le et donne les raisons
             - S'il y a déjà eu des épisodes de sécheresse accrue dans ces sous-régions, mentionne les
@@ -480,7 +480,7 @@ class AIAnalyzer:
         2. Quels sont les 2 régions viticoles mondiales avec de fortes similitudes (sous-régions idéalement) avec la zone {zone_id} :
         3. Quelles sont les raisons de cette similarité ?
         4. Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes :
-        5. Quels sont les cépages  en vin rouge, vin blanc et en rosé utilisés dans ces sous-régions ?
+        5. Quels sont les cépages en vin rouge, vin blanc et en rosé utilisés dans ces sous-régions ?
         6. Quels sont les cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique ?
         7. Quels sont les facteurs limitants dans ces sous-régions ?
         8. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ? 
