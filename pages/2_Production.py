@@ -1074,7 +1074,7 @@ with tab_map:
                 cepage_mean = st.selectbox("Cepage", sorted(df[df["type_mvt"] == "REVE"]["code_cepage"].dropna().unique()), key="mean_cepage")
                 indicator_mean = st.selectbox("Indicateur", ["Volume", "Rendement", "Surface"], key="mean_indicator_cepage")
         
-        if st.button("Generer la carte (moyenne sur periode)", key="btn_mean_map"):
+        if st.button("Generer la carte", key="btn_mean_map"):
             with st.spinner("Creation de la carte en cours..."):
                 indicator_key = {"Rendement": "rendement", "Volume": "volume", "Surface": "surface"}[indicator_mean]
                 mvt_key = "DECR" if indicator_key == "rendement" else "REVE"
