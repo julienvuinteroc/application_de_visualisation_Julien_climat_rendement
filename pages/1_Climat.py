@@ -1392,8 +1392,8 @@ with tab_future:
             st.dataframe(
                 scenario_table_display,
                 width="stretch",
-                height=600,
-                row_height=20
+                height=900,
+                row_height=30
             )
             map_scenario = st.selectbox(
                 "Scenario etudie",

@@ -9,6 +9,7 @@ import matplotlib.ticker as mticker
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+from matplotlib.patches import Ellipse
 from sklearn.preprocessing import StandardScaler
 
 
@@ -1177,53 +1178,9 @@ with tab_quant:
     col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
     col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} hl/ha" if pd.notna(vol_rdt) else "N/A")
     
-    tab_q1, tab_q2, tab_q3, tab_q4, tab_q5, tab_q6 = st.tabs([
-        "Surface vs Volume", "Rendement vs Volume", "Productivite et rendement par zone", "Productivite par couleur", "Volatilite", "Tableau de bord"
+    tab_q2, tab_q3, tab_q4, tab_q5, tab_q6 = st.tabs([
+       "Rendement vs Volume", "Productivite et rendement par zone", "Productivite par couleur", "Volatilite", "Tableau de bord"
     ])
-    
-    with tab_q1:
-        st.subheader("Relation Surface - Volume")
-        st.markdown("*Analyse de la correlation entre la surface cultivee et le volume produit*")
-        
-        tmp = base.dropna(subset=["surface", "volume", "code_couleur"]).copy()
-        if not tmp.empty:
-            # Graphique 1: Nuage de points avec regression
-            fig1, ax1 = plt.subplots(figsize=(16, 6))
-            
-            for couleur in ["BL", "RG", "RS"]:
-                subset = tmp[tmp["code_couleur"] == couleur]
-                if not subset.empty:
-                    color = COLOR_MAP.get(couleur, "#808080")
-                    ax1.scatter(subset["surface"], subset["volume"], 
-                               alpha=0.5, label=f"{couleur}", c=color, s=30)
-                    
-                    # Regression lineaire
-                    z = np.polyfit(subset["surface"], subset["volume"], 1)
-                    p = np.poly1d(z)
-                    ax1.plot(sorted(subset["surface"]), p(sorted(subset["surface"])), 
-                            "--", color=color, linewidth=1.5)
-            
-            ax1.set_xlabel("Surface (ha)", fontsize=12)
-            ax1.set_ylabel("Volume (hl)", fontsize=12)
-            ax1.set_ylim(0, 200000)
-            ax1.set_xlim(0, 4000)
-            ax1.xaxis.set_major_formatter(
-                mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
-            )
-            ax1.yaxis.set_major_formatter(
-                mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
-            )
-            ax1.set_title("Relation Surface - Volume par couleur", fontsize=14, fontweight="bold")
-            ax1.legend()
-            ax1.grid(True, alpha=0.3)
-            st.pyplot(fig1)
-            plt.close(fig1)
-            # Interpretation automatique
-            st.info(f"""
-            **Interpretation :**
-            - La correlation entre surface et volume est de {tmp["surface"].corr(tmp["volume"]):.2f}
-            """)
-    
     with tab_q2:
         st.subheader("Relation Rendement - Volume")
         st.markdown("*Analyse de la correlation entre le rendement et le volume produit*")
@@ -1362,20 +1319,43 @@ with tab_quant:
             if len(cluster_df) >= 3:
                 X = cluster_df[["rendement", "volume", "surface"]]
                 X_scaled = StandardScaler().fit_transform(X)
-                
                 k = st.slider("Nombre de classes", 2, 4, 3, key="cluster_slider")
                 st.divider()
                 kmeans = KMeans(n_clusters=k, random_state=42)
                 cluster_df["cluster"] = kmeans.fit_predict(X_scaled)
-                
                 # Graphique simplifie
                 fig_cluster, ax_cluster = plt.subplots(figsize=(14, 6))
-                
-                for cluster in range(k):
+                cluster_colors = {
+                    0: "#2ca02c",  
+                    1: "#ff7f0e",   
+                    2: "#d62728",   
+                    3: "#1f77b4" 
+                }
+                for cluster in range(0, k):
                     cluster_data = cluster_df[cluster_df["cluster"] == cluster]
-                    ax_cluster.scatter(cluster_data["rendement"], cluster_data["volume"], 
-                                    s=cluster_data["surface"]/100, alpha=0.6, label=f"Cluster {cluster}")
-                
+                    c = cluster_colors.get(cluster, "gray")
+                    ax_cluster.scatter(cluster_data["rendement"], 
+                                        cluster_data["volume"], 
+                                        s=cluster_data["surface"]/100,
+                                        color=c, 
+                                        alpha=0.6, 
+                                        label=f"Cluster {cluster}")
+                    for _, row in cluster_data.iterrows(): 
+                        ax_cluster.annotate(
+                            f"Zone{int(row['Zone'])}",
+                            xy=(row["rendement"], row["volume"]),
+                            xytext=(8, 8),
+                            textcoords="offset points",
+                            fontsize=9,
+                            color=c,
+                            weight="bold",
+                            bbox=dict(
+                                boxstyle="round,pad=0.2",
+                                fc="white",
+                                ec=c,
+                                alpha=0.8
+                            )
+                        )
                 ax_cluster.set_xlabel("Rendement (hl/ha)", fontsize=12)
                 ax_cluster.set_ylabel("Volume (hl)", fontsize=12)
                 ax_cluster.set_ylim(0,100000000)
@@ -1399,7 +1379,7 @@ with tab_quant:
                 
                 # Tableau d'interpretation
                 st.subheader("Interpretation des classes")
-                for i in range(k):
+                for i in range(0,k):
                     zones_cluster = cluster_df[cluster_df["cluster"] == i]["Zone"].tolist()
                     avg_rendement = cluster_df[cluster_df["cluster"] == i]["rendement"].mean()
                     avg_volume = cluster_df[cluster_df["cluster"] == i]["volume"].mean()
