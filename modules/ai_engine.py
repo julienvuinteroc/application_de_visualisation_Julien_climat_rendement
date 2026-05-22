@@ -467,7 +467,8 @@ class AIAnalyzer:
             - Facteurs limitantes dans ces sous-régions (manque d'eau ou autre chose)
             - Détaille sur besoin en irrigation si c'est critique dis le et donne les raisons
             - S'il y a déjà eu des épisodes de sécheresse accrue dans ces sous-régions, mentionne les
-            - dans la partie Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner si possible rendement moyen par couleur)
+            - dans la partie Détails sur ces sous-régions sur le rendement moyen, volume total, et précipitations annuelles moyennes 
+            - (donner si possible volume total et rendement moyen par couleur)
             - Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner températures moyennes annuelles)
             - Justifie chaque analogie par le climat
             - Zone : {zone_id}
