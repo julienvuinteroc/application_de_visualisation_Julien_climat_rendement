@@ -244,11 +244,11 @@ with st.sidebar:
         key="sb_coul",
         help=None
     )
-    with st.expander("Aide sur les codes couleur de vins"):
+    with st.expander("Aide couleurs de vins"):
         st.write("BL : Blanc")
         st.write("RG : Rouge")
         st.write("RS : Rose")
-    with st.expander("Aide sur les codes cepages (par ordre alphabetique)"):
+    with st.expander("Aide cepage (par ordre alphabetique)"):
         st.write("1705 : Caladoc")
         st.write("3039 : Alvarinho")
         st.write("ALIC : Alicante H. Bouschet")
