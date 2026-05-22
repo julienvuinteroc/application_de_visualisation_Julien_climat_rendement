@@ -455,7 +455,7 @@ class AIAnalyzer:
                 Zone 7: *zone avec le plus grand nombre de jours très chauds mais sols profonds,
             - Utilise uniquement des régions viticoles réelles internationales hors France 
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
-            - Liste les cépages dominants utilisés dans ces sous-régions 
+            - Liste les cépages dominants (en vin rouge, vin blanc et en rosé) utilisés dans ces sous-régions 
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
             - Utiliser les cépages autorisées en Pays d'Oc IGP pour ta réponse sur les cépages résistants et qui sont autorisées dans ces sous-régions pour la partie
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique
@@ -470,17 +470,17 @@ class AIAnalyzer:
             - dans la partie Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner si possible rendement moyen par couleur)
             - Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner températures moyennes annuelles)
             - Justifie chaque analogie par le climat
-            - Zone ID : {zone_id}
+            - Zone : {zone_id}
             - Température moyenne : {temperature_moyenne} °C
             - Précipitations totales : {precipitations_totales} mm
         Réponds à mon besoin en précisant les points suivants :
-        1. Type de climat 
-        2. 2 régions viticoles mondiales avec de fortes similitudes (sous-régions idéalement)
-        3. Raisons de cette similarité ?
-        4. Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes
-        5. Cépages utilisés dans ces sous-régions
-        6. Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique
-        7. Facteurs limitantes dans ces sous-régions
+        1. Type de climat :
+        2. Quels sont les 2 régions viticoles mondiales avec de fortes similitudes (sous-régions idéalement) avec la zone {zone_id} :
+        3. Quelles sont les raisons de cette similarité ?
+        4. Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes :
+        5. Quels sont les cépages  en vin rouge, vin blanc et en rosé utilisés dans ces sous-régions ?
+        6. Quels sont les cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique ?
+        7. Quels sont les facteurs limitants dans ces sous-régions ?
         8. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ? 
         9. Quelles mesures ont été prises pour garantir une bonne gestion de l'eau ?
         """
