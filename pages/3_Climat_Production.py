@@ -396,9 +396,51 @@ with st.sidebar:
         "Couleurs",
         available_colors,
         default=available_colors,
-        help="Type de vin : BL (Blanc), RG (Rouge), RS (Rose)"
+        help=None
     )
-
+    with st.expander("Aide sur les codes couleur de vins"):
+        st.write("BL : Blanc")
+        st.write("RG : Rouge")
+        st.write("RS : Rose")
+    with st.expander("Aide sur les codes cépages (par ordre alphabetique)"):
+        st.write("1705 : Caladoc")
+        st.write("3039 : Alvarinho")
+        st.write("ALIC : Alicante H. Bouschet")
+        st.write("BOUR : Bourboulenc")
+        st.write("CAFR : Cabernet Franc")
+        st.write("CARI : Carignan")
+        st.write("CASA : Cabernet Sauvignon")
+        st.write("CHAR : Chardonnay")
+        st.write("CHEN : Chenin")
+        st.write("CINS : Cinsault")
+        st.write("COLO : Colombard")
+        st.write("COT : Malbec")
+        st.write("GEBL : Generique Blanc")
+        st.write("GERG : Generique Rouge")
+        st.write("GERS : Generique Rose")
+        st.write("GEWU : Gewurztraminer")
+        st.write("GREB : Grenache Blanc")
+        st.write("GREG : Grenache Gris")
+        st.write("GREN : Grenache Noir")
+        st.write("MARS : Marsanne")
+        st.write("MASE : Marselan")
+        st.write("MAUZ : Mauzac")
+        st.write("MERL : Merlot")
+        st.write("MOUR : Mourvedre")
+        st.write("MUPG : Muscat Petits Grains blanc")
+        st.write("MUSC : Muscat d'Alexandrie")
+        st.write("PIBL : Pinot Blanc")
+        st.write("PIGR : Pinot Gris")
+        st.write("PINO : Pinot Noir")
+        st.write("RIES : Riesling")
+        st.write("ROUS : Roussanne")
+        st.write("SAGR : Sauvignon Gris")
+        st.write("SAUV : Sauvignon Blanc")
+        st.write("SYRA : Syrah")
+        st.write("TERB : Terret blanc")
+        st.write("VERD : Petit Verdot")
+        st.write("VERM : Rolle (Vermentino)")
+        st.write("VIOG : Viognier")
     available_cepages = sorted([c for c in df_fusion["code_cepage"].dropna().unique() if c and c != "nan"])
     selected_cepages = st.multiselect(
         "Cepages",
