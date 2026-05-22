@@ -1504,7 +1504,7 @@ with tab_quant:
             bars = ax7.bar(vol_stats["Zone"].astype(str), vol_stats["cv"], color=colors_zones, edgecolor="black")
             ax7.set_xlabel("Zone", fontsize=12)
             ax7.set_ylabel("Coefficient de variation (%)", fontsize=12)
-            ax7.set_title("Stabilite du rendement par zone (CV plus petit = plus stable)", fontsize=14, fontweight="bold")
+            ax7.set_title("Stabilite du rendement par zone (Coefficient de variation plus petit = plus stable)", fontsize=14, fontweight="bold")
             ax7.grid(axis="y", alpha=0.3)
             
             # Ajout des seuils
