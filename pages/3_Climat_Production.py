@@ -402,7 +402,7 @@ with st.sidebar:
         st.write("BL : Blanc")
         st.write("RG : Rouge")
         st.write("RS : Rose")
-    with st.expander("Aide sur les codes cépages (par ordre alphabetique)"):
+    with st.expander("Aide sur les codes cepages (par ordre alphabetique)"):
         st.write("1705 : Caladoc")
         st.write("3039 : Alvarinho")
         st.write("ALIC : Alicante H. Bouschet")
