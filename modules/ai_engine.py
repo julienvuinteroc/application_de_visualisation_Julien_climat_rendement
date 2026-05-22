@@ -468,8 +468,8 @@ class AIAnalyzer:
             - Détaille sur besoin en irrigation si c'est critique dis le et donne les raisons
             - S'il y a déjà eu des épisodes de sécheresse accrue dans ces sous-régions, mentionne les
             - dans la partie Détails sur ces sous-régions sur le rendement moyen, volume total, et précipitations annuelles moyennes 
-            - (donner si possible volume total et rendement moyen par couleur)
-            - Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner températures moyennes annuelles)
+            - (donner si possible volume total en hl et rendement moyen par couleur en hl/ha)
+            - Détails sur ces sous-régions sur le rendement moyen en hl/ha et précipitations annuelles moyennes en mm (donner températures moyennes annuelles)
             - Justifie chaque analogie par le climat
             - Zone : {zone_id}
             - Température moyenne : {temperature_moyenne} °C
