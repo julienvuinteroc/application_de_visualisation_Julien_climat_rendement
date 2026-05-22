@@ -455,16 +455,20 @@ class AIAnalyzer:
                 Zone 7: *zone avec le plus grand nombre de jours très chauds mais sols profonds,
             - Utilise uniquement des régions viticoles réelles internationales hors France 
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
+            - Liste les cépages dominants utilisés dans ces sous-régions 
             - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat pour lutter contre le dérèglement climatique
-            - Utiliser les cépages autorisées en Pays d'Oc pour ta réponse sur les cépages résistants et qui sont autorisées dans ces sous-régions
+            - Utiliser les cépages autorisées en Pays d'Oc IGP pour ta réponse sur les cépages résistants et qui sont autorisées dans ces sous-régions pour la partie
+            - Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique
             - https://info.agriculture.gouv.fr/boagri/document_administratif-9231994c-2220-475c-b784-b51d291c7c7c
             - Ne pas mettre de régions viticoles françaises dans tes réponses 
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Etre fiable sur la topographie de la région
-            - Ne pas inventer de noms de régions
+            - Ne pas inventer de noms de régions et de sous-régions dans la partie Cépages utilisés dans ces sous-régions
+            - Facteurs limitantes dans ces sous-régions (manque d'eau ou autre chose)
             - Détaille sur besoin en irrigation si c'est critique dis le et donne les raisons
             - S'il y a déjà eu des épisodes de sécheresse accrue dans ces sous-régions, mentionne les
-            - D'une zone à l'autre essaie d'imaginer des pratiques culturales variées
+            - dans la partie Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner si possible rendement moyen par couleur)
+            - Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes (donner températures moyennes annuelles)
             - Justifie chaque analogie par le climat
             - Zone ID : {zone_id}
             - Température moyenne : {temperature_moyenne} °C
@@ -473,10 +477,12 @@ class AIAnalyzer:
         1. Type de climat 
         2. 2 régions viticoles mondiales avec de fortes similitudes (sous-régions idéalement)
         3. Raisons de cette similarité ?
-        4. Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique
-        5. Pratiques culturales recommandées
-        6. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ? 
-        7. Quelles mesures ont été prises pour garantir une bonne gestion de l'eau ?
+        4. Détails sur ces sous-régions sur le rendement moyen et précipitations annuelles moyennes
+        5. Cépages utilisés dans ces sous-régions
+        6. Cépages en vin rouge, vin blanc et en rosé adaptés à ce type de climat et résistants pour lutter contre le dérèglement climatique
+        7. Facteurs limitantes dans ces sous-régions
+        8. Quel est le besoin en irrigation (faible/modéré/fort) dans ces régions ? 
+        9. Quelles mesures ont été prises pour garantir une bonne gestion de l'eau ?
         """
         key = f"{zone_id}_{temperature_moyenne}_{precipitations_totales}"
         if key in self.cache:
