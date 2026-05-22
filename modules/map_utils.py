@@ -139,7 +139,9 @@ def display_map_with_legend(data, title_suffix="", height=500, key=None):
             title=f"{data['indicator']}<br>({data['unit']})",
             len=0.4,
             thickness=15,
-            y=0.5
+            y=0.5,
+            tickformat=",.0f",
+            separatethousands=True
         )
     )
     
