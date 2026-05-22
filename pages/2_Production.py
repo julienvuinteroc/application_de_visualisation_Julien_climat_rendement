@@ -1189,7 +1189,7 @@ with tab_map:
                     # Tableau des cepages dominants
                     st.subheader("Detail des cepages dominants")
                     display_df = dom_top[["Zone", "code_cepage", "volume"]].sort_values(["Zone", "volume"], ascending=[True, False])
-                    display_df["volume"] = display_df["volume"].apply(lambda x: f"{x:,.0f}")
+                    display_df["volume"] = display_df["volume"].apply(lambda x: f"{x:,.0f}").replace(",", " ")
                     st.dataframe(display_df, width="stretch", hide_index=True)
                 else:
                     st.info("Aucune donnee disponible pour les criteres selectionnes")
