@@ -801,9 +801,16 @@ def plot_historical_curves(
     ax.set_title(
         f"{title} - {indicator_label(indicator)}"
     )
-    ax.yaxis.set_major_formatter(
-        mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
-    )
+    temp_indicators = {"temp_moyenne", "tmax_mean", "tmin_mean"}
+    if indicator in temp_indicators:
+        ax.yaxis.set_major_formatter(
+            mticker.FuncFormatter(lambda x, _: f"{x:,.1f}".replace(",", " "))
+        )
+    else:
+        ax.yaxis.set_major_formatter(
+            mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", " "))
+        )
+    ax.yaxis.set_major_locator(mticker.MaxNLocator(nbins=8, integer=True))
     ax.set_xlabel("Annee")
     ax.set_ylabel(indicator_label(indicator))
     ax.grid(axis="y",linestyle="--",alpha=0.5)
