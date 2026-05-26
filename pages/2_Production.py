@@ -805,7 +805,6 @@ with tab_vol:
             fig_zone_color_vol.update_layout(
                 separators=". "
             )
-
             fig_zone_color_vol.update_yaxes(
                 tickformat=",.0f"
             )
