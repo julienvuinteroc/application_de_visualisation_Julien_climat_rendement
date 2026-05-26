@@ -11,6 +11,7 @@ import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 
 
+
 # Configuration de la page
 st.set_page_config(
     page_title="Observatoire Viticole - Pays d'Oc IGP",
