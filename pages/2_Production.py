@@ -1517,7 +1517,6 @@ with tab_quant:
             vol_stats['cv'] = (vol_stats['std'] / vol_stats['mean'] * 100).round(1)
             vol_stats = get_zones_1_7(vol_stats)
             vol_stats = vol_stats.sort_values("cv")
-            
             # Graphique 1: Coefficient de variation
             fig7, ax7 = plt.subplots(figsize=(16, 6))
             color_map_zones = {
@@ -1533,7 +1532,6 @@ with tab_quant:
             ax7.set_ylabel("Coefficient de variation (%)", fontsize=12)
             ax7.set_title("Stabilite du rendement par zone", fontsize=14, fontweight="bold")
             ax7.grid(axis="y", alpha=0.3)
-            
             # Ajout des seuils
             ax7.axhline(y=15, color='green', linestyle='--', alpha=0.7, label='Seuil de stabilite (15%)')
             ax7.axhline(y=25, color='orange', linestyle='--', alpha=0.7, label='Seuil de variabilite (25%)')
