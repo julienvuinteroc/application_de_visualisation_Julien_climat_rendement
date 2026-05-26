@@ -1352,6 +1352,7 @@ with tab_quant:
             st.info ("N.B: cv: Coefficient de variation (en %)")
             plt.close(fig5)
             gc.collect()
+
     with tab_q4:
         st.subheader("Productivite par couleur")
         st.markdown("*Analyse comparative de la productivite (volume/surface) entre les couleurs*")
