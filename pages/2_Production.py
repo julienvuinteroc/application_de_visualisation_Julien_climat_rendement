@@ -740,7 +740,21 @@ with tab_vol:
             if use_moving_average:
                 last_year = data["annee"].max()
                 data = data[data["annee"] >= last_year - 4]
-            dept_color_vol = data.groupby(["code_departement", "code_couleur"])["volume"].sum().reset_index()
+            dept_color_vol = (
+                data.groupby(
+                    ["annee", "code_departement", "code_couleur"]
+                )["volume"]
+                .sum()
+                .reset_index()
+            )
+
+            dept_color_vol = (
+                dept_color_vol.groupby(
+                    ["code_departement", "code_couleur"]
+                )["volume"]
+                .mean()
+                .reset_index()
+            )
             dept_color_vol["code_departement"] = pd.Categorical(
                 dept_color_vol["code_departement"], 
                 categories=["11", "30", "34", "66"]
@@ -752,6 +766,7 @@ with tab_vol:
                 color="code_couleur",
                 barmode="stack",
                 color_discrete_map=COLOR_MAP,
+                text_auto=".0f",
                 title="Volume total par departement et couleur",
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
@@ -762,14 +777,19 @@ with tab_vol:
             fig_dept_color_vol.update_yaxes(
                 tickformat=",.0f"
             )
+            fig_dept_color_vol.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
+            )
             st.plotly_chart(fig_dept_color_vol, key="dept_color_vol", width="stretch")
-            
             # Volume par zone et couleur
             st.markdown("#### Volume par zone et couleur")
             if use_moving_average:
                 last_year = data["annee"].max()
                 data = data[data["annee"] >= last_year - 4]
-            zone_color_vol = data.groupby(["Zone", "code_couleur"])["volume"].sum().reset_index()
+            zone_color_vol = data.groupby(["annee", "Zone", "code_couleur"])["volume"].sum().reset_index()
+            zone_color_vol = zone_color_vol.groupby(["Zone", "code_couleur"])["volume"].mean().reset_index()
             zone_color_vol = get_zones_1_7(zone_color_vol)
             fig_zone_color_vol = px.bar(
                 zone_color_vol,
@@ -778,6 +798,7 @@ with tab_vol:
                 color="code_couleur",
                 barmode="stack",
                 color_discrete_map=COLOR_MAP,
+                text_auto=".0f",
                 title="Volume total par zone et couleur",
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
@@ -788,12 +809,18 @@ with tab_vol:
             fig_zone_color_vol.update_yaxes(
                 tickformat=",.0f"
             )
+            fig_zone_color_vol.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
+            )
             st.plotly_chart(fig_zone_color_vol, key="zone_color_vol", width="stretch")
             
             # Volume par zone et cepage (top 10 cepages)
             st.markdown("#### Volume par zone et cepage (Top 10 cepages)")
             top10_cepages = data.groupby("code_cepage")["volume"].sum().nlargest(10).index.tolist()
-            zone_cepage_vol = data[data["code_cepage"].isin(top10_cepages)].groupby(["Zone", "code_cepage"])["volume"].sum().reset_index()
+            zone_cepage_vol = data[data["code_cepage"].isin(top10_cepages)].groupby(["annee", "Zone", "code_cepage"])["volume"].sum().reset_index()
+            zone_cepage_vol = zone_cepage_vol.groupby(["Zone", "code_cepage"])["volume"].mean().reset_index()
             zone_cepage_vol = get_zones_1_7(zone_cepage_vol)
             fig_zone_cepage = px.bar(
                 zone_cepage_vol,
@@ -801,26 +828,39 @@ with tab_vol:
                 y="volume",
                 color="code_cepage",
                 barmode="stack",
+                text_auto=".0f",
                 title="Volume par zone et cepage (Top 10)",
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
             fig_zone_cepage.update_layout(
                 separators=". "
             )
-
             fig_zone_cepage.update_yaxes(
                 tickformat=",.0f"
+            )
+            fig_zone_cepage.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
             )
             st.plotly_chart(fig_zone_cepage, key="zone_cepage_vol", width="stretch")
             # Volume par departement et cepage
             st.markdown("#### Volume par departement et cepage (Top 10 cepages)")
-            dept_cepage_vol = data[data["code_cepage"].isin(top10_cepages)].groupby(["code_departement", "code_cepage"])["volume"].sum().reset_index()
+            dept_cepage_vol = data[data["code_cepage"].isin(top10_cepages)].groupby(["annee","code_departement", "code_cepage"])["volume"].sum().reset_index()
+            dept_cepage_vol = (
+                dept_cepage_vol.groupby(
+                    ["code_departement", "code_cepage"]
+                )["volume"]
+                .mean()
+                .reset_index()
+            )
             fig_dept_cepage = px.bar(
                 dept_cepage_vol,
                 x="code_departement",
                 y="volume",
                 color="code_cepage",
                 barmode="stack",
+                text_auto=".0f",
                 title="Volume par departement et cepage (Top 10)",
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
@@ -828,9 +868,13 @@ with tab_vol:
             fig_dept_cepage.update_layout(
                 separators=". "
             )
-
             fig_dept_cepage.update_yaxes(
                 tickformat=",.0f"
+            )
+            fig_dept_cepage.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
             )
             st.plotly_chart(fig_dept_cepage, key="dept_cepage_vol", width="stretch")
     
@@ -841,8 +885,13 @@ with tab_vol:
             st.subheader("Top 20 cepages - 5 dernieres annees")
             last_5_years = get_last_5_years(reve)
             top20_last5 = (
-                last_5_years.groupby("code_cepage")["volume"]
+                last_5_years.groupby(["annee", "code_cepage"])["volume"]
                 .sum()
+                .reset_index()
+            )
+            top20_last5 = (
+                top20_last5.groupby("code_cepage")["volume"]
+                .mean()
                 .sort_values(ascending=False)
                 .head(20)
                 .reset_index()
@@ -853,7 +902,7 @@ with tab_vol:
                 y="volume",
                 color="code_cepage",
                 title="Top 20 cepages par volume produit (5 dernieres annees)",
-                
+                text_auto=".0f",
                 color_discrete_sequence=px.colors.qualitative.Set3,
                 height=500
             )
@@ -863,6 +912,11 @@ with tab_vol:
             )
             fig_top_last5.update_yaxes(
                 tickformat=",.0f"
+            )
+            fig_top_last5.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
             )
             st.plotly_chart(fig_top_last5, key="top20_last5", width="stretch")
 
