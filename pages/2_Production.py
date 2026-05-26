@@ -989,13 +989,13 @@ with tab_map:
     # Selection du type de carte
     map_category = st.radio(
         "Type de carte",
-        ["Par indicateur", "Par couleur", "Par cepage", "Moyenne sur periode", "Cepage dominant 5 ans"],
+        ["Indicateur", "Couleur", "Cepage", "Moyenne sur periode", "Cepage dominant 5 ans"],
         horizontal=True,
         key="map_category",
         label_visibility="collapsed"
     )
     
-    if map_category == "Par indicateur":
+    if map_category == "Indicateur":
         map_type = st.radio(
             "Sous-type",
             ["Carte simple", "Comparaison de cartes"],
@@ -1057,7 +1057,7 @@ with tab_map:
                     title2 = f"{indicator2} - {level2} - {year2}"
                     compare_two_maps(data1, data2, title1, title2)
     
-    elif map_category == "Par couleur":
+    elif map_category == "Couleur":
         st.subheader("Carte par couleur de vin")
         col1, col2, col3, col4 = st.columns(4)
         
@@ -1106,7 +1106,7 @@ with tab_map:
                             fig.update_layout(coloraxis_showscale=False)
                             st.plotly_chart(fig, key=f"color_compare_{coul}", width="stretch")
     
-    elif map_category == "Par cepage":
+    elif map_category == "Cepage":
         st.subheader("Carte par cepage")
         
         reve_data = df[df["type_mvt"] == "REVE"].copy()
@@ -1162,7 +1162,7 @@ with tab_map:
         
         analysis_type = st.radio(
             "Type d'analyse",
-            ["Par indicateur", "Par couleur", "Par cepage"],
+            ["Indicateur", "Couleur", "Cepage"],
             horizontal=True,
             key="mean_analysis_type"
         )
@@ -1174,9 +1174,9 @@ with tab_map:
         with col2:
             level_mean = st.selectbox("Niveau", ["Departement", "Zone"], key="mean_level")
         with col3:
-            if analysis_type == "Par indicateur":
+            if analysis_type == "Indicateur":
                 indicator_mean = st.selectbox("Indicateur", ["Rendement", "Volume", "Surface"], key="mean_indicator")
-            elif analysis_type == "Par couleur":
+            elif analysis_type == "Couleur":
                 couleur_mean = st.selectbox("Couleur", ["BL", "RG", "RS"], key="mean_color")
                 indicator_mean = st.selectbox("Indicateur", ["Volume", "Rendement", "Surface"], key="mean_indicator_color")
             else:
@@ -1190,9 +1190,9 @@ with tab_map:
                 
                 df_period = df[(df["annee"].between(years_range[0], years_range[1])) & (df["type_mvt"] == mvt_key)].copy()
                 
-                if analysis_type == "Par couleur":
+                if analysis_type == "Couleur":
                     df_period = df_period[df_period["code_couleur"] == couleur_mean]
-                elif analysis_type == "Par cepage":
+                elif analysis_type == "Cepage":
                     df_period = df_period[df_period["code_cepage"] == cepage_mean]
                 
                 if level_mean == "Departement":
@@ -1219,9 +1219,9 @@ with tab_map:
                     unit_map = {"Rendement": "hl/ha", "Volume": "hl", "Surface": "ha"}[indicator_mean]
                     
                     title_suffix = f"{years_range[0]}-{years_range[1]}"
-                    if analysis_type == "Par couleur":
+                    if analysis_type == "Couleur":
                         title_suffix += f" - {couleur_mean}"
-                    elif analysis_type == "Par cepage":
+                    elif analysis_type == "Cepage":
                         title_suffix += f" - {cepage_mean}"
                     
                     fig_map = px.choropleth(
