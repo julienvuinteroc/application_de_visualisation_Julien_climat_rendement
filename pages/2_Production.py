@@ -9,9 +9,6 @@ import gc
 import matplotlib.ticker as mticker
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
-from matplotlib.patches import Ellipse
-from sklearn.preprocessing import StandardScaler
 
 
 # Configuration de la page
