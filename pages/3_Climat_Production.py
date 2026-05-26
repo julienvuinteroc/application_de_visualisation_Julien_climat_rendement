@@ -1013,7 +1013,7 @@ with st.expander("Tableau de synthese par zone et annee", expanded=False):
     table_zone_year["precipitation_total"] = table_zone_year["precipitation_total"].round(0)
     table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
     st.dataframe(table_zone_year_display, width="stretch", hide_index=True, row_height=20, height=750)
-
+    gc.collect()
 
 # =====================================================
 # NARRATION AUTOMATIQUE

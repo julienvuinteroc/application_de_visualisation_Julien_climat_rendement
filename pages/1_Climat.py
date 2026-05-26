@@ -1202,6 +1202,7 @@ with tab_histo_2008_2024:
             fig_hist = plot_historical_curves(df_climat, selected_zones, selected_indicator, mode_map[graph_mode])
             st.pyplot(fig_hist)
             plt.close(fig_hist)
+            gc.collect()
         except Exception as e:
             st.error(f"Erreur graphique historique : {e}")
 
@@ -1257,7 +1258,7 @@ with tab_future:
             )
             st.pyplot(fig_no_scenario)
             plt.close(fig_no_scenario)
-
+            gc.collect()
         except Exception as e:
             st.error(f"Erreur projection sans scenario : {e}")
     if view_future == "Projections des scenarios – graphiques":
@@ -1445,6 +1446,7 @@ with tab_future:
                 unsafe_allow_html=True
                 )
             plt.close(fig_scenario)
+            gc.collect()
     if view_future == "Projections – cartes":
         st.markdown("**Evolution des tendances climatiques futures à court et moyen terme par zone**")
         map_scenario = st.selectbox(

@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import base64
+import gc
 import matplotlib.ticker as mticker
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
@@ -485,6 +486,7 @@ with tab_rdt:
                 plafond_check['conforme'] = plafond_check['max'] <= plafond_check['plafond']
                 plafond_check = plafond_check.rename(columns={'max': 'Rendement max'})
                 st.dataframe(plafond_check[['Rendement max', 'plafond', 'conforme']], width="stretch")
+                gc.collect()
             # Graphique d'evolution
             evol = data.groupby(["annee", col_map])["rendement"].mean().reset_index()
             evol_full = complete_years(evol, col_map, "rendement", "mean", YEAR_MIN, YEAR_MAX)
@@ -1254,6 +1256,7 @@ with tab_quant:
             ax4.grid(True, alpha=0.3)
             st.pyplot(fig4)
             plt.close(fig4)
+            gc.collect()
         # Interpretation
         corr_value = tmp["rendement"].corr(tmp["volume"])
         st.info(f"""
@@ -1291,6 +1294,7 @@ with tab_quant:
                         f"{val:.0f}", ha="center", va="bottom", fontsize=9)
             st.pyplot(fig2)
             plt.close(fig2)
+            gc.collect()
             # Interpretation automatique
             st.info(f"""
             **Interpretation :**
@@ -1347,6 +1351,7 @@ with tab_quant:
             st.pyplot(fig5)
             st.info ("N.B: cv: Coefficient de variation (en %)")
             plt.close(fig5)
+            gc.collect()
             st.divider()
             st.subheader("Classification automatique des zones")
             
@@ -1417,7 +1422,7 @@ with tab_quant:
                 ax_cluster.grid(True, alpha=0.3)
                 st.pyplot(fig_cluster)
                 plt.close(fig_cluster)
-                
+                gc.collect()
                 # Tableau d'interpretation
                 st.subheader("Interpretation des classes")
                 for i in range(0,k):
@@ -1458,6 +1463,7 @@ with tab_quant:
                         f"{val:.0f}", ha="center", va="bottom", fontsize=9)
             st.pyplot(fig20)
             plt.close(fig20)
+            gc.collect()
             col_rank1, col_rank2 = st.columns(2)
             with col_rank1:
                 # Top 1 zone
@@ -1518,6 +1524,7 @@ with tab_quant:
             
             st.pyplot(fig7)
             plt.close(fig7)
+            gc.collect()
             # Interpretation
             st.markdown("""
             **Guide de lecture :**
@@ -1545,6 +1552,7 @@ with tab_quant:
             ax8.legend()
             st.pyplot(fig8)
             plt.close(fig8)
+            gc.collect()
             # Zone la plus variable
             most_variable = vol_stats.loc[vol_stats["cv"].idxmax(), "Zone"]
             st.markdown(f"**Zone la plus variable : Zone {int(most_variable)} (Stabilite du rendement={vol_stats.loc[vol_stats['cv'].idxmax(), 'cv']:.0f}%)**")
@@ -1561,6 +1569,7 @@ with tab_quant:
             ax9.legend()
             st.pyplot(fig9)
             plt.close(fig9)
+            gc.collect()
             
     
     with tab_q6:
@@ -1609,3 +1618,4 @@ st.markdown(f"""
     <p style="font-size: 0.75rem;">(c) 2024 - Analyse des rendements et volumes viticoles</p>
 </div>
 """, unsafe_allow_html=True)
+gc.collect()
