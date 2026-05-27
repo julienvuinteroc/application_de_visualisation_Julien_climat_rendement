@@ -623,9 +623,9 @@ with tab_rdt:
                     last_year = data["annee"].max()
                     data = data[data["annee"] >= last_year - 4]
                 stats_df = data.groupby(col_map)["rendement"].describe(percentiles=[.25, .5, .75]).round(1)
-                stats_df = stats_df[['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']]
+                stats_df = stats_df[['mean', 'std', 'min', '25%', '50%', '75%', 'max']]
                 stats_df['std'] = stats_df['std'].round(0)
-                stats_df.columns = ['Occurrence', 'Moyenne', 'Ecart-type', 'Valeur minimale', '1er quartile', 'Mediane', '3ème quartile', 'Valeur maximale']
+                stats_df.columns = ['Moyenne', 'Ecart-type', 'Valeur minimale', '1er quartile', 'Mediane', '3ème quartile', 'Valeur maximale']
                 st.dataframe(stats_df, width="stretch")
 
 # =====================================================
@@ -1347,8 +1347,8 @@ with tab_quant:
     col_k2.metric("Correlation Volume/Rendement", f"{corr_vr:.1f}" if pd.notna(corr_vr) else "N/A")
     col_k3.metric("Volatilite rendement", f"{vol_rdt:.1f} hl/ha" if pd.notna(vol_rdt) else "N/A")
     
-    tab_q2, tab_q3, tab_q4, tab_q5, tab_q6 = st.tabs([
-       "Rendement vs Volume", "Productivite et rendement par zone", "Productivite par couleur", "Volatilite", "Tableau de bord"
+    tab_q2, tab_q3, tab_q4, tab_q5 = st.tabs([
+       "Rendement vs Volume", "Productivite et rendement par zone", "Productivite par couleur", "Volatilite"
     ])
     with tab_q2:
         st.subheader("Relation Rendement - Volume")
@@ -1612,43 +1612,7 @@ with tab_quant:
             gc.collect()
             
     
-    with tab_q6:
-        st.subheader("Tableau de bord analytique")
-        tmp = base.dropna(subset=["surface", "volume", "code_couleur"]).copy()
-        if not tmp.empty:
-            # Productivite par zone
-            prod_zone = tmp.groupby("Zone").agg({
-                "surface": "sum",
-                "volume": "sum",
-                "rendement": "mean",
-            }).reset_index()
-            prod_zone["productivite"] = prod_zone["volume"] / prod_zone["surface"]
-            prod_zone = get_zones_1_7(prod_zone)
-            prod_zone['% volume'] = (prod_zone['volume'] / prod_zone['volume'].sum() * 100).round(1)
-            prod_zone = get_zones_1_7(prod_zone)
-            prod_zone = prod_zone[prod_zone["Zone"] != "1"]
-            prod_zone = prod_zone.sort_values("Zone", key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0))
-            prod_zone["surface"] = prod_zone["surface"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-            prod_zone["rendement"] = prod_zone["rendement"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-            prod_zone["volume"] = prod_zone["volume"].apply(lambda x: f"{x:,.0f}".replace(",", " "))
-            prod_zone = prod_zone.sort_values(
-                "Zone",
-                key=lambda s: s.map(lambda x: int(x) if str(x).isdigit() else 0)
-            )
-            # Version simplifiee avec mise en forme conditionnelle
-            st.dataframe(
-                prod_zone,
-                column_config={
-                    "Zone": st.column_config.TextColumn("Zone", width="small"),
-                    "surface": st.column_config.TextColumn("Surface (ha)", width="medium"),
-                    "volume": st.column_config.TextColumn("Volume (hl)", width="medium"),
-                    "rendement": st.column_config.NumberColumn("Rendement (hl/ha)", format="%.0f", width="medium"),
-                    "productivite": st.column_config.NumberColumn("productivite", format="%.0f", width="medium"),
-                    "% volume": st.column_config.NumberColumn("% Volume", format="%.1f", width="small")
-                },
-                width="stretch",
-                hide_index=True
-            )
+   
         
 # Footer
 st.markdown("---")
