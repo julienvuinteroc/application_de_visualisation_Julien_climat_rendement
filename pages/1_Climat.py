@@ -959,6 +959,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
     trend_vals = df_indexed.loc[sorted_zones, trend_col].values
     hist_vals = np.array(hist_vals, dtype=float)
     trend_vals = np.array(trend_vals, dtype=float)
+    std_vals = df_indexed.loc[sorted_zones, "std_val"].values
+    std_vals = np.array(std_vals, dtype=float)
     if indicator == "temp_moyenne" or indicator =="tmax_mean" or indicator =="tmin_mean":
         for i in range(len(x)):
             projection = hist_vals[i] + trend_vals[i]
@@ -970,6 +972,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 va ="bottom",
                 fontsize=15,
             )
+            ax.errorbar(x[i],hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6)
             ax.text(
                 x[i],
                 hist_vals[i] + trend_vals[i] / 2,
@@ -979,8 +982,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 fontweight="bold",
                 color ="black"
             )
-            ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
-            ax.bar(x, trend_vals, bottom=hist_vals, color="red", alpha=0.85, width=0.8)
+        ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
+        ax.bar(x, trend_vals, bottom=hist_vals, color="red", alpha=0.85, width=0.8)
     if indicator == "precipitation_total":
         for i in range(len(x)):
             projection = hist_vals[i] + trend_vals[i]
@@ -992,6 +995,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 ha="center",
                 va="bottom"
             )
+            
             ax.text(
                 x[i],
                 (hist_vals[i] + trend_vals[i])* 0.75,
@@ -1002,8 +1006,10 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 fontweight="bold",
                 color ="black"
             )
-            ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
-            ax.bar(x, trend_vals, bottom=hist_vals, color= "red", alpha=0.85, width=0.8)
+        
+            ax.errorbar(x[i],hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6)
+        ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
+        ax.bar(x, trend_vals, bottom=hist_vals, color= "red", alpha=0.85, width=0.8)
     ax.set_xticks(x)
     ax.set_xlabel("Zone")
     ax.set_ylabel(indicator_label(indicator))
@@ -1418,6 +1424,14 @@ with tab_future:
                 df_graph = scenario_table[
                     scenario_table["scenario"] == map_scenario
                 ]
+            std_by_zone_bars = (
+                df_climat[df_climat["cluster"].isin(selected_zones)]
+                .groupby("cluster")[indicator]
+                .std()
+                .reset_index()
+                .rename(columns={"cluster": "zone", indicator: "std_val"})
+            )
+            df_graph = df_graph.merge(std_by_zone_bars, on="zone", how="left")
             fig_scenario = plot_scenario_comparison(
                 df_table=df_graph,
                 indicator=indicator,
