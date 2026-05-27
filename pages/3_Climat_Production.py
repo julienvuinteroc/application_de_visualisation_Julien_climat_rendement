@@ -939,24 +939,16 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     np.nan,
                 )
                 color_ratio["ratio_volume_pct"] = color_ratio["ratio_volume_pct"].round(1)
-                
                 fig_color_ratio = px.pie(
                     color_ratio,
                     values="ratio_volume_pct",
                     names="code_couleur",
                     color="code_couleur",
-                    text_auto=".1f",
+                    
                     color_discrete_map=WINE_COLOR_MAP,
                     title="Poids relatif de chaque couleur dans le volume total",
                     hole=0.4,
                     height=500
-                )
-                fig_color_ratio.update_traces(
-                    textfont_color="white",
-                    texttemplate="%{y:,.1f}",
-                    textposition="inside",
-                    insidetextanchor="middle",
-                    textfont_size=16
                 )
                 st.plotly_chart(fig_color_ratio, key="color_ratio_chart", width="stretch")
     
