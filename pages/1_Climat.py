@@ -950,7 +950,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
         "temp_moyenne": "Tendance temperature (°C)",
         "tmax_mean": "Tendance temperature (°C)",
         "tmin_mean": "Tendance temperature (°C)",
-        "precipitation_total": "Tendance precipitations (mm)"
+        "precipitation_total": "Tendance precipitations (%)"
     }
     hist_col = hist_col_map[indicator]
     trend_col = trend_col_map[indicator]
@@ -990,7 +990,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
             projection = hist_vals[i] + trend_vals[i]
             ax.text(
                 x[i],
-                projection + 0.5,
+                projection + 30,
                 f"{projection:.0f}",
                 fontsize=18,
                 ha="center",
@@ -1313,7 +1313,7 @@ with tab_future:
             "temp_moyenne": "Tendance temperature (°C)",
             "tmax_mean": "Tendance temperature (°C)",
             "tmin_mean": "Tendance temperature (°C)",
-            "precipitation_total": "Tendance precipitations (mm)"
+            "precipitation_total": "Tendance precipitations (%)"
         }
         label_map = {
             "temp_moyenne": "Temperature moyenne (°C)",
@@ -1537,7 +1537,7 @@ with tab_future:
             "temp_moyenne": "Tendance temperature (°C)",
             "tmax_mean": "Tendance temperature (°C)",
             "tmin_mean": "Tendance temperature (°C)",
-            "precipitation_total": "Tendance precipitations (mm)"
+            "precipitation_total": "Tendance precipitations (%)"
         }
         label_map = {
             "temp_moyenne": "Temperature moyenne (°C)",
