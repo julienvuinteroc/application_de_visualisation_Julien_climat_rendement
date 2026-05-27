@@ -953,7 +953,7 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 )
                 fig_color_ratio.update_traces(
                     textfont_color="white",
-                    texttemplate="%{y:,.0f}",
+                    texttemplate="%{y:,.1f}",
                     textposition="inside",
                     insidetextanchor="middle",
                     textfont_size=16
