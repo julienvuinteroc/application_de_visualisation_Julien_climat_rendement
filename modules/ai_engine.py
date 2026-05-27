@@ -470,6 +470,7 @@ class AIAnalyzer:
             - dans la partie Détails sur ces sous-régions sur le rendement moyen (vin rouge, blanc, rose), volume total (vin rouge, blanc, rose), et précipitations annuelles moyennes
             - Va voir les bonnes sources de données fiables locales/internationales en les confrontant (viticoles ou autre) pour récupérer le rendement moyen/couleur et le volume total/couleur, les températures annuelles et les précipitations annuelles
             - (donner si possible volume total (rouge, blanc, rose) en hl et rendement moyen par couleur (rouge, blanc, rose) en hl/ha)
+            - Mettre "non connu" si les rendements moyen annuels sont trop faibles (en-dessous de 30 hl/ha)
             - Détails sur ces sous-régions sur le rendement moyen en hl/ha et précipitations annuelles moyennes en mm (donner températures moyennes annuelles)
             - Justifie chaque analogie par le climat
             - Zone : {zone_id}
