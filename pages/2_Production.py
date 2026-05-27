@@ -562,9 +562,16 @@ with tab_rdt:
                 color="code_couleur",
                 barmode="group",
                 error_y="std",
+                text_auto=".0f",
                 color_discrete_map=COLOR_MAP,
                 title="Rendement moyen par departement et couleur",
                 labels={"code_departement": "Departement", "mean": "Rendement (hl/ha)", "code_couleur": "Couleur"}
+            )
+            fig_dept_color.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
+                insidetextanchor="start"
             )
             fig_dept_color.update_layout(xaxis_type="category")
             st.plotly_chart(fig_dept_color, key="dept_color_rdt", width="stretch")
@@ -584,13 +591,19 @@ with tab_rdt:
                 x="Zone",
                 y="mean",
                 color="code_couleur",
+                text_auto=".0f",
                 barmode="group",
                 error_y="std",
                 color_discrete_map=COLOR_MAP,
                 title="Rendement moyen par zone et couleur",
                 labels={"Zone": "Zone", "mean": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
-            
+            fig_zone_color.update_traces(
+                textfont_color="black",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
+                insidetextanchor="start"
+            )
             st.plotly_chart(fig_zone_color, key="zone_color_rdt", width="stretch")
             
             # Analyse IA
