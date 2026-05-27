@@ -972,7 +972,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 va ="bottom",
                 fontsize=15,
             )
-            ax.errorbar(x[i],hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6)
+            offset = -0.5
+            ax.errorbar(x[i] + offset, hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6)
             ax.text(
                 x[i],
                 hist_vals[i] + trend_vals[i] / 2,
@@ -1006,8 +1007,8 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 fontweight="bold",
                 color ="black"
             )
-        
-            ax.errorbar(x[i],hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6)
+            offset = -0.5
+            ax.errorbar(x[i] + offset,hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6)
         ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
         ax.bar(x, trend_vals, bottom=hist_vals, color= "red", alpha=0.85, width=0.8)
     ax.set_xticks(x)
