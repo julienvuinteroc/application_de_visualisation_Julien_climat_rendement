@@ -568,10 +568,11 @@ with tab_rdt:
                 labels={"code_departement": "Departement", "mean": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
             fig_dept_color.update_traces(
-                textfont_color="black",
+                textfont_color="white",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
-                insidetextanchor="start"
+                insidetextanchor="start",
+                textfont_size=16
             )
             fig_dept_color.update_layout(xaxis_type="category")
             st.plotly_chart(fig_dept_color, key="dept_color_rdt", width="stretch")
@@ -599,10 +600,11 @@ with tab_rdt:
                 labels={"Zone": "Zone", "mean": "Rendement (hl/ha)", "code_couleur": "Couleur"}
             )
             fig_zone_color.update_traces(
-                textfont_color="black",
+                textfont_color="white",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
-                insidetextanchor="start"
+                insidetextanchor="start",
+                textfont_size=16
             )
             st.plotly_chart(fig_zone_color, key="zone_color_rdt", width="stretch")
             
@@ -799,6 +801,8 @@ with tab_vol:
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
+                textfont_size=16
+                
             )
             fig_dept_color_vol.update_layout(
                 legend_traceorder="normal"
@@ -841,6 +845,7 @@ with tab_vol:
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
+                textfont_size=16
             )
             fig_zone_color_vol.update_layout(
                 legend_traceorder="normal"
@@ -881,6 +886,7 @@ with tab_vol:
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
+                textfont_size=16
             )
             fig_zone_cepage.update_layout(
                 legend_traceorder="normal"
@@ -925,6 +931,7 @@ with tab_vol:
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
+                textfont_size=16
             )
             fig_dept_cepage.update_layout(
                 legend_traceorder="normal"
@@ -978,6 +985,7 @@ with tab_vol:
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
+                textfont_size=16
             )
             fig_top_last5.update_layout(
                 legend_traceorder="normal"

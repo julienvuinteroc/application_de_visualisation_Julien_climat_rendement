@@ -604,6 +604,7 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         color="zone_label",
         color_discrete_map=color_map,
         text="classe_final",
+        text_auto=".0f",
         title="Classement qualitatif des zones",
         labels={"zone_label": "Zone", "score_final": "Score global"},
         height=500
@@ -615,6 +616,14 @@ with st.expander("Scoring intelligent des zones", expanded=True):
         plot_bgcolor="rgba(0,0,0,0)",
         hoverlabel=dict(bgcolor="white", font_size=12)
     )
+    fig_score.update_traces(
+        textfont_color="white",
+        texttemplate="%{y:,.0f}",
+        textposition="inside",
+        insidetextanchor="middle",
+        textfont_size=16
+    )
+    
     st.plotly_chart(fig_score, key="score_bar_chart", width="stretch")
     with st.info(""):
         st.markdown("""
@@ -901,10 +910,18 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                 y="rendement",
                 color="code_couleur",
                 barmode="group",
+                text_auto=".0f",
                 color_discrete_map=WINE_COLOR_MAP,
                 title="Rendement moyen par zone et par couleur",
                 labels={"zone": "Zone", "rendement": "Rendement (hl/ha)", "code_couleur": "Couleur"},
                 height=500
+            )
+            fig_color.update_traces(
+                textfont_color="white",
+                texttemplate="%{y:,.0f}",
+                textposition="inside",
+                insidetextanchor="middle",
+                textfont_size=16
             )
             st.plotly_chart(fig_color, key="color_bar_chart", width="stretch")
             
@@ -922,15 +939,24 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
                     np.nan,
                 )
                 color_ratio["ratio_volume_pct"] = color_ratio["ratio_volume_pct"].round(1)
+                
                 fig_color_ratio = px.pie(
                     color_ratio,
                     values="ratio_volume_pct",
                     names="code_couleur",
                     color="code_couleur",
+                    text_auto=".1f",
                     color_discrete_map=WINE_COLOR_MAP,
                     title="Poids relatif de chaque couleur dans le volume total",
                     hole=0.4,
                     height=500
+                )
+                fig_color_ratio.update_traces(
+                    textfont_color="white",
+                    texttemplate="%{y:,.0f}",
+                    textposition="inside",
+                    insidetextanchor="middle",
+                    textfont_size=16
                 )
                 st.plotly_chart(fig_color_ratio, key="color_ratio_chart", width="stretch")
     
