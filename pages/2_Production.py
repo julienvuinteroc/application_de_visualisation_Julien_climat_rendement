@@ -1417,7 +1417,7 @@ with tab_quant:
             # Ajout des valeurs sur les barres
             for bar, val in zip(bars, prod_zone["productivite"]):
                 ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                        f"{val:.0f}", ha="center", va="bottom", fontsize=9)
+                        f"{val:.0f}", ha="center", va="bottom", fontsize=17)
             st.pyplot(fig2)
             plt.close(fig2)
             gc.collect()
@@ -1502,7 +1502,7 @@ with tab_quant:
             # Ajout des valeurs sur les barres
             for bar, val in zip(bars, prod_couleur["productivite"]):
                 ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                        f"{val:.0f}", ha="center", va="bottom", fontsize=9)
+                        f"{val:.0f}", ha="center", va="bottom", fontsize=17)
             st.pyplot(fig20)
             plt.close(fig20)
             gc.collect()
@@ -1560,7 +1560,7 @@ with tab_quant:
             # Ajout des valeurs
             for bar, val in zip(bars, vol_stats["cv"]):
                 ax7.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.5,
-                        f"{val:.0f}%", ha="center", va="bottom", fontsize=9)
+                        f"{val:.0f}%", ha="center", va="bottom", fontsize=17)
             
             st.pyplot(fig7)
             plt.close(fig7)
