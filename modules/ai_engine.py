@@ -464,7 +464,7 @@ class AIAnalyzer:
             - Mettre des sous-régions idéalement (Californie ou Afrique du Sud sont trop vastes mais cite une zone)
             - Etre fiable sur la topographie de la région
             - Ne pas inventer de noms de régions et de sous-régions dans la partie "Cépages utilisés dans ces sous-régions"
-            - Facteurs limitantes dans ces sous-régions (manque d'eau ou autre chose)
+            - Cite l'ensemble des facteurs limitants dans ces sous-régions (manque d'eau ou autre chose)
             - Détaille sur besoin en irrigation si c'est critique dis le et donne les raisons
             - S'il y a déjà eu des épisodes de sécheresse accrue dans ces sous-régions, mentionne les
             - dans la partie Détails sur ces sous-régions sur le rendement moyen (vin rouge, blanc, rose), volume total (vin rouge, blanc, rose), et précipitations annuelles moyennes
