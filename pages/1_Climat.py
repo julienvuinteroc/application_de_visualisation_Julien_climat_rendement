@@ -972,7 +972,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 va ="bottom",
                 fontsize=15,
             )
-            offset = 0.2
+            offset = 0.25
             ax.errorbar(x[i] + offset, hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6, capsize=6, capthick=2, elinewidth=2)
             ax.text(
                 x[i],
@@ -1007,7 +1007,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
                 fontweight="bold",
                 color ="black"
             )
-            offset = 0.2
+            offset = 0.25
             ax.errorbar(x[i] + offset,hist_vals[i] + trend_vals[i], yerr=std_vals[i], fmt="none", color="black",zorder=6, capsize=6, capthick=2, elinewidth=2)
         ax.bar(x, hist_vals, color="yellow", alpha=0.85, width=0.8)
         ax.bar(x, trend_vals, bottom=hist_vals, color= "red", alpha=0.85, width=0.8)
@@ -1019,7 +1019,7 @@ def plot_scenario_comparison(df_table, indicator, period, scenario):
     ax.grid(axis="y", linestyle="--", alpha=0.4)
     y_bottom = min(0, np.min(hist_vals + trend_vals))
     y_top = np.max(hist_vals + trend_vals)
-    ax.set_ylim(y_bottom, y_top + (y_top - y_bottom) * 0.30)
+    ax.set_ylim(y_bottom, y_top + (y_top - y_bottom) * 0.60)
     return fig
 
 # =====================================================
