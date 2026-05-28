@@ -247,7 +247,7 @@ with st.sidebar:
         st.write("BL : Blanc")
         st.write("RG : Rouge")
         st.write("RS : Rose")
-    with st.expander("Aide cepages (par ordre alphabétique)"):
+    with st.expander("Aide cepages (par ordre alphabetique)"):
         st.write("1705 : Caladoc")
         st.write("3039 : Alvarinho")
         st.write("ALIC : Alicante H. Bouschet")
@@ -1008,7 +1008,7 @@ with tab_map:
     # Selection du type de carte
     map_category = st.radio(
         "Type de carte",
-        ["Indicateur", "Couleur", "Cepage", "Moyenne sur periode", "Cepage dominant 5 ans"],
+        ["Indicateur", "Couleur", "Cepage", "Moyenne sur periode", "Cepages dominants 5 ans"],
         horizontal=True,
         key="map_category",
         label_visibility="collapsed"
@@ -1259,7 +1259,7 @@ with tab_map:
                     st.error("Impossible de generer la carte")
     
     else:  # Cepage dominant 5 ans
-        st.subheader("Cepage dominant par zone - 5 dernieres annees")
+        st.subheader("Cepages dominants par zone - 5 dernieres annees")
         
         col_f1, col_f2 = st.columns(2)
         with col_f1:
@@ -1317,8 +1317,8 @@ with tab_map:
                     # Tableau des cepages dominants
                     st.subheader("Detail des cepages dominants")
                     display_df = dom_top[["Zone", "code_cepage", "volume"]].sort_values(["Zone", "volume"], ascending=[True, False])
-                    display_df["volume"] = display_df["volume"].apply(lambda x: f"{x:,.0f}").replace(",", " ")
-                    st.dataframe(display_df, width="stretch", hide_index=True)
+                    display_df["volume"] = display_df["volume"].apply(lambda x: f"{x:,.0f}").replace(",", "  ")
+                    st.dataframe(display_df, width="stretch", hide_index=True , height=2500)
                 else:
                     st.info("Aucune donnee disponible pour les criteres selectionnes")
             else:

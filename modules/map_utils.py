@@ -163,12 +163,12 @@ def display_map_with_legend(data, title_suffix="", height=500, key=None):
                     xref="paper",
                     yref="paper",
                     text=f"<b>Statistiques</b><br>"
-                         f"Moyenne: {stats['mean']:.1f} {data['unit']} | "
-                         f"Mediane: {stats['median']:.1f} {data['unit']}<br>"
-                         f"Minimum: {stats['min']:.1f} {data['unit']} | "
-                         f"Maximum: {stats['max']:.1f} {data['unit']}",
+                         f"Moyenne: {stats['mean']:.0f} {data['unit']} | "
+                         f"Mediane: {stats['median']:.0f} {data['unit']}<br>"
+                         f"Minimum: {stats['min']:.0f} {data['unit']} | "
+                         f"Maximum: {stats['max']:.0f} {data['unit']}",
                     showarrow=False,
-                    font=dict(size=11),
+                    font=dict(size=15),
                     align="center",
                     bgcolor="rgba(255,255,255,0.9)",
                     bordercolor="lightgray",
@@ -182,8 +182,10 @@ def display_map_with_legend(data, title_suffix="", height=500, key=None):
     
     # Afficher un tableau des 10 premières valeurs
     with st.expander("Voir les donnees detailles"):
+        df_format = data['map_display'].copy()
+        df_format[data['var']] = df_format[data['var']].round(0)
         st.dataframe(
-            data['map_display'].sort_values(data['var'], ascending=False).head(10),
+            df_format.sort_values(data['var'], ascending=False).head(10),
             use_container_width=True,
             hide_index=True
         )
@@ -215,32 +217,58 @@ def compare_two_maps(data1, data2, title1, title2):
     if data1 and data2 and not data1['map_display'].empty and not data2['map_display'].empty:
         st.subheader("Comparaison statistique")
         
-        col_s1, col_s2, col_s3, col_s4 = st.columns(4)
+        col_s1, col_s2, col_s3 = st.columns(3)
         
         vals1 = data1['map_display'][data1['var']].dropna()
         vals2 = data2['map_display'][data2['var']].dropna()
         
         if not vals1.empty and not vals2.empty:
             with col_s1:
-                st.metric(
-                    f"{data1['indicator']} moyenne",
-                    f"{vals1.mean():.1f} {data1['unit']}"
-                )
+                if data1['indicator'] == "Rendement":
+                    st.metric(
+                        f"{data1['indicator']} moyen carte 1",
+                        f"{vals1.mean():.1f} {data1['unit']}"
+                    )
+                if data1['indicator'] == "Volume":
+                    st.metric(
+                        f"{data1['indicator']} moyen carte 1",
+                        f"{vals1.mean():.0f} {data1['unit']}"
+                    )
+                if data1['indicator'] == "Surface":
+                    st.metric(
+                        f"{data1['indicator']} moyenne carte 1",
+                        f"{vals1.mean():.0f} {data1['unit']}"
+                    )
             with col_s2:
-                st.metric(
-                    f"{data2['indicator']} moyenne",
-                    f"{vals2.mean():.1f} {data2['unit']}"
-                )
+                if data2['indicator'] == "Rendement":
+                    st.metric(
+                        f"{data2['indicator']} moyen carte 2",
+                        f"{vals2.mean():.1f} {data2['unit']}"
+                    )
+                if data2['indicator'] == "Volume":
+                    st.metric(
+                        f"{data2['indicator']} moyen carte 2",
+                        f"{vals2.mean():.0f} {data2['unit']}"
+                    )
+                if data2['indicator'] == "Surface":
+                    st.metric(
+                        f"{data2['indicator']} moyenne carte 2",
+                        f"{vals2.mean():.0f} {data2['unit']}"
+                    )
             with col_s3:
                 diff = vals1.mean() - vals2.mean()
-                st.metric(
-                    "Difference",
-                    f"{diff:.1f}",
-                    delta=f"{diff:.1f}"
-                )
-            with col_s4:
-                ratio = (vals1.mean() / vals2.mean() * 100) if vals2.mean() != 0 else 0
-                st.metric(
-                    "Ratio",
-                    f"{ratio:.1f}%"
-                )
+                if data1['indicator'] == "Rendement":
+                    st.metric(
+                        "Difference entre les 2 cartes",
+                        f"{diff:.1f} hl/ha"
+                    )
+                if data1['indicator'] == "Volume":
+                    st.metric(
+                        "Difference entre les 2 cartes",
+                        f"{diff:.0f} hl"
+                    )
+                if data1['indicator'] == "Surface":
+                    st.metric(
+                        "Difference entre les 2 cartes",
+                        f"{diff:.0f} ha"
+                    )
