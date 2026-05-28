@@ -1013,27 +1013,6 @@ with st.expander("Analyse par couleur et par cepage", expanded=False):
 
 
 # =====================================================
-# TABLEAU DE SYNTHESE
-# =====================================================
-
-with st.expander("Tableau de synthese par zone et annee", expanded=False):
-    table_zone_year = (
-        df_geo_filtered.groupby(["zone", "annee"], as_index=False)
-        .agg(
-            rendement=("rendement", "mean"),
-            temp_moyenne=("temp_moyenne", "mean"),
-            precipitation_total=("precipitation_total", "mean")
-        ).round(1)
-        .sort_values(["zone", "annee"])
-    )
-    table_zone_year["temp_moyenne"] = table_zone_year["temp_moyenne"].round(1)
-    table_zone_year["rendement"] = table_zone_year["rendement"].round(0)
-    table_zone_year["precipitation_total"] = table_zone_year["precipitation_total"].round(0)
-    table_zone_year_display = table_zone_year.rename(columns=DISPLAY_LABELS)
-    st.dataframe(table_zone_year_display, width="stretch", hide_index=True, row_height=20, height=750)
-    gc.collect()
-
-# =====================================================
 # NARRATION AUTOMATIQUE
 # =====================================================
 

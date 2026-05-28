@@ -1306,11 +1306,10 @@ with tab_map:
                         featureidkey="properties.code_commune",
                         color="code_cepage",
                         title=f"Cepages dominants par zone (Top {top_n} - 5 dernieres annees{f' - {filter_couleur}' if filter_couleur != 'Toutes' else ''})",
-                        hover_data=["Zone", "code_cepage", "volume", "nb_cepages"],
                         color_discrete_sequence=px.colors.qualitative.Set3,
                         height=500
                     )
-                    
+                    fig_dom.update_layout(coloraxis_showscale=True)
                     fig_dom.update_geos(fitbounds="locations", visible=False)
                     st.plotly_chart(fig_dom, key="dominant_cepage_map_5y", width="stretch")
                     

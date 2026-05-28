@@ -127,7 +127,7 @@ def display_map_with_legend(data, title_suffix="", height=500, key=None):
         ] if len(data['map_display']) > 5 else None,
         title=f"{data['indicator']} par {data['title_level']} - {title_suffix}",
         labels={data['var']: f"{data['indicator']} ({data['unit']})"},
-        hover_data={data['locations']: True, data['var']: ':.1f'}
+        hover_data={data['locations']: True, data['var']: ':.0f'}
     )
     
     fig.update_geos(fitbounds="locations", visible=False)
