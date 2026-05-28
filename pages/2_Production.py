@@ -790,6 +790,7 @@ with tab_vol:
                 title="Volume total par departement et couleur",
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
+            fig_dept_color_vol.update_layout(legend_traceorder="reversed")
             fig_dept_color_vol.update_layout(xaxis_type="category")
             fig_dept_color_vol.update_layout(
                 separators=". "
@@ -835,6 +836,7 @@ with tab_vol:
                 category_orders={"code_couleur": color_order},
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_couleur": "Couleur"}
             )
+            fig_zone_color_vol.update_layout(legend_traceorder="reversed")
             fig_zone_color_vol.update_layout(
                 separators=". "
             )
@@ -876,6 +878,7 @@ with tab_vol:
                 category_orders={"code_couleur": color_order},
                 labels={"Zone": "Zone", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
+            fig_zone_cepage.update_layout(legend_traceorder="reversed")
             fig_zone_cepage.update_layout(
                 separators=". "
             )
@@ -920,6 +923,7 @@ with tab_vol:
                 title="Volume par departement et cepage (Top 10)",
                 labels={"code_departement": "Departement", "volume": "Volume (hl)", "code_cepage": "Cepage"}
             )
+            fig_zone_cepage.update_layout(legend_traceorder="reversed")
             fig_dept_cepage.update_layout(xaxis_type="category")
             fig_dept_cepage.update_layout(
                 separators=". "
