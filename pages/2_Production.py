@@ -572,6 +572,8 @@ with tab_rdt:
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
                 insidetextanchor="start",
+                hoverinfo="skip",
+                hovertemplate=None,
                 textfont_size=16
             )
             fig_dept_color.update_layout(xaxis_type="category")
@@ -604,6 +606,8 @@ with tab_rdt:
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
                 insidetextanchor="start",
+                hoverinfo="skip",
+                hovertemplate=None,
                 textfont_size=16
             )
             st.plotly_chart(fig_zone_color, key="zone_color_rdt", width="stretch")
@@ -802,7 +806,9 @@ with tab_vol:
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
-                textfont_size=16
+                textfont_size=16,
+                hoverinfo="skip",
+                hovertemplate=None
                 
             )
             fig_dept_color_vol.update_layout(
@@ -841,13 +847,16 @@ with tab_vol:
                 separators=". "
             )
             fig_zone_color_vol.update_yaxes(
-                tickformat=",.0f"
+                tickformat=",.0f",
             )
+
             fig_zone_color_vol.update_traces(
                 textfont_color="black",
                 texttemplate="%{y:,.0f}",
                 textposition="inside",
-                textfont_size=16
+                textfont_size=16,
+                hoverinfo="skip",
+                hovertemplate=None
             )
             fig_zone_color_vol.update_layout(
                 legend_traceorder="normal"
